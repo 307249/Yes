@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>DROSAK</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="circles">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="background-books"></div>
+
+  <div class="page active" id="homePage">
+    <h1>DROSAK</h1>
+    <p>﴿ وَأَنْ لَيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَى ﴾</p>
+    <div class="notice-box">🔐 أدخل الكود للمتابعة</div>
+    <input id="codeInput" type="text" placeholder="ادخل الكود هنا" class="code-input"/>
+    <p class="error-msg" id="errorMsg"></p>
+    <button class="main-btn" onclick="handleAccess()">يلا بينا</button>
+  </div>
+
+  <div class="page" id="subjectsPage">
+    <button class="settings-btn" onclick="showPage('settingsPage')">⚙️</button>
+    <h1>اختر المادة</h1>
+    <button class="main-btn" onclick="showPage('arabicPage')">عربي</button>
+    <button class="main-btn" onclick="showPage('chemistryPage')">كيمياء</button>
+    <button class="main-btn" onclick="showPage('physicsPage')">فيزياء</button>
+    <button class="main-btn" onclick="showPage('biologyPage')">أحياء</button>
+    <button class="main-btn" onclick="showPage('englishPage')">ENGLISH</button>
+    <button class="main-btn" onclick="showPage('mathPage')">رياضة</button>
+  </div>
+
+  <div class="page" id="settingsPage">
+    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+    <h1>إعدادات المستخدم</h1>
+    <p>هنضيف الإعدادات لاحقًا.</p>
+  </div>
+
+  <div class="page" id="arabicPage">
+    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+    <h1>مادة عربي</h1>
+    <button class="arabic-btn">محمد صلاح</button>
+    <button class="arabic-btn">رضا الفاروق</button>
+  </div>
+
+  <div class="page" id="chemistryPage">
+    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+    <h1>مادة كيمياء</h1>
+    <button class="chem-btn">خالد صقر</button>
+    <button class="chem-btn">عبد الجواد</button>
+    <p class="member-msg">📌 العضوية 2025 دي للناس اللي حابه تبدأ عضوية مع العام</p>
+  </div>
+
+  <div class="page" id="physicsPage">
+    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+    <h1>مادة فزياء</h1>
+    <button class="chem-btn">محمد عبد المعبود</button>
+    <button class="chem-btn">كرلس</button>
+  </div>
+
+  <div class="page" id="biologyPage">
+    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+    <h1>مادة أحياء</h1>
+    <button class="chem-btn">الجوهري</button>
+    <button class="chem-btn">جيو ماجد</button>
+  </div>
+
+  <div class="page" id="englishPage">
+    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+    <h1>مادة ENGLISH</h1>
+    <button class="chem-btn">وائل ميلاد</button>
+    <button class="chem-btn">عبقري لغه</button>
+  </div>
+
+  <div class="page" id="mathPage">
+    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+    <h1>مادة رياضة</h1>
+    <button class="chem-btn">أحمد عصام</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
