@@ -1,4 +1,3 @@
-
 const firebaseConfig = {
   databaseURL: "https://drosak-2f9fe-default-rtdb.europe-west1.firebasedatabase.app"
 };
@@ -15,22 +14,23 @@ async function handleAccess() {
   const errorBox = document.getElementById("errorMsg");
 
   try {
-    const res = await fetch(databaseURL + "/settings.json");
-    const data = await res.json();
+    const res = await fetch(databaseURL + "/appSettings.json");
+    const settings = await res.json();
+    const isLocked = settings.lockEnabled;
 
-    if (!data || data.active !== true) {
+    if (!isLocked) {
       showPage("subjectsPage");
       return;
     }
 
-    const keys = data.keys || {};
+    const keys = settings.validKeys || {};
     const savedKey = localStorage.getItem("drosakKey");
     const now = Date.now();
 
     let validKey = null;
     for (const key in keys) {
       const entry = keys[key];
-      if ((key === code || key === savedKey) && entry && now < entry.expiresAt) {
+      if ((key === code || key === savedKey) && entry && now < entry.expiry) {
         validKey = key;
         break;
       }
@@ -40,7 +40,7 @@ async function handleAccess() {
       localStorage.setItem("drosakKey", validKey);
       showPage("subjectsPage");
     } else {
-      if (code && keys[code] && now >= keys[code].expiresAt) {
+      if (code && keys[code] && now >= keys[code].expiry) {
         errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
       } else {
         errorBox.textContent = "❌ الكود خطأ للأشتراك كلمنا t.me/AL_MAALA";
