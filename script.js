@@ -1,28 +1,33 @@
-const databaseURL = "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app/";
+const firebaseConfig = {
+  databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app/"
+};
+const databaseURL = firebaseConfig.databaseURL;
 
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
+// زر الدخول
 async function handleAccess() {
   const input = document.getElementById("codeInput");
   const code = input.value.trim();
   const errorBox = document.getElementById("errorMsg");
 
   try {
-    const res = await fetch(databaseURL + "/appSettings.json");
-    const settings = await res.json();
+    const res = await fetch(databaseURL + "/appSettings/lockEnabled.json");
+    const lockEnabled = await res.json();
 
-    const isLocked = settings?.lockEnabled === true;
-    const keys = settings?.validKeys || {};
-    const savedKey = localStorage.getItem("drosakKey");
-    const now = Date.now();
-
-    if (!isLocked) {
+    if (!lockEnabled) {
       showPage("subjectsPage");
       return;
     }
+
+    const keysRes = await fetch(databaseURL + "/validKeys.json");
+    const keys = await keysRes.json();
+
+    const savedKey = localStorage.getItem("drosakKey");
+    const now = Date.now();
 
     let validKey = null;
     for (const key in keys) {
@@ -40,11 +45,12 @@ async function handleAccess() {
       if (code && keys[code] && now >= keys[code].expiresAt) {
         errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
       } else {
-        errorBox.textContent = "❌ الكود خطأ، للأشتراك كلمنا: t.me/AL_MAALA";
+        errorBox.textContent = "❌ الكود خطأ، للأشتراك كلمنا t.me/AL_MAALA";
       }
     }
-  } catch (err) {
-    console.error(err);
-    errorBox.textContent = "❌ حدث خطأ أثناء التحقق من الكود.";
+
+  } catch (e) {
+    console.error(e);
+    errorBox.textContent = "حدث خطأ أثناء التحقق. تأكد من الاتصال بالإنترنت.";
   }
 }
