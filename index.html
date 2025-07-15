@@ -1,59 +1,33 @@
-const firebaseConfig = {
-  databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app/"
-};
-const databaseURL = firebaseConfig.databaseURL;
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>DROSAK</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>📚 تطبيق دروسك</h1>
+    
+    <div class="notice-box">🔐 أدخل الكود للمتابعة (إذا طُلب)</div>
+    <input id="codeInput" type="text" placeholder="ادخل الكود هنا" class="code-input"/>
+    <p class="error-msg" id="errorMsg"></p>
+    <button class="main-btn" onclick="handleAccess()">يلا بينا</button>
+  </div>
 
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
+  <div class="page" id="subjectsPage" style="display:none">
+    <button class="back-btn" onclick="goBack()">← رجوع</button>
+    <h2>اختر المادة</h2>
+    <button class="main-btn">عربي</button>
+    <button class="main-btn">كيمياء</button>
+    <button class="main-btn">فيزياء</button>
+    <button class="main-btn">أحياء</button>
+    <button class="main-btn">إنجليزي</button>
+    <button class="main-btn">رياضة</button>
+  </div>
 
-async function handleAccess() {
-  const codeInput = document.getElementById("codeInput");
-  const errorMsg = document.getElementById("errorMsg");
-  const enteredCode = codeInput.value.trim();
-  const savedCode = localStorage.getItem("drosakKey");
-  const now = Date.now();
-
-  try {
-    // أولاً: نتحقق من حالة القفل
-    const lockRes = await fetch(`${databaseURL}/appSettings/lockEnabled.json`);
-    const lockEnabled = await lockRes.json();
-
-    if (!lockEnabled) {
-      // القفل مش مفعل → نسمح بالدخول على طول
-      showPage("subjectsPage");
-      return;
-    }
-
-    // القفل مفعل → نتحقق من المفاتيح
-    const keysRes = await fetch(`${databaseURL}/validKeys.json`);
-    const keys = await keysRes.json();
-
-    let valid = false;
-
-    for (const key in keys) {
-      const data = keys[key];
-      if ((key === enteredCode || key === savedCode) && data && now < data.expiresAt) {
-        valid = true;
-        localStorage.setItem("drosakKey", key);
-        break;
-      }
-    }
-
-    if (valid) {
-      showPage("subjectsPage");
-    } else {
-      // نحدد الرسالة حسب الحالة
-      if (enteredCode && keys[enteredCode] && now >= keys[enteredCode].expiresAt) {
-        errorMsg.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
-      } else {
-        errorMsg.textContent = "❌ الكود غير صحيح، للأشتراك كلمنا t.me/AL_MAALA";
-      }
-    }
-
-  } catch (err) {
-    console.error(err);
-    errorMsg.textContent = "حدث خطأ أثناء الاتصال، حاول لاحقًا.";
-  }
-}
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
