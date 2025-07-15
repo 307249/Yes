@@ -1,63 +1,54 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
-
 const firebaseConfig = {
   databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app/"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
 
 async function handleAccess() {
   const codeInput = document.getElementById("codeInput");
-  const errorBox = document.getElementById("errorMsg");
   const code = codeInput.value.trim();
-  const savedKey = localStorage.getItem("drosakKey");
-  const now = Date.now();
+  const errorBox = document.getElementById("errorMsg");
 
   try {
-    const snapshot = await get(ref(db, "appSettings/lockEnabled"));
-    const lockEnabled = snapshot.exists() ? snapshot.val() : false;
+    const res = await fetch(firebaseConfig.databaseURL + "/appSettings/lockEnabled.json");
+    const isLocked = await res.json();
 
-    // لو القفل غير مفعل → دخول مباشر
-    if (!lockEnabled) {
-      document.querySelector(".container").style.display = "none";
-      document.getElementById("subjectsPage").style.display = "block";
+    if (!isLocked) {
+      showPage("subjectsPage");
       return;
     }
 
-    // القفل مفعل → التحقق من الكود الحالي
-    const keysSnapshot = await get(ref(db, "validKeys"));
-    const keys = keysSnapshot.exists() ? keysSnapshot.val() : {};
+    const savedKey = localStorage.getItem("drosakKey") || "";
+    const res2 = await fetch(firebaseConfig.databaseURL + "/validKeys.json");
+    const keys = await res2.json();
+    const now = Date.now();
 
-    let validKey = null;
+    let foundValid = false;
+
     for (const key in keys) {
-      const entry = keys[key];
-      if ((key === code || key === savedKey) && now < entry.expiresAt) {
-        validKey = key;
+      const data = keys[key];
+      if ((key === code || key === savedKey) && now < data.expiresAt) {
+        foundValid = true;
+        localStorage.setItem("drosakKey", key);
         break;
       }
     }
 
-    if (validKey) {
-      localStorage.setItem("drosakKey", validKey);
-      document.querySelector(".container").style.display = "none";
-      document.getElementById("subjectsPage").style.display = "block";
+    if (foundValid) {
+      showPage("subjectsPage");
     } else {
-      if (code && keys[code] && now >= keys[code].expiresAt) {
+      if (keys[code] && now >= keys[code].expiresAt) {
         errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
       } else {
-        errorBox.textContent = "❌ الكود خطأ للأشتراك كلمنا t.me/AL_MAALA";
+        errorBox.textContent = "❌ الكود غير صحيح أو لم يتم إنشاؤه.";
       }
     }
 
   } catch (e) {
-    console.error("Firebase error:", e);
-    errorBox.textContent = "⚠️ حدث خطأ أثناء الاتصال بالسيرفر.";
+    console.error("حدث خطأ:", e);
+    errorBox.textContent = "⚠️ حدث خطأ أثناء الاتصال بقاعدة البيانات.";
   }
-}
-
-function goBack() {
-  document.getElementById("subjectsPage").style.display = "none";
-  document.querySelector(".container").style.display = "block";
 }
