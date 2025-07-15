@@ -4,56 +4,58 @@ const firebaseConfig = {
 
 const dbURL = firebaseConfig.databaseURL;
 
-function goBack() {
-  document.getElementById("subjectsPage").style.display = "none";
-  document.querySelector(".container").style.display = "block";
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
 
 async function handleAccess() {
-  const codeInput = document.getElementById("codeInput").value.trim();
+  const codeInput = document.getElementById("codeInput");
+  const code = codeInput.value.trim();
   const errorBox = document.getElementById("errorMsg");
 
   try {
-    // التحقق من حالة التفعيل
-    const lockRes = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
-    const isLocked = await lockRes.json();
+    const res = await fetch(`${dbURL}/appSettings.json`);
+    const settings = await res.json();
 
-    if (isLocked !== true) {
-      // القفل غير مفعل → فتح التطبيق
-      showSubjects();
+    const lockEnabled = settings?.lockEnabled === true;
+
+    if (!lockEnabled) {
+      showPage("subjectsPage");
       return;
     }
 
-    // القفل مفعل → التحقق من الكود
-    const keysRes = await fetch(`${dbURL}/validKeys.json`);
-    const keys = await keysRes.json() || {};
+    const keysSnap = await fetch(`${dbURL}/validKeys.json`);
+    const keysData = await keysSnap.json() || {};
+    const savedKey = localStorage.getItem("drosakKey");
     const now = Date.now();
-    const saved = localStorage.getItem("drosakKey");
 
-    // تحقق من الكود الجديد أو المحفوظ
-    for (const key in keys) {
-      const entry = keys[key];
-      if ((key === codeInput || key === saved) && now < entry.expiresAt) {
-        localStorage.setItem("drosakKey", key);
-        showSubjects();
-        return;
+    let matchedKey = null;
+
+    for (const key in keysData) {
+      const entry = keysData[key];
+      if ((key === code || key === savedKey) && now < entry.expiresAt) {
+        matchedKey = key;
+        break;
       }
     }
 
-    // صلاحية منتهية أو كود خاطئ
-    if (codeInput in keys && now >= keys[codeInput].expiresAt) {
-      errorBox.textContent = "انتهت صلاحية الكود، للتجديد تواصل معنا: @AL_MAALA";
+    if (matchedKey) {
+      localStorage.setItem("drosakKey", matchedKey);
+      showPage("subjectsPage");
     } else {
-      errorBox.textContent = "❌ الكود غير صحيح";
+      if (code && keysData[code] && now >= keysData[code].expiresAt) {
+        errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
+      } else {
+        errorBox.textContent = "❌ الكود غير صحيح، تواصل معنا: @AL_MAALA";
+      }
     }
 
-  } catch (e) {
-    console.error(e);
-    errorBox.textContent = "حدث خطأ أثناء الاتصال. تأكد من الإنترنت.";
+  } catch (err) {
+    console.error(err);
+    errorBox.textContent = "❌ حدث خطأ أثناء الاتصال بقاعدة البيانات";
   }
 }
 
-function showSubjects() {
-  document.querySelector(".container").style.display = "none";
-  document.getElementById("subjectsPage").style.display = "block";
-}
+// تحقق تلقائي عند أول فتح إذا الكود محفوظ وصالح
+window.addEventListener("DOMContentLoaded", handleAccess);
