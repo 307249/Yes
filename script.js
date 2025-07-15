@@ -13,14 +13,17 @@ async function handleAccess() {
   const errorBox = document.getElementById("errorMsg");
 
   try {
+    // التحقق من حالة التفعيل
     const res = await fetch(firebaseConfig.databaseURL + "/appSettings/lockEnabled.json");
     const isLocked = await res.json();
 
-    if (!isLocked) {
+    // لو القفل غير مفعل، ندخل على طول
+    if (isLocked !== true) {
       showPage("subjectsPage");
       return;
     }
 
+    // لو القفل مفعل، نبدأ نتحقق من الكود
     const savedKey = localStorage.getItem("drosakKey") || "";
     const res2 = await fetch(firebaseConfig.databaseURL + "/validKeys.json");
     const keys = await res2.json();
@@ -41,9 +44,9 @@ async function handleAccess() {
       showPage("subjectsPage");
     } else {
       if (keys[code] && now >= keys[code].expiresAt) {
-        errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
+        errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك. للتجديد تواصل معنا: @AL_MAALA";
       } else {
-        errorBox.textContent = "❌ الكود غير صحيح أو لم يتم إنشاؤه.";
+        errorBox.textContent = "❌ الكود غير صحيح أو غير مسجّل.";
       }
     }
 
