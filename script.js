@@ -14,16 +14,17 @@ async function handleAccess() {
   const errorBox = document.getElementById("errorMsg");
 
   try {
-    const res = await fetch(databaseURL + "/appSettings.json");
-    const settings = await res.json();
-    const isLocked = settings.lockEnabled;
+    const lockRes = await fetch(databaseURL + "/appSettings/lockEnabled.json");
+    const lockEnabled = await lockRes.json();
 
-    if (!isLocked) {
+    // لو القفل مش مفعّل
+    if (!lockEnabled) {
       showPage("subjectsPage");
       return;
     }
 
-    const keys = settings.validKeys || {};
+    const keysRes = await fetch(databaseURL + "/validKeys.json");
+    const keys = await keysRes.json() || {};
     const savedKey = localStorage.getItem("drosakKey");
     const now = Date.now();
 
@@ -46,8 +47,9 @@ async function handleAccess() {
         errorBox.textContent = "❌ الكود خطأ للأشتراك كلمنا t.me/AL_MAALA";
       }
     }
+
   } catch (e) {
     console.error(e);
-    errorBox.textContent = "حدث خطأ أثناء التحقق. تأكد من الاتصال بالإنترنت.";
+    errorBox.textContent = "⚠️ حدث خطأ أثناء الاتصال بـ Firebase.";
   }
 }
