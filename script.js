@@ -1,57 +1,59 @@
 const firebaseConfig = {
-  databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app/"
+  databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
 };
 
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+const dbURL = firebaseConfig.databaseURL;
+
+function goBack() {
+  document.getElementById("subjectsPage").style.display = "none";
+  document.querySelector(".container").style.display = "block";
 }
 
 async function handleAccess() {
-  const codeInput = document.getElementById("codeInput");
-  const code = codeInput.value.trim();
+  const codeInput = document.getElementById("codeInput").value.trim();
   const errorBox = document.getElementById("errorMsg");
 
   try {
     // التحقق من حالة التفعيل
-    const res = await fetch(firebaseConfig.databaseURL + "/appSettings/lockEnabled.json");
-    const isLocked = await res.json();
+    const lockRes = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
+    const isLocked = await lockRes.json();
 
-    // لو القفل غير مفعل، ندخل على طول
     if (isLocked !== true) {
-      showPage("subjectsPage");
+      // القفل غير مفعل → فتح التطبيق
+      showSubjects();
       return;
     }
 
-    // لو القفل مفعل، نبدأ نتحقق من الكود
-    const savedKey = localStorage.getItem("drosakKey") || "";
-    const res2 = await fetch(firebaseConfig.databaseURL + "/validKeys.json");
-    const keys = await res2.json();
+    // القفل مفعل → التحقق من الكود
+    const keysRes = await fetch(`${dbURL}/validKeys.json`);
+    const keys = await keysRes.json() || {};
     const now = Date.now();
+    const saved = localStorage.getItem("drosakKey");
 
-    let foundValid = false;
-
+    // تحقق من الكود الجديد أو المحفوظ
     for (const key in keys) {
-      const data = keys[key];
-      if ((key === code || key === savedKey) && now < data.expiresAt) {
-        foundValid = true;
+      const entry = keys[key];
+      if ((key === codeInput || key === saved) && now < entry.expiresAt) {
         localStorage.setItem("drosakKey", key);
-        break;
+        showSubjects();
+        return;
       }
     }
 
-    if (foundValid) {
-      showPage("subjectsPage");
+    // صلاحية منتهية أو كود خاطئ
+    if (codeInput in keys && now >= keys[codeInput].expiresAt) {
+      errorBox.textContent = "انتهت صلاحية الكود، للتجديد تواصل معنا: @AL_MAALA";
     } else {
-      if (keys[code] && now >= keys[code].expiresAt) {
-        errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك. للتجديد تواصل معنا: @AL_MAALA";
-      } else {
-        errorBox.textContent = "❌ الكود غير صحيح أو غير مسجّل.";
-      }
+      errorBox.textContent = "❌ الكود غير صحيح";
     }
 
   } catch (e) {
-    console.error("حدث خطأ:", e);
-    errorBox.textContent = "⚠️ حدث خطأ أثناء الاتصال بقاعدة البيانات.";
+    console.error(e);
+    errorBox.textContent = "حدث خطأ أثناء الاتصال. تأكد من الإنترنت.";
   }
+}
+
+function showSubjects() {
+  document.querySelector(".container").style.display = "none";
+  document.getElementById("subjectsPage").style.display = "block";
 }
