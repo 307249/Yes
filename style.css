@@ -1,33 +1,40 @@
 body {
   font-family: 'Cairo', sans-serif;
-  background: linear-gradient(135deg, #0D1B2A, #1B263B);
+  background: #0D1B2A;
   color: white;
   margin: 0;
-}
-.page {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-}
-.page.active {
+  padding: 0;
+  height: 100vh;
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.main-btn, .chem-btn, .arabic-btn {
-  margin: 10px;
-  padding: 10px 20px;
-  font-size: 18px;
+.container, .page {
+  text-align: center;
+  background: #1B263B;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #000;
+  width: 90%;
+  max-width: 400px;
+}
+.main-btn {
+  margin-top: 15px;
+  padding: 15px 25px;
+  font-size: 16px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  background: #5FA8D3;
+  color: #000;
 }
 .code-input {
   margin-top: 15px;
   padding: 10px;
-  font-size: 18px;
+  font-size: 16px;
   border-radius: 8px;
   border: none;
+  width: 100%;
 }
 .notice-box {
   background: rgba(255,255,255,0.1);
@@ -40,13 +47,12 @@ body {
   font-size: 16px;
   margin-top: 10px;
 }
-.settings-btn, .back-btn {
-  margin-top: 10px;
-  align-self: flex-start;
-  margin-right: 20px;
-  font-size: 20px;
-  background: transparent;
-  color: white;
+.back-btn {
+  margin-bottom: 20px;
+  background: #ccc;
+  color: black;
   border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
   cursor: pointer;
 }
