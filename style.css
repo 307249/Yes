@@ -1,58 +1,63 @@
 body {
   font-family: 'Cairo', sans-serif;
-  background: #0D1B2A;
+  background: linear-gradient(135deg, #0D1B2A, #1B263B);
   color: white;
   margin: 0;
   padding: 0;
-  height: 100vh;
+  direction: rtl;
+}
+
+.container {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.container, .page {
+  height: 100vh;
+  flex-direction: column;
   text-align: center;
-  background: #1B263B;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 20px #000;
-  width: 90%;
-  max-width: 400px;
 }
-.main-btn {
-  margin-top: 15px;
-  padding: 15px 25px;
-  font-size: 16px;
+
+.page {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.page.active {
+  display: flex;
+}
+
+.main-btn, .back-btn, .settings-btn {
+  margin: 10px;
+  padding: 12px 20px;
+  font-size: 18px;
   border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  background: #5FA8D3;
+  border-radius: 10px;
+  background-color: #5FA8D3;
   color: #000;
+  cursor: pointer;
 }
+
 .code-input {
   margin-top: 15px;
   padding: 10px;
-  font-size: 16px;
+  font-size: 18px;
   border-radius: 8px;
   border: none;
-  width: 100%;
+  width: 80%;
+  max-width: 300px;
 }
+
 .notice-box {
   background: rgba(255,255,255,0.1);
   padding: 10px;
   border-radius: 8px;
   margin-top: 10px;
+  font-size: 16px;
 }
+
 .error-msg {
   color: #ff8080;
   font-size: 16px;
   margin-top: 10px;
-}
-.back-btn {
-  margin-bottom: 20px;
-  background: #ccc;
-  color: black;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  cursor: pointer;
 }
