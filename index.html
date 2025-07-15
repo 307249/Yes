@@ -1,58 +1,33 @@
-const firebaseConfig = {
-  databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
-};
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>DROSAK</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>DROSAK</h1>
+    <p class="sub">﴿ وَأَنْ لَيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَى ﴾</p>
 
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
+    <div class="notice">أدخل الكود للمتابعة</div>
+    <input id="codeInput" type="text" placeholder="ادخل الكود هنا">
+    <p class="error" id="errorMsg"></p>
 
-async function handleAccess() {
-  const input = document.getElementById("codeInput");
-  const code = input.value.trim();
-  const errorBox = document.getElementById("errorMsg");
-  const now = Date.now();
+    <button onclick="handleAccess()">يلا بينا</button>
+  </div>
 
-  try {
-    // جلب حالة التفعيل
-    const lockRes = await fetch(`${firebaseConfig.databaseURL}/appSettings/lockEnabled.json`);
-    const isLocked = await lockRes.json();
+  <div class="subjects" id="subjectsPage" style="display:none;">
+    <h2>اختر المادة</h2>
+    <button onclick="goBack()">← رجوع</button>
+    <button>عربي</button>
+    <button>كيمياء</button>
+    <button>فيزياء</button>
+    <button>أحياء</button>
+    <button>انجليزي</button>
+    <button>رياضة</button>
+  </div>
 
-    console.log("lockEnabled = ", isLocked); // لمراقبة القيمة في console
-
-    if (isLocked !== true) {
-      showPage("subjectsPage");
-      return;
-    }
-
-    // إذا القفل مفعل، تحقق من الكود
-    const keysRes = await fetch(`${firebaseConfig.databaseURL}/validKeys.json`);
-    const keys = await keysRes.json();
-
-    const savedKey = localStorage.getItem("drosakKey");
-    let validKey = null;
-
-    for (const key in keys) {
-      const k = keys[key];
-      if ((key === code || key === savedKey) && now < k.expiresAt) {
-        validKey = key;
-        break;
-      }
-    }
-
-    if (validKey) {
-      localStorage.setItem("drosakKey", validKey);
-      showPage("subjectsPage");
-    } else {
-      if (code && keys[code] && now >= keys[code].expiresAt) {
-        errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك. للتجديد كلمنا: @AL_MAALA";
-      } else {
-        errorBox.textContent = "❌ الكود غير صحيح.";
-      }
-    }
-
-  } catch (err) {
-    console.error("Error:", err);
-    errorBox.textContent = "⚠️ حدث خطأ في الاتصال بقاعدة البيانات.";
-  }
-}
+  <script src="script.js"></script>
+</body>
+</html>
