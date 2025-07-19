@@ -1,35 +1,106 @@
 body {
-  background: #121212;
-  color: white;
   font-family: 'Cairo', sans-serif;
-  text-align: center;
+  background: linear-gradient(135deg, #0D1B2A, #1B263B);
+  color: white;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
-.container {
-  margin-top: 100px;
+.page {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
 }
 
-input, button {
-  padding: 10px;
-  margin-top: 10px;
-  font-size: 16px;
+.page.active {
+  display: flex;
+}
+
+.main-btn, .back-btn {
+  margin: 10px;
+  padding: 12px 25px;
+  font-size: 18px;
+  border-radius: 8px;
   border: none;
-  border-radius: 5px;
-}
-
-input {
-  width: 250px;
-}
-
-button {
-  background-color: #1e88e5;
-  color: white;
+  background: #5FA8D3;
+  color: #000;
   cursor: pointer;
 }
 
-#message {
-  margin-top: 20px;
-  color: red;
+.code-input {
+  margin-top: 15px;
+  padding: 10px;
+  font-size: 18px;
+  border-radius: 8px;
+  border: none;
+  width: 250px;
+  text-align: center;
+}
+
+.notice-box {
+  background: rgba(255,255,255,0.1);
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.error-msg {
+  color: #ff8080;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.circles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.circles span {
+  position: absolute;
+  display: block;
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.1);
+  animation: move 20s linear infinite;
+  border-radius: 50%;
+}
+
+.circles span:nth-child(1) {
+  top: 20%;
+  left: 15%;
+  animation-delay: 0s;
+}
+.circles span:nth-child(2) {
+  top: 40%;
+  left: 70%;
+  animation-delay: 2s;
+}
+.circles span:nth-child(3) {
+  top: 65%;
+  left: 25%;
+  animation-delay: 4s;
+}
+.circles span:nth-child(4) {
+  top: 80%;
+  left: 80%;
+  animation-delay: 6s;
+}
+.circles span:nth-child(5) {
+  top: 10%;
+  left: 50%;
+  animation-delay: 8s;
+}
+
+@keyframes move {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-1000px); opacity: 0; }
 }
