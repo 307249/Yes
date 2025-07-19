@@ -13,42 +13,38 @@ async function handleAccess() {
   const codeInput = document.getElementById("codeInput");
   const code = codeInput.value.trim();
   const errorBox = document.getElementById("errorMsg");
+  errorBox.textContent = "";
 
   try {
-    const res = await fetch(`${dbURL}/appSettings.json`);
-    const settings = await res.json();
+    // أولًا: نتحقق من حالة القفل
+    const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
+    const lockEnabled = await res.json();
 
-    const lockEnabled = settings?.lockEnabled === true;
-
+    // لو القفل مش مفعّل → يدخل عادي
     if (!lockEnabled) {
       showPage("subjectsPage");
       return;
     }
 
-    const keysSnap = await fetch(`${dbURL}/validKeys.json`);
-    const keysData = await keysSnap.json() || {};
-    const savedKey = localStorage.getItem("drosakKey");
-    const now = Date.now();
-
-    let matchedKey = null;
-
-    for (const key in keysData) {
-      const entry = keysData[key];
-      if ((key === code || key === savedKey) && now < entry.expiresAt) {
-        matchedKey = key;
-        break;
-      }
+    // لو القفل مفعّل → لازم الكود
+    if (!code) {
+      errorBox.textContent = "⚠️ من فضلك أدخل الكود";
+      return;
     }
 
-    if (matchedKey) {
-      localStorage.setItem("drosakKey", matchedKey);
+    // نجيب كل المفاتيح من قاعدة البيانات
+    const keysSnap = await fetch(`${dbURL}/validKeys.json`);
+    const keysData = await keysSnap.json() || {};
+    const now = Date.now();
+
+    // نتحقق هل الكود موجود وصلاحيته سارية
+    if (keysData[code] && now < keysData[code].expiresAt) {
+      localStorage.setItem("drosakKey", code);
       showPage("subjectsPage");
+    } else if (keysData[code] && now >= keysData[code].expiresAt) {
+      errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
     } else {
-      if (code && keysData[code] && now >= keysData[code].expiresAt) {
-        errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
-      } else {
-        errorBox.textContent = "❌ الكود غير صحيح، تواصل معنا: @AL_MAALA";
-      }
+      errorBox.textContent = "❌ الكود غير صحيح، تواصل معنا: @AL_MAALA";
     }
 
   } catch (err) {
@@ -56,6 +52,3 @@ async function handleAccess() {
     errorBox.textContent = "❌ حدث خطأ أثناء الاتصال بقاعدة البيانات";
   }
 }
-
-// تحقق تلقائي عند أول فتح إذا الكود محفوظ وصالح
-window.addEventListener("DOMContentLoaded", handleAccess);
