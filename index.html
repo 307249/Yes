@@ -1,21 +1,19 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>دروسك</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>دروسك - التطبيق الأساسي</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"></script>
 </head>
 <body>
   <div class="container">
-    <h1>دروسك</h1>
-    <input type="text" id="codeInput" placeholder="ادخل كود التفعيل">
-    <button id="startBtn">يلا بينا</button>
-    <p id="message" class="error-message"></p>
+    <h1>مرحباً بك في دروسك</h1>
+    <input type="text" id="keyInput" placeholder="ادخل المفتاح هنا">
+    <button id="startButton">يلا بينا</button>
+    <p id="message"></p>
   </div>
-
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
