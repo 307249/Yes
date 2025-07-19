@@ -1,77 +1,125 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>DROSAK</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>تطبيق دروسك</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #fff;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+    }
+
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 40px;
+    }
+
+    #startButton {
+      background-color: #00c853;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #startButton:hover {
+      background-color: #00b140;
+    }
+
+    .logo {
+      width: 120px;
+      margin-bottom: 20px;
+    }
+
+    .footer {
+      margin-top: 50px;
+      font-size: 0.9em;
+      color: #999;
+    }
+  </style>
 </head>
 <body>
-  <div class="circles">
-    <span></span><span></span><span></span><span></span><span></span>
+  <div class="container">
+    <img src="logo.png" alt="شعار دروسك" class="logo">
+    <h1>مرحبًا بك في تطبيق دروسك</h1>
+    <button id="startButton">يلا بينا</button>
+
+    <div class="footer">© 2025 دروسك - جميع الحقوق محفوظة</div>
   </div>
 
-  <div class="page active" id="homePage">
-    <h1>DROSAK</h1>
-    <p>﴿ وَأَنْ لَيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَى ﴾</p>
-    <div class="notice-box">🔐 أدخل الكود للمتابعة</div>
-    <input id="codeInput" type="text" placeholder="ادخل الكود هنا" class="code-input" />
-    <p class="error-msg" id="errorMsg"></p>
-    <button class="main-btn" onclick="handleAccess()">يلا بينا</button>
-  </div>
+  <!-- Firebase Scripts -->
+  <script type="module">
+    // إعدادات Firebase الخاصة بك:
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "SENDER_ID",
+      appId: "APP_ID"
+    };
 
-  <div class="page" id="subjectsPage">
-    <button class="back-btn" onclick="showPage('homePage')">← رجوع</button>
-    <h1>اختر المادة</h1>
-    <button class="main-btn" onclick="showPage('arabicPage')">عربي</button>
-    <button class="main-btn" onclick="showPage('chemistryPage')">كيمياء</button>
-    <button class="main-btn" onclick="showPage('physicsPage')">فيزياء</button>
-    <button class="main-btn" onclick="showPage('biologyPage')">أحياء</button>
-    <button class="main-btn" onclick="showPage('englishPage')">ENGLISH</button>
-    <button class="main-btn" onclick="showPage('mathPage')">رياضة</button>
-  </div>
+    // تحميل مكتبات Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-  <!-- صفحات المواد -->
-  <div class="page" id="arabicPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>عربي</h1>
-    <button class="main-btn">محمد صلاح</button>
-    <button class="main-btn">رضا الفاروق</button>
-  </div>
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-  <div class="page" id="chemistryPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>كيمياء</h1>
-    <button class="main-btn">خالد صقر</button>
-    <button class="main-btn">عبد الجواد</button>
-  </div>
+    window.onload = () => {
+      const startButton = document.getElementById("startButton");
 
-  <div class="page" id="physicsPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>فيزياء</h1>
-    <button class="main-btn">محمد عبد المعبود</button>
-    <button class="main-btn">كرلس</button>
-  </div>
+      startButton.addEventListener("click", async () => {
+        try {
+          const lockSnapshot = await get(ref(db, "appSettings/lockEnabled"));
+          const lockEnabled = lockSnapshot.exists() ? lockSnapshot.val() : false;
 
-  <div class="page" id="biologyPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>أحياء</h1>
-    <button class="main-btn">الجوهري</button>
-    <button class="main-btn">جيو ماجد</button>
-  </div>
+          if (!lockEnabled) {
+            window.location.href = "main.html";
+            return;
+          }
 
-  <div class="page" id="englishPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>ENGLISH</h1>
-    <button class="main-btn">وائل ميلاد</button>
-    <button class="main-btn">عبقري لغة</button>
-  </div>
+          const storedCode = localStorage.getItem("accessCode");
 
-  <div class="page" id="mathPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>رياضة</h1>
-    <button class="main-btn">أحمد عصام</button>
-  </div>
+          if (!storedCode) {
+            alert("يرجى إدخال كود الوصول من التطبيق المولد أولاً.");
+            return;
+          }
 
-  <script src="script.js"></script>
+          const keySnapshot = await get(ref(db, `validKeys/${storedCode}`));
+
+          if (keySnapshot.exists()) {
+            const keyData = keySnapshot.val();
+            const currentTime = Date.now();
+
+            if (keyData.expiresAt && currentTime < keyData.expiresAt) {
+              window.location.href = "main.html";
+            } else {
+              alert("انتهت صلاحية هذا الكود. يرجى إدخال كود جديد.");
+            }
+          } else {
+            alert("الكود غير صحيح. يرجى إدخال كود تم إنشاؤه من التطبيق المولد.");
+          }
+
+        } catch (error) {
+          console.error("Error:", error);
+          alert("حدث خطأ أثناء التحقق من الكود. حاول مرة أخرى.");
+        }
+      });
+    };
+  </script>
 </body>
 </html>
