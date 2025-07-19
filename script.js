@@ -1,21 +1,11 @@
 const firebaseConfig = {
   databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
 };
-
 const dbURL = firebaseConfig.databaseURL;
 
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-}
-
-function getDeviceId() {
-  let deviceId = localStorage.getItem("deviceId");
-  if (!deviceId) {
-    deviceId = "device-" + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem("deviceId", deviceId);
-  }
-  return deviceId;
 }
 
 async function handleAccess() {
@@ -38,40 +28,77 @@ async function handleAccess() {
       return;
     }
 
-    const keysSnap = await fetch(`${dbURL}/validKeys/${code}.json`);
-    const keyData = await keysSnap.json();
+    const keysSnap = await fetch(`${dbURL}/validKeys.json`);
+    const keysData = await keysSnap.json() || {};
     const now = Date.now();
-    const currentDevice = getDeviceId();
 
-    if (!keyData) {
-      errorBox.textContent = "❌ الكود غير صحيح، تواصل معنا: @AL_MAALA";
-      return;
-    }
+    if (keysData[code] && now < keysData[code].expiresAt) {
+      // حفظ بيانات الكود
+      localStorage.setItem("drosakKey", code);
+      localStorage.setItem("accessCode", code);
+      localStorage.setItem("expiresAt", keysData[code].expiresAt);
+      localStorage.setItem("deviceId", getDeviceId());
 
-    if (now >= keyData.expiresAt) {
+      // تحقق من الجهاز
+      if (keysData[code].deviceId && keysData[code].deviceId !== getDeviceId()) {
+        errorBox.textContent = "❌ هذا الكود مخصص لجهاز آخر";
+        return;
+      }
+
+      // أول مرة نحفظ الجهاز
+      if (!keysData[code].deviceId) {
+        await fetch(`${dbURL}/validKeys/${code}/deviceId.json`, {
+          method: "PUT",
+          body: JSON.stringify(getDeviceId())
+        });
+      }
+
+      showPage("subjectsPage");
+    } else if (keysData[code] && now >= keysData[code].expiresAt) {
       errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
-      return;
+    } else {
+      errorBox.textContent = "❌ الكود غير صحيح، تواصل معنا: @AL_MAALA";
     }
-
-    // تحقق من الجهاز
-    if (keyData.deviceId && keyData.deviceId !== currentDevice) {
-      errorBox.textContent = "❌ هذا الكود مرتبط بجهاز آخر بالفعل.";
-      return;
-    }
-
-    // لو أول مرة، نحفظ الجهاز في القاعدة
-    if (!keyData.deviceId) {
-      await fetch(`${dbURL}/validKeys/${code}/deviceId.json`, {
-        method: "PUT",
-        body: JSON.stringify(currentDevice)
-      });
-    }
-
-    localStorage.setItem("drosakKey", code);
-    showPage("subjectsPage");
 
   } catch (err) {
     console.error(err);
     errorBox.textContent = "❌ حدث خطأ أثناء الاتصال بقاعدة البيانات";
   }
+}
+
+function getDeviceId() {
+  let id = localStorage.getItem("deviceId");
+  if (!id) {
+    id = crypto.randomUUID();
+    localStorage.setItem("deviceId", id);
+  }
+  return id;
+}
+
+// فتح نافذة الإعدادات
+function openSettings() {
+  const code = localStorage.getItem("accessCode") || "غير متوفر";
+  const expiresAt = localStorage.getItem("expiresAt");
+
+  document.getElementById("settingsCode").textContent = code;
+
+  if (expiresAt) {
+    const now = Date.now();
+    const remainingTime = parseInt(expiresAt) - now;
+
+    if (remainingTime > 0) {
+      const daysLeft = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+      document.getElementById("settingsCountdown").textContent = `${daysLeft} يوم`;
+    } else {
+      document.getElementById("settingsCountdown").textContent = "انتهت الصلاحية";
+    }
+  } else {
+    document.getElementById("settingsCountdown").textContent = "غير متوفر";
+  }
+
+  document.getElementById("settingsModal").style.display = "flex";
+}
+
+function closeSettings() {
+  document.getElementById("settingsModal").style.display = "none";
 }
