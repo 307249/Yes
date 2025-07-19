@@ -1,36 +1,53 @@
-document.getElementById("enter-btn").addEventListener("click", function () {
-  const keyInput = document.getElementById("key-input");
-  const userKey = keyInput.value.trim();
-  const savedKey = localStorage.getItem("accessKey");
+// firebaseConfig هنا المفروض يكون معرف مسبقًا في كود HTML
 
-  fetch('https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app/appSettings/lockEnabled.json')
-    .then(response => response.json())
-    .then(lockEnabled => {
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+window.onload = () => {
+  const startButton = document.getElementById("startButton");
+
+  startButton.addEventListener("click", async () => {
+    try {
+      const lockSnapshot = await get(ref(db, "appSettings/lockEnabled"));
+      const lockEnabled = lockSnapshot.exists() ? lockSnapshot.val() : false;
+
       if (!lockEnabled) {
-        window.location.href = "main.html"; // القفل غير مفعل
+        window.location.href = "main.html";
         return;
       }
 
-      const finalKey = savedKey || userKey;
+      // الزر مفعل - نكمل التحقق من الكود
 
-      if (!finalKey) {
-        alert("⚠️ من فضلك أدخل الكود الصحيح الذي حصلت عليه من المدرس.");
+      // هل فيه كود محفوظ في التخزين المحلي؟
+      const storedCode = localStorage.getItem("accessCode");
+      if (!storedCode) {
+        alert("يرجى إدخال كود الوصول من التطبيق المولد أولاً.");
         return;
       }
 
-      fetch(`https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app/validKeys/${finalKey}.json`)
-        .then(response => response.json())
-        .then(data => {
-          if (data && data.expiresAt && Date.now() < data.expiresAt) {
-            localStorage.setItem("accessKey", finalKey); // حفظ الكود الصالح
-            window.location.href = "main.html";
-          } else {
-            alert("⚠️ الكود غير صحيح أو انتهت صلاحيته.\nتواصل مع المدرس للحصول على كود جديد.");
-            localStorage.removeItem("accessKey"); // مسح الكود غير الصالح
-          }
-        })
-        .catch(error => {
-          alert("حدث خطأ أثناء التحقق من الكود.");
-        });
-    });
-});
+      // تحقق من وجود الكود وصلاحيته في قاعدة البيانات
+      const keySnapshot = await get(ref(db, `validKeys/${storedCode}`));
+
+      if (keySnapshot.exists()) {
+        const keyData = keySnapshot.val();
+        const currentTime = Date.now();
+
+        if (keyData.expiresAt && currentTime < keyData.expiresAt) {
+          // كود صالح
+          window.location.href = "main.html";
+        } else {
+          alert("انتهت صلاحية هذا الكود. يرجى إدخال كود جديد.");
+        }
+      } else {
+        alert("الكود غير صحيح. يرجى إدخال كود تم إنشاؤه من التطبيق المولد.");
+      }
+
+    } catch (error) {
+      console.error("Error:", error);
+      alert("حدث خطأ أثناء التحقق من الكود. حاول مرة أخرى.");
+    }
+  });
+};
