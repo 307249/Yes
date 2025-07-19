@@ -1,144 +1,135 @@
-/* style.css */
-
+/* الخط العام */
 body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #111, #222);
+  color: white;
   margin: 0;
-  font-family: 'Cairo', sans-serif;
-  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-  color: #fff;
-  text-align: center;
-  overflow-x: hidden;
+  padding: 0;
+  height: 100vh;
 }
 
-h1 {
-  font-size: 2.5em;
-  margin: 20px 0 10px;
-}
-
-p {
-  font-size: 1.2em;
-  margin: 10px 0;
-}
-
+/* الصفحات */
 .page {
   display: none;
   padding: 20px;
-  animation: fadeIn 0.5s ease-in-out;
 }
 
 .page.active {
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-input.code-input {
-  padding: 10px;
-  font-size: 1.1em;
-  border: none;
-  border-radius: 8px;
-  width: 80%;
+/* الصفحة الرئيسية */
+.container {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  width: 90%;
+  max-width: 400px;
+}
+
+.main-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.main-title .highlight {
+  color: #00c9a7;
+}
+
+/* إدخال الكود */
+input[type="text"] {
+  padding: 12px;
+  font-size: 16px;
+  width: 90%;
   max-width: 300px;
-  margin: 15px auto;
-  display: block;
+  margin: 10px auto;
+  border-radius: 6px;
+  border: none;
   text-align: center;
 }
 
-button.main-btn, button.back-btn {
-  display: block;
-  margin: 12px auto;
+/* زر يلا بينا */
+.access-btn {
   padding: 12px 25px;
-  font-size: 1em;
+  font-size: 18px;
+  background-color: #00c9a7;
+  color: black;
   border: none;
-  border-radius: 8px;
-  background: #00c9ff;
-  background: linear-gradient(to right, #92fe9d, #00c9ff);
-  color: #000;
+  border-radius: 6px;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-top: 15px;
+  transition: background 0.3s ease;
 }
 
-button.main-btn:hover, button.back-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px #00c9ff;
+.access-btn:hover {
+  background-color: #00b397;
 }
 
-.notice-box {
-  background: rgba(0,0,0,0.4);
-  border-left: 4px solid #00c9ff;
-  padding: 10px;
-  margin: 20px auto;
-  max-width: 320px;
-  font-weight: bold;
+/* رسالة الخطأ */
+.error {
+  color: #ff4f4f;
+  font-size: 14px;
+  margin-top: 10px;
 }
 
-.error-msg {
-  color: #ff6b6b;
-  font-size: 1em;
-  margin: 10px 0;
+/* المواد */
+.subjects {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
 }
 
-.circles {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: -1;
+.subjects button {
+  padding: 12px;
+  font-size: 18px;
+  border: none;
+  border-radius: 6px;
+  background-color: #1e88e5;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
-.circles span {
-  position: absolute;
-  display: block;
-  width: 60px;
-  height: 60px;
-  background: rgba(255, 255, 255, 0.05);
-  animation: animate 25s linear infinite;
-  border-radius: 50%;
-  bottom: -150px;
+.subjects button:hover {
+  background-color: #1565c0;
 }
 
-.circles span:nth-child(1) {
-  left: 25%;
-  width: 80px;
-  height: 80px;
-  animation-delay: 0s;
-}
-.circles span:nth-child(2) {
-  left: 10%;
-  width: 20px;
-  height: 20px;
-  animation-delay: 2s;
-  animation-duration: 12s;
-}
-.circles span:nth-child(3) {
-  left: 70%;
-  width: 20px;
-  height: 20px;
-  animation-delay: 4s;
-}
-.circles span:nth-child(4) {
-  left: 40%;
-  width: 60px;
-  height: 60px;
-  animation-delay: 0s;
-  animation-duration: 18s;
-}
-.circles span:nth-child(5) {
-  left: 65%;
-  width: 20px;
-  height: 20px;
-  animation-delay: 0s;
+/* إعدادات */
+#settingsPage {
+  text-align: center;
+  padding: 30px;
 }
 
-@keyframes animate {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-1000px) rotate(720deg);
-    opacity: 0;
-  }
+/* زر الرجوع */
+#settingsPage button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+/* الترس */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.settings-icon {
+  font-size: 22px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
 }
