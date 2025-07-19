@@ -55,13 +55,14 @@
     <img src="logo.png" alt="شعار دروسك" class="logo">
     <h1>مرحبًا بك في تطبيق دروسك</h1>
     <button id="startButton">يلا بينا</button>
-
     <div class="footer">© 2025 دروسك - جميع الحقوق محفوظة</div>
   </div>
 
-  <!-- Firebase Scripts -->
+  <!-- Firebase SDK + App initialization -->
   <script type="module">
-    // إعدادات Firebase الخاصة بك:
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
     const firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "YOUR_PROJECT.firebaseapp.com",
@@ -72,18 +73,25 @@
       appId: "APP_ID"
     };
 
-    // تحميل مكتبات Firebase
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    window.onload = () => {
-      const startButton = document.getElementById("startButton");
+    window.db = db; // نحفظ قاعدة البيانات في النافذة علشان نستخدمها في سكربت تاني
+    window.ref = ref;
+    window.get = get;
+  </script>
 
-      startButton.addEventListener("click", async () => {
+  <!-- كود الزر ومعالجة الضغط -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const btn = document.getElementById("startButton");
+
+      btn.addEventListener("click", async () => {
         try {
+          const db = window.db;
+          const ref = window.ref;
+          const get = window.get;
+
           const lockSnapshot = await get(ref(db, "appSettings/lockEnabled"));
           const lockEnabled = lockSnapshot.exists() ? lockSnapshot.val() : false;
 
@@ -114,12 +122,12 @@
             alert("الكود غير صحيح. يرجى إدخال كود تم إنشاؤه من التطبيق المولد.");
           }
 
-        } catch (error) {
-          console.error("Error:", error);
-          alert("حدث خطأ أثناء التحقق من الكود. حاول مرة أخرى.");
+        } catch (err) {
+          console.error(err);
+          alert("حدث خطأ أثناء الاتصال بقاعدة البيانات.");
         }
       });
-    };
+    });
   </script>
 </body>
 </html>
