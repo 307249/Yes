@@ -1,45 +1,44 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>تطبيق دروسك</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <title>دروسك</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="main-container">
-    <div class="home-screen" id="homeScreen">
-      <div class="logo-container">
-        <img src="logo.png" alt="Logo" class="logo" />
-      </div>
-      <h1 class="main-title">دروسك التعليمية</h1>
-      <button id="startButton" class="main-button">يلا بينا</button>
-      <button id="settingsButton" class="settings-icon">⚙️</button>
+  <div class="page active" id="homePage">
+    <div class="circle-container">
+      <h1>دروسك</h1>
+      <button onclick="handleAccess()" class="main-btn">يلا بينا</button>
+      <input type="text" id="codeInput" placeholder="ادخل الكود هنا">
+      <div id="errorMsg"></div>
     </div>
+  </div>
 
-    <div class="subject-screen hidden" id="subjectScreen">
-      <div class="top-bar">
-        <button id="backButton" class="back-button">رجوع</button>
-        <button id="openSettings" class="settings-icon">⚙️</button>
-      </div>
+  <div class="page" id="subjectsPage">
+    <div class="top-bar">
+      <span class="gear-icon" onclick="showPage('settingsPage')">⚙️</span>
+    </div>
+    <div class="circle-container">
       <h2>اختر المادة</h2>
-      <div class="subjects">
-        <button class="subject-button">عربي</button>
-        <button class="subject-button">رياضة</button>
-        <button class="subject-button">فيزياء</button>
-        <button class="subject-button">كيمياء</button>
-        <button class="subject-button">أحياء</button>
-        <button class="subject-button">إنجليزي</button>
-      </div>
+      <ul>
+        <li><button>عربي</button></li>
+        <li><button>كيمياء</button></li>
+        <li><button>فيزياء</button></li>
+        <li><button>أحياء</button></li>
+        <li><button>إنجليزي</button></li>
+        <li><button>رياضة</button></li>
+      </ul>
     </div>
+  </div>
 
-    <div class="settings-screen hidden" id="settingsScreen">
-      <button id="backToSubjects" class="back-button">رجوع</button>
+  <div class="page" id="settingsPage">
+    <div class="circle-container">
       <h2>الإعدادات</h2>
-      <p id="codeInfo">جاري التحميل...</p>
+      <p id="keyDisplay">جارٍ التحميل...</p>
     </div>
+    <button onclick="showPage('subjectsPage')" class="back-btn">رجوع</button>
   </div>
 
   <script src="script.js"></script>
