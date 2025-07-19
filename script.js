@@ -1,51 +1,77 @@
+// Firebase إعداد
 const firebaseConfig = {
-  databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT.firebaseio.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "SENDER_ID",
+  appId: "APP_ID"
 };
 
-const dbURL = firebaseConfig.databaseURL;
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-function showPage(pageId) {
-  document.querySelectorAll(".page").forEach(page => {
-    page.classList.remove("active");
-  });
-  document.getElementById(pageId).classList.add("active");
-}
+const startButton = document.getElementById("startButton");
+const backButton = document.getElementById("backButton");
+const openSettings = document.getElementById("openSettings");
+const settingsButton = document.getElementById("settingsButton");
+const backToSubjects = document.getElementById("backToSubjects");
 
-async function handleAccess() {
-  const codeInput = document.getElementById("codeInput");
-  const code = codeInput.value.trim();
-  const errorBox = document.getElementById("errorMsg");
-  errorBox.textContent = "";
+const homeScreen = document.getElementById("homeScreen");
+const subjectScreen = document.getElementById("subjectScreen");
+const settingsScreen = document.getElementById("settingsScreen");
+const codeInfo = document.getElementById("codeInfo");
 
-  try {
-    const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
-    const lockEnabled = await res.json();
+startButton.addEventListener("click", () => {
+  homeScreen.classList.add("hidden");
+  subjectScreen.classList.remove("hidden");
+});
 
-    if (!lockEnabled) {
-      showPage("subjectsPage");
-      return;
-    }
+backButton?.addEventListener("click", () => {
+  subjectScreen.classList.add("hidden");
+  homeScreen.classList.remove("hidden");
+});
 
-    if (!code) {
-      errorBox.textContent = "⚠️ من فضلك أدخل الكود";
-      return;
-    }
+settingsButton.addEventListener("click", () => {
+  homeScreen.classList.add("hidden");
+  settingsScreen.classList.remove("hidden");
+  loadSettings();
+});
 
-    const keysSnap = await fetch(`${dbURL}/validKeys.json`);
-    const keysData = await keysSnap.json() || {};
-    const now = Date.now();
+openSettings.addEventListener("click", () => {
+  subjectScreen.classList.add("hidden");
+  settingsScreen.classList.remove("hidden");
+  loadSettings();
+});
 
-    if (keysData[code] && now < keysData[code].expiresAt) {
-      localStorage.setItem("drosakKey", code);
-      showPage("subjectsPage");
-    } else if (keysData[code] && now >= keysData[code].expiresAt) {
-      errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
+backToSubjects.addEventListener("click", () => {
+  settingsScreen.classList.add("hidden");
+  subjectScreen.classList.remove("hidden");
+});
+
+function loadSettings() {
+  const code = localStorage.getItem("usedCode");
+  db.ref("appSettings/lockEnabled").once("value").then((snap) => {
+    const isLocked = snap.val();
+    if (isLocked && code) {
+      db.ref("validKeys/" + code).once("value").then((codeSnap) => {
+        const data = codeSnap.val();
+        if (data && data.expiry) {
+          const now = Date.now();
+          const remaining = data.expiry - now;
+          if (remaining > 0) {
+            const days = Math.ceil(remaining / (1000 * 60 * 60 * 24));
+            codeInfo.innerText = `المدة المتبقية على صلاحية الكود: ${days} يوم`;
+          } else {
+            codeInfo.innerText = "انتهت صلاحية الكود.";
+          }
+        } else {
+          codeInfo.innerText = "لم يتم العثور على معلومات الكود.";
+        }
+      });
     } else {
-      errorBox.textContent = "❌ الكود غير صحيح، تواصل معنا: @AL_MAALA";
+      codeInfo.innerText = "سيتم إضافة التاريخ في النسخة المدفوعة.";
     }
-
-  } catch (err) {
-    console.error(err);
-    errorBox.textContent = "❌ حدث خطأ أثناء الاتصال بقاعدة البيانات";
-  }
+  });
 }
