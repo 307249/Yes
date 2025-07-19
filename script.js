@@ -1,47 +1,61 @@
-// firebase config هنا بتحط بيانات مشروعك
 const firebaseConfig = {
-  databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app/"
+  databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
 };
 
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+const dbURL = firebaseConfig.databaseURL;
 
-const startButton = document.getElementById("startButton");
-const keyInput = document.getElementById("keyInput");
-const message = document.getElementById("message");
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
 
-startButton.addEventListener("click", async () => {
-  message.textContent = "";
+async function handleAccess() {
+  const codeInput = document.getElementById("codeInput");
+  const code = codeInput.value.trim();
+  const errorBox = document.getElementById("errorMsg");
 
   try {
-    const lockSnapshot = await database.ref("appSettings/lockEnabled").get();
-    const isLocked = lockSnapshot.val();
+    const res = await fetch(`${dbURL}/appSettings.json`);
+    const settings = await res.json();
 
-    if (!isLocked) {
-      window.location.href = "home.html";
+    const lockEnabled = settings?.lockEnabled === true;
+
+    if (!lockEnabled) {
+      showPage("subjectsPage");
       return;
     }
 
-    const enteredKey = keyInput.value.trim();
-    if (!enteredKey) {
-      message.textContent = "يرجى إدخال المفتاح.";
-      return;
-    }
+    const keysSnap = await fetch(`${dbURL}/validKeys.json`);
+    const keysData = await keysSnap.json() || {};
+    const savedKey = localStorage.getItem("drosakKey");
+    const now = Date.now();
 
-    const keySnapshot = await database.ref("validKeys/" + enteredKey).get();
+    let matchedKey = null;
 
-    if (keySnapshot.exists()) {
-      const expiresAt = keySnapshot.val().expiresAt;
-      if (Date.now() < expiresAt) {
-        window.location.href = "home.html";
-      } else {
-        message.textContent = "انتهت صلاحية المفتاح.";
+    for (const key in keysData) {
+      const entry = keysData[key];
+      if ((key === code || key === savedKey) && now < entry.expiresAt) {
+        matchedKey = key;
+        break;
       }
-    } else {
-      message.textContent = "المفتاح غير صحيح. تواصل معنا على تيليجرام.";
     }
-  } catch (error) {
-    message.textContent = "حدث خطأ. حاول مرة أخرى.";
-    console.error(error);
+
+    if (matchedKey) {
+      localStorage.setItem("drosakKey", matchedKey);
+      showPage("subjectsPage");
+    } else {
+      if (code && keysData[code] && now >= keysData[code].expiresAt) {
+        errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
+      } else {
+        errorBox.textContent = "❌ الكود غير صحيح، تواصل معنا: @AL_MAALA";
+      }
+    }
+
+  } catch (err) {
+    console.error(err);
+    errorBox.textContent = "❌ حدث خطأ أثناء الاتصال بقاعدة البيانات";
   }
-});
+}
+
+// تحقق تلقائي عند أول فتح إذا الكود محفوظ وصالح
+window.addEventListener("DOMContentLoaded", handleAccess);
