@@ -11,33 +11,32 @@ function showPage(id) {
 
 async function handleAccess() {
   const codeInput = document.getElementById("codeInput");
-  const code = codeInput.value.trim();
   const errorBox = document.getElementById("errorMsg");
   errorBox.textContent = "";
 
   try {
-    // أولًا: نتحقق من حالة القفل
     const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
     const lockEnabled = await res.json();
 
-    // لو القفل مش مفعّل → يدخل عادي
     if (!lockEnabled) {
+      if (codeInput) codeInput.style.display = "none";
       showPage("subjectsPage");
       return;
     }
 
-    // لو القفل مفعّل → لازم الكود
+    if (codeInput) codeInput.style.display = "block";
+
+    const code = codeInput ? codeInput.value.trim() : "";
+
     if (!code) {
       errorBox.textContent = "⚠️ من فضلك أدخل الكود";
       return;
     }
 
-    // نجيب كل المفاتيح من قاعدة البيانات
     const keysSnap = await fetch(`${dbURL}/validKeys.json`);
     const keysData = await keysSnap.json() || {};
     const now = Date.now();
 
-    // نتحقق هل الكود موجود وصلاحيته سارية
     if (keysData[code] && now < keysData[code].expiresAt) {
       localStorage.setItem("drosakKey", code);
       showPage("subjectsPage");
