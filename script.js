@@ -4,18 +4,11 @@ const firebaseConfig = {
 
 const dbURL = firebaseConfig.databaseURL;
 
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-function getDeviceId() {
-  let deviceId = localStorage.getItem("deviceId");
-  if (!deviceId) {
-    deviceId = "device-" + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem("deviceId", deviceId);
-  }
-  return deviceId;
+function showPage(pageId) {
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.remove("active");
+  });
+  document.getElementById(pageId).classList.add("active");
 }
 
 async function handleAccess() {
@@ -38,37 +31,18 @@ async function handleAccess() {
       return;
     }
 
-    const keysSnap = await fetch(`${dbURL}/validKeys/${code}.json`);
-    const keyData = await keysSnap.json();
+    const keysSnap = await fetch(`${dbURL}/validKeys.json`);
+    const keysData = await keysSnap.json() || {};
     const now = Date.now();
-    const currentDevice = getDeviceId();
 
-    if (!keyData) {
-      errorBox.textContent = "❌ الكود غير صحيح، تواصل معنا: @AL_MAALA";
-      return;
-    }
-
-    if (now >= keyData.expiresAt) {
+    if (keysData[code] && now < keysData[code].expiresAt) {
+      localStorage.setItem("drosakKey", code);
+      showPage("subjectsPage");
+    } else if (keysData[code] && now >= keysData[code].expiresAt) {
       errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
-      return;
+    } else {
+      errorBox.textContent = "❌ الكود غير صحيح، تواصل معنا: @AL_MAALA";
     }
-
-    // تحقق من الجهاز
-    if (keyData.deviceId && keyData.deviceId !== currentDevice) {
-      errorBox.textContent = "❌ هذا الكود مرتبط بجهاز آخر بالفعل.";
-      return;
-    }
-
-    // لو أول مرة، نحفظ الجهاز في القاعدة
-    if (!keyData.deviceId) {
-      await fetch(`${dbURL}/validKeys/${code}/deviceId.json`, {
-        method: "PUT",
-        body: JSON.stringify(currentDevice)
-      });
-    }
-
-    localStorage.setItem("drosakKey", code);
-    showPage("subjectsPage");
 
   } catch (err) {
     console.error(err);
