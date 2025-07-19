@@ -1,110 +1,115 @@
 body {
   margin: 0;
-  font-family: 'Arial', sans-serif;
-  direction: rtl;
-  background-image: url('modern_background.jpg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  color: white;
+  padding: 0;
+  font-family: 'Cairo', sans-serif;
+  background-color: #1a1a1a;
+  color: #fff;
+  overflow: hidden;
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  animation: float 20s infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(100vh) scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-10vh) scale(1);
+    opacity: 0;
+  }
+}
+
+.circle:nth-child(1) {
+  width: 120px;
+  height: 120px;
+  left: 10%;
+  animation-delay: 0s;
+}
+.circle:nth-child(2) {
+  width: 80px;
+  height: 80px;
+  left: 30%;
+  animation-delay: 5s;
+}
+.circle:nth-child(3) {
+  width: 100px;
+  height: 100px;
+  left: 50%;
+  animation-delay: 10s;
+}
+.circle:nth-child(4) {
+  width: 60px;
+  height: 60px;
+  left: 70%;
+  animation-delay: 15s;
+}
+.circle:nth-child(5) {
+  width: 90px;
+  height: 90px;
+  left: 85%;
+  animation-delay: 20s;
 }
 
 .page {
   display: none;
-  padding: 20px;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   text-align: center;
 }
 
 .page.active {
-  display: block;
+  display: flex;
 }
 
-h1 {
-  font-size: 32px;
-  margin-top: 30px;
-}
-
-p {
-  font-size: 18px;
-  margin: 10px 0;
-}
-
-.code-input {
+input[type="text"] {
   padding: 10px;
-  font-size: 16px;
-  margin-top: 15px;
-  width: 70%;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  width: 80%;
   max-width: 300px;
-  border: none;
-  border-radius: 5px;
+  background-color: #333;
+  color: white;
+  text-align: center;
 }
 
-.main-btn {
-  margin-top: 20px;
-  padding: 12px 25px;
-  font-size: 18px;
-  background-color: rgba(0,0,0,0.6);
+button {
+  padding: 10px 25px;
+  background-color: #555;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 7px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background-color 0.3s;
 }
 
-.main-btn:hover {
-  background-color: rgba(0,0,0,0.8);
+button:hover {
+  background-color: #777;
 }
 
-.back-btn {
-  margin-bottom: 20px;
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: darkred;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.notice-box {
-  margin-top: 10px;
-  background: rgba(0,0,0,0.5);
-  padding: 10px;
-  border-radius: 5px;
-}
-
-.error-msg {
-  color: #ffcccc;
-  margin-top: 10px;
-}
-
-.circles {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: -1;
-}
-
-.circles span {
-  position: absolute;
-  display: block;
-  width: 40px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.1);
-  animation: animate 25s linear infinite;
-  border-radius: 50%;
-  bottom: -150px;
-}
-
-@keyframes animate {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-1000px) rotate(720deg);
-    opacity: 0;
-  }
+#errorMsg {
+  color: #ff5555;
+  margin-top: 15px;
+  font-size: 14px;
 }
