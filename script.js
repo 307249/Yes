@@ -1,50 +1,47 @@
-// Firebase config
+// firebase config هنا بتحط بيانات مشروعك
 const firebaseConfig = {
-  apiKey: "AIzaSyDCZtE2gp4KfAbEUECskGuYtc0xxx",
-  authDomain: "drosak-v2.firebaseapp.com",
-  databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "drosak-v2",
-  storageBucket: "drosak-v2.appspot.com",
-  messagingSenderId: "759013079383",
-  appId: "1:759013079383:web:abc123"
+  databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app/"
 };
 
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const database = firebase.database();
 
-const startBtn = document.getElementById("startBtn");
-const codeInput = document.getElementById("codeInput");
+const startButton = document.getElementById("startButton");
+const keyInput = document.getElementById("keyInput");
 const message = document.getElementById("message");
 
-startBtn.addEventListener("click", async () => {
-  const code = codeInput.value.trim() || localStorage.getItem("savedCode");
+startButton.addEventListener("click", async () => {
+  message.textContent = "";
 
   try {
-    const snapshot = await db.ref("appSettings/lockEnabled").once("value");
-    const lockEnabled = snapshot.val();
+    const lockSnapshot = await database.ref("appSettings/lockEnabled").get();
+    const isLocked = lockSnapshot.val();
 
-    if (!lockEnabled) {
-      // لو القفل غير مفعل افتح التطبيق مباشرة
-      window.location.href = "subjects.html";
+    if (!isLocked) {
+      window.location.href = "home.html";
       return;
     }
 
-    if (!code) {
-      message.textContent = "من فضلك ادخل كود التفعيل أولاً.";
+    const enteredKey = keyInput.value.trim();
+    if (!enteredKey) {
+      message.textContent = "يرجى إدخال المفتاح.";
       return;
     }
 
-    const keySnapshot = await db.ref("validKeys/" + code).once("value");
-    const keyData = keySnapshot.val();
+    const keySnapshot = await database.ref("validKeys/" + enteredKey).get();
 
-    if (keyData && Date.now() < keyData.expiresAt) {
-      localStorage.setItem("savedCode", code);
-      window.location.href = "subjects.html";
+    if (keySnapshot.exists()) {
+      const expiresAt = keySnapshot.val().expiresAt;
+      if (Date.now() < expiresAt) {
+        window.location.href = "home.html";
+      } else {
+        message.textContent = "انتهت صلاحية المفتاح.";
+      }
     } else {
-      message.innerHTML = `الكود خاطئ أو منتهي. <br><a href="https://t.me/yourTelegram" target="_blank">راسل الدعم</a>`;
+      message.textContent = "المفتاح غير صحيح. تواصل معنا على تيليجرام.";
     }
-  } catch (err) {
-    message.textContent = "حدث خطأ أثناء الاتصال بقاعدة البيانات.";
-    console.error(err);
+  } catch (error) {
+    message.textContent = "حدث خطأ. حاول مرة أخرى.";
+    console.error(error);
   }
 });
