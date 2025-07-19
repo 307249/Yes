@@ -12,54 +12,83 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+// تشغيل التطبيق عند الضغط على زر "يلا بينا"
 async function handleAccess() {
   const codeInput = document.getElementById('codeInput');
   const errorMsg = document.getElementById('errorMsg');
   const noticeBox = document.querySelector('.notice-box');
 
-  // 1. التحقق من حالة القفل
-  const lockEnabledSnap = await db.ref('appSettings/lockEnabled').once('value');
-  const lockEnabled = lockEnabledSnap.val();
+  // التحقق من حالة القفل من Firebase
+  const lockSnap = await db.ref("appSettings/lockEnabled").once("value");
+  const lockEnabled = lockSnap.val();
 
   if (!lockEnabled) {
-    // إذا القفل غير مفعل → إخفاء خانة الكود والرسالة وفتح التطبيق
-    codeInput.style.display = 'none';
-    noticeBox.style.display = 'none';
-    errorMsg.textContent = '';
-    showPage('subjectsPage');
+    // إذا القفل غير مفعل → ندخل التطبيق ونخفي الخانة
+    codeInput.style.display = "none";
+    noticeBox.style.display = "none";
+    errorMsg.textContent = "";
+    showPage("subjectsPage");
     return;
   } else {
-    // إذا القفل مفعل → إظهار خانة الكود والرسالة
-    codeInput.style.display = 'block';
-    noticeBox.style.display = 'block';
+    // لو القفل مفعل → نظهر الخانة للمستخدم
+    codeInput.style.display = "block";
+    noticeBox.style.display = "block";
   }
 
-  // 2. الحصول على الكود من localStorage أو من خانة الإدخال
-  let userCode = localStorage.getItem('savedCode') || codeInput.value.trim();
-
-  if (!userCode) {
-    errorMsg.textContent = "⚠️ من فضلك أدخل الكود أولاً أو تواصل معنا عبر تليجرام.";
+  // التأكد من وجود كود
+  const enteredCode = codeInput.value.trim();
+  if (!enteredCode) {
+    errorMsg.textContent = "⚠️ من فضلك أدخل الكود أولاً.";
     return;
   }
 
-  // 3. التحقق من الكود داخل Firebase
-  const codeSnap = await db.ref('validKeys/' + userCode).once('value');
-  const codeData = codeSnap.val();
+  // التحقق من الكود في Firebase
+  const keySnap = await db.ref("validKeys/" + enteredCode).once("value");
+  const keyData = keySnap.val();
 
-  if (!codeData) {
-    errorMsg.textContent = "❌ الكود غير صحيح. إذا كانت هناك مشكلة، تواصل معنا على تليجرام.";
+  if (!keyData) {
+    errorMsg.textContent = "❌ الكود غير صحيح.";
     return;
   }
 
-  // 4. التحقق من انتهاء صلاحية الكود
+  // التأكد من صلاحية الكود
   const now = Date.now();
-  if (codeData.expiry && now > codeData.expiry) {
-    errorMsg.textContent = "⌛ انتهت صلاحية الكود. من فضلك اطلب كود جديد.";
+  if (keyData.expiry && now > keyData.expiry) {
+    errorMsg.textContent = "⌛ انتهت صلاحية الكود.";
     return;
   }
 
-  // ✅ الكود صحيح وصالح → نحفظه وندخل
-  localStorage.setItem('savedCode', userCode);
-  errorMsg.textContent = '';
-  showPage('subjectsPage');
+  // ✅ الكود صحيح → نحفظه وندخل التطبيق
+  localStorage.setItem("savedCode", enteredCode);
+  errorMsg.textContent = "";
+  showPage("subjectsPage");
+}
+
+// تحميل الكود المحفوظ تلقائيًا في خانة الإدخال (اختياري)
+window.onload = async function () {
+  const codeInput = document.getElementById("codeInput");
+  const noticeBox = document.querySelector(".notice-box");
+
+  // نتحقق من حالة القفل لإظهار أو إخفاء خانة الكود
+  const lockSnap = await db.ref("appSettings/lockEnabled").once("value");
+  const lockEnabled = lockSnap.val();
+
+  if (!lockEnabled) {
+    codeInput.style.display = "none";
+    noticeBox.style.display = "none";
+  } else {
+    codeInput.style.display = "block";
+    noticeBox.style.display = "block";
+  }
+
+  const savedCode = localStorage.getItem("savedCode");
+  if (savedCode) {
+    codeInput.value = savedCode;
+  }
+};
+
+// التنقل بين الصفحات
+function showPage(pageId) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(pageId).classList.add("active");
 }
