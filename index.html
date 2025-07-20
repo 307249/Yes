@@ -21,7 +21,7 @@
 
   <div class="page" id="subjectsPage">
     <div class="top-bar">
-      <button class="settings-icon" onclick="showPage('settingsPage')">⚙️</button>
+      <button class="settings-icon" onclick="openSettings()">⚙️</button>
     </div>
     <h1>اختر المادة</h1>
     <button class="main-btn" onclick="showPage('arabicPage')">عربي</button>
@@ -37,7 +37,9 @@
   <div class="page" id="settingsPage">
     <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     <h1>الإعدادات</h1>
-    <p>سيتم عرض الكود والوقت المتبقي لاحقًا هنا</p>
+    <div id="settingsContent">
+      <p>جاري التحميل...</p>
+    </div>
   </div>
 
   <!-- صفحات المواد -->
