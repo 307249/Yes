@@ -1,85 +1,103 @@
+/* خلفية الدوائر */
 body {
-  margin: 0;
-  padding: 0;
+  margin: 0; padding: 0;
   font-family: 'Cairo', sans-serif;
-  background: linear-gradient(135deg, #1e1e2f, #2e2e48);
-  color: white;
+  background: #111;
+  color: #fff;
+  overflow-x: hidden;
   text-align: center;
 }
 
-.main-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+/* الدوائر المتحركة */
+.circles {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: -1; overflow: hidden;
+}
+.circles span {
+  position: absolute; display: block;
+  width: 20px; height: 20px;
+  background: #00f2fe; opacity: 0.2;
+  border-radius: 50%;
+  animation: move 25s linear infinite;
+}
+.circles span:nth-child(1) { left:25%; top:20%; animation-delay:0s; }
+.circles span:nth-child(2) { left:10%; top:40%; animation-delay:2s; }
+.circles span:nth-child(3) { left:70%; top:60%; animation-delay:4s; }
+.circles span:nth-child(4) { left:40%; top:80%; animation-delay:6s; }
+.circles span:nth-child(5) { left:65%; top:10%; animation-delay:8s; }
+@keyframes move {
+  0% { transform: translateY(0) scale(1); }
+ 100% { transform: translateY(-1000px) scale(0); }
 }
 
-.logo {
-  width: 120px;
-  margin-top: 30px;
-}
-
-.main-title {
-  font-size: 28px;
-  margin: 20px 0;
-}
-
-.main-button {
-  padding: 15px 30px;
-  font-size: 20px;
-  border: none;
-  border-radius: 10px;
-  background-color: #4caf50;
-  color: white;
-  cursor: pointer;
-  margin: 15px;
-}
-
-.subject-screen, .settings-screen {
-  padding: 20px;
-}
-
-.subject-button {
-  padding: 15px 25px;
-  margin: 10px;
-  font-size: 18px;
-  border: none;
-  border-radius: 8px;
-  background-color: #3f51b5;
-  color: white;
-  cursor: pointer;
-}
-
-.back-button {
-  position: fixed;
-  bottom: 15px;
-  left: 15px;
-  padding: 10px 18px;
-  font-size: 16px;
-  border-radius: 6px;
-  border: none;
-  background-color: #f44336;
-  color: white;
-  cursor: pointer;
-}
-
-.settings-icon {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background-color: transparent;
-  font-size: 24px;
-  border: none;
-  color: white;
-  cursor: pointer;
-}
-
-.hidden {
+/* صفحات التطبيق */
+.page {
   display: none;
+  padding: 60px 20px 20px;
+}
+.page.active { display: block; }
+
+/* عناوين ونصوص */
+h1, h2 { margin-bottom: 10px; }
+p { margin-bottom: 20px; }
+
+/* مربع التنبيه */
+.notice-box {
+  background: #333; padding: 10px; border-radius: 8px;
+  margin-bottom: 15px;
 }
 
+/* حقل الكود */
+.code-input {
+  padding: 10px; font-size: 16px;
+  width: 80%; max-width: 300px;
+  border-radius: 6px; border: none;
+  margin-bottom: 10px;
+}
+
+/* رسالة الخطأ */
+.error-msg {
+  color: #ff4d4d; margin-bottom: 10px;
+}
+
+/* أزرار */
+.main-btn {
+  display: block;
+  width: 80%; max-width: 300px;
+  margin: 10px auto; padding: 12px;
+  font-size: 18px; background: #00f2fe;
+  color: #000; border: none; border-radius: 8px;
+  cursor: pointer; transition: 0.3s;
+}
+.main-btn:hover { background: #00c9d8; }
+
+/* زر رجوع */
+.back-btn {
+  display: block; margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 16px; background: transparent;
+  color: #00f2fe; border: 1px solid #00f2fe;
+  border-radius: 6px; cursor: pointer; transition: 0.3s;
+}
+.back-btn:hover {
+  background: #00f2fe; color: #000;
+}
+
+/* شريط علوي */
 .top-bar {
-  position: relative;
-  height: 50px;
+  display: flex; justify-content: flex-end; padding: 10px;
+}
+
+/* أيقونة الترس */
+.settings-icon {
+  background: none; border: none;
+  font-size: 24px; color: white;
+  cursor: pointer;
+}
+
+/* صفحة الإعدادات - عرض المعلومة */
+.key-info {
+  font-size: 18px;
+  margin-top: 20px;
 }
