@@ -1,6 +1,7 @@
-/* خلفية الدوائر */
+/* خلفية متحركة */
 body {
-  margin: 0; padding: 0;
+  margin: 0;
+  padding: 0;
   font-family: 'Cairo', sans-serif;
   background: #111;
   color: #fff;
@@ -8,96 +9,153 @@ body {
   text-align: center;
 }
 
-/* الدوائر المتحركة */
+/* شكل الدوائر */
 .circles {
-  position: fixed; top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: -1; overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
 }
 .circles span {
-  position: absolute; display: block;
-  width: 20px; height: 20px;
-  background: #00f2fe; opacity: 0.2;
-  border-radius: 50%;
+  position: absolute;
+  display: block;
+  width: 20px;
+  height: 20px;
+  background: #00f2fe;
   animation: move 25s linear infinite;
+  opacity: 0.2;
+  border-radius: 50%;
 }
-.circles span:nth-child(1) { left:25%; top:20%; animation-delay:0s; }
-.circles span:nth-child(2) { left:10%; top:40%; animation-delay:2s; }
-.circles span:nth-child(3) { left:70%; top:60%; animation-delay:4s; }
-.circles span:nth-child(4) { left:40%; top:80%; animation-delay:6s; }
-.circles span:nth-child(5) { left:65%; top:10%; animation-delay:8s; }
+.circles span:nth-child(1) {
+  left: 25%;
+  animation-delay: 0s;
+  top: 20%;
+}
+.circles span:nth-child(2) {
+  left: 10%;
+  animation-delay: 2s;
+  top: 40%;
+}
+.circles span:nth-child(3) {
+  left: 70%;
+  animation-delay: 4s;
+  top: 60%;
+}
+.circles span:nth-child(4) {
+  left: 40%;
+  animation-delay: 0s;
+  top: 80%;
+}
+.circles span:nth-child(5) {
+  left: 65%;
+  animation-delay: 3s;
+  top: 10%;
+}
 @keyframes move {
-  0% { transform: translateY(0) scale(1); }
- 100% { transform: translateY(-1000px) scale(0); }
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    transform: translateY(-1000px) scale(0);
+  }
 }
 
-/* صفحات التطبيق */
+/* الصفحات */
 .page {
   display: none;
   padding: 60px 20px 20px;
 }
-.page.active { display: block; }
+.page.active {
+  display: block;
+}
 
-/* عناوين ونصوص */
-h1, h2 { margin-bottom: 10px; }
-p { margin-bottom: 20px; }
+/* العنوان */
+h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
 
 /* مربع التنبيه */
 .notice-box {
-  background: #333; padding: 10px; border-radius: 8px;
+  background-color: #333;
+  padding: 10px;
+  border-radius: 8px;
   margin-bottom: 15px;
 }
 
-/* حقل الكود */
+/* خانة إدخال الكود */
 .code-input {
-  padding: 10px; font-size: 16px;
-  width: 80%; max-width: 300px;
-  border-radius: 6px; border: none;
+  padding: 10px;
+  font-size: 16px;
+  width: 80%;
+  max-width: 300px;
+  border-radius: 6px;
+  border: none;
   margin-bottom: 10px;
 }
 
 /* رسالة الخطأ */
 .error-msg {
-  color: #ff4d4d; margin-bottom: 10px;
+  color: #ff4d4d;
+  margin-bottom: 10px;
 }
 
-/* أزرار */
+/* زر رئيسي */
 .main-btn {
   display: block;
-  width: 80%; max-width: 300px;
-  margin: 10px auto; padding: 12px;
-  font-size: 18px; background: #00f2fe;
-  color: #000; border: none; border-radius: 8px;
-  cursor: pointer; transition: 0.3s;
+  width: 80%;
+  max-width: 300px;
+  margin: 10px auto;
+  padding: 12px;
+  font-size: 18px;
+  background-color: #00f2fe;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
 }
-.main-btn:hover { background: #00c9d8; }
+.main-btn:hover {
+  background-color: #00c9d8;
+}
 
 /* زر رجوع */
 .back-btn {
-  display: block; margin: 20px auto;
+  display: block;
+  margin: 20px auto;
   padding: 10px 20px;
-  font-size: 16px; background: transparent;
-  color: #00f2fe; border: 1px solid #00f2fe;
-  border-radius: 6px; cursor: pointer; transition: 0.3s;
+  font-size: 16px;
+  background-color: transparent;
+  color: #00f2fe;
+  border: 1px solid #00f2fe;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 .back-btn:hover {
-  background: #00f2fe; color: #000;
+  background-color: #00f2fe;
+  color: #000;
 }
 
 /* شريط علوي */
 .top-bar {
-  display: flex; justify-content: flex-end; padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
 }
 
-/* أيقونة الترس */
+/* زر الإعدادات (الترس) */
 .settings-icon {
-  background: none; border: none;
-  font-size: 24px; color: white;
+  background: none;
+  border: none;
+  font-size: 24px;
   cursor: pointer;
-}
-
-/* صفحة الإعدادات - عرض المعلومة */
-.key-info {
-  font-size: 18px;
-  margin-top: 20px;
+  color: white;
 }
