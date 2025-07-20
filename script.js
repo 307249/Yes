@@ -1,95 +1,124 @@
-body {
-  margin: 0;
-  font-family: 'Tajawal', sans-serif;
-  background: linear-gradient(to bottom, #141e30, #243b55);
-  color: white;
-  text-align: center;
+const firebaseConfig = {
+  databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
+};
+const dbURL = firebaseConfig.databaseURL;
+
+// عرض/إخفاء الصفحات
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
 
-.page {
-  display: none;
-  padding: 20px;
+// توليد معرف جهاز لحفظ المحاولة الأولى
+function getDeviceId() {
+  let deviceId = localStorage.getItem("deviceId");
+  if (!deviceId) {
+    deviceId = "device-" + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem("deviceId", deviceId);
+  }
+  return deviceId;
 }
 
-.page.active {
-  display: block;
+// التعامل مع زر "يلا بينا"
+async function handleAccess() {
+  const codeInput = document.getElementById("codeInput");
+  const code = codeInput.value.trim();
+  const errorBox = document.getElementById("errorMsg");
+  errorBox.textContent = "";
+
+  try {
+    // جلب حالة القفل
+    const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
+    const lockEnabled = await res.json();
+
+    // لو غير مفعل → مباشرة
+    if (!lockEnabled) {
+      showPage("subjectsPage");
+      return;
+    }
+
+    // لو مفعل ولا يوجد كود
+    if (!code) {
+      errorBox.textContent = "⚠️ من فضلك أدخل الكود";
+      return;
+    }
+
+    // جلب بيانات الكود
+    const keyRes = await fetch(`${dbURL}/validKeys/${code}.json`);
+    const keyData = await keyRes.json();
+    const now = Date.now();
+    const device = getDeviceId();
+
+    if (!keyData) {
+      errorBox.textContent = "❌ الكود غير صحيح، تواصل معنا: @AL_MAALA";
+      return;
+    }
+    if (now >= keyData.expiresAt) {
+      errorBox.textContent = "⚠️ انتهت صلاحية الكود";
+      return;
+    }
+    if (keyData.deviceId && keyData.deviceId !== device) {
+      errorBox.textContent = "❌ هذا الكود مرتبط بجهاز آخر";
+      return;
+    }
+
+    // تخزين معرف الجهاز في المرة الأولى
+    if (!keyData.deviceId) {
+      await fetch(`${dbURL}/validKeys/${code}/deviceId.json`, {
+        method: "PUT",
+        body: JSON.stringify(device)
+      });
+    }
+
+    // حفظ الكود محليًا
+    localStorage.setItem("drosakKey", code);
+    showPage("subjectsPage");
+  } catch (e) {
+    console.error(e);
+    document.getElementById("errorMsg").textContent = "❌ خطأ في الاتصال";
+  }
 }
 
-.circle-container {
-  margin-top: 100px;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  max-width: 400px;
-  margin-inline: auto;
-  box-shadow: 0 0 10px #00000088;
+// عند فتح صفحة الإعدادات
+async function loadKeyInfo() {
+  const display = document.getElementById("keyInfoDisplay");
+  const savedKey = localStorage.getItem("drosakKey");
+
+  try {
+    // جلب حالة القفل
+    const lockRes = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
+    const locked = await lockRes.json();
+
+    // لو غير مفعل
+    if (!locked) {
+      display.textContent = "🛈 سيتم إضافة التاريخ في النسخة المدفوعة";
+      return;
+    }
+
+    // لو مفعل ويوجد كود محفوظ
+    if (savedKey) {
+      const keyRes = await fetch(`${dbURL}/validKeys/${savedKey}.json`);
+      const keyData = await keyRes.json();
+      const now = Date.now();
+
+      if (keyData && keyData.expiresAt) {
+        const days = Math.ceil((keyData.expiresAt - now) / (1000*60*60*24));
+        display.textContent = `الكود: ${savedKey} - المتبقي: ${days} يوم`;
+      } else {
+        display.textContent = "⚠️ لا توجد معلومات صالحة للكود";
+      }
+    } else {
+      display.textContent = "⚠️ لم تقم بإدخال أي كود بعد";
+    }
+  } catch (e) {
+    console.error(e);
+    display.textContent = "❌ خطأ في تحميل المعلومات";
+  }
 }
 
-.main-btn, .back-btn {
-  padding: 10px 20px;
-  margin-top: 15px;
-  font-size: 18px;
-  border: none;
-  border-radius: 10px;
-  background: #4CAF50;
-  color: white;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.main-btn:hover, .back-btn:hover {
-  background: #45a049;
-}
-
-input[type="text"] {
-  margin-top: 10px;
-  padding: 10px;
-  width: 80%;
-  border-radius: 10px;
-  border: none;
-  text-align: center;
-}
-
-#codeInput {
-  margin-top: 20px;
-}
-
-#subjectsPage ul {
-  list-style: none;
-  padding: 0;
-}
-
-#subjectsPage li button {
-  background: #2196F3;
-  color: white;
-  padding: 10px;
-  margin: 10px;
-  border: none;
-  border-radius: 10px;
-  width: 80%;
-  font-size: 18px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-#subjectsPage li button:hover {
-  background: #0b7dda;
-}
-
-#errorMsg {
-  margin-top: 10px;
-  color: #ff5555;
-  font-weight: bold;
-}
-
-.gear-icon {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  font-size: 28px;
-  cursor: pointer;
-}
-
-.top-bar {
-  position: relative;
-}
+// استدعاء loadKeyInfo عند عرض صفحة الإعدادات
+document.getElementById("settingsPage").addEventListener("transitionend", () => {
+  if (document.getElementById("settingsPage").classList.contains("active")) {
+    loadKeyInfo();
+  }
+});
