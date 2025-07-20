@@ -1,18 +1,35 @@
 const firebaseConfig = {
   databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
 };
-
 const dbURL = firebaseConfig.databaseURL;
 
+// عند تحميل الصفحة أول مرة، نثبت الصفحة الرئيسية في سجل التنقل
+window.addEventListener("DOMContentLoaded", () => {
+  history.replaceState({ pageId: "homePage" }, "", "#homePage");
+});
+
+// التعامل مع زر الرجوع في الهاتف/المتصفح
+window.addEventListener("popstate", (event) => {
+  const pageId = event.state && event.state.pageId;
+  if (pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+  }
+});
+
+// دالة التنقل بين الصفحات وتسجيلها في التاريخ
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+
+  history.pushState({ pageId: id }, "", `#${id}`);
 
   if (id === "settingsPage") {
     showSettingsInfo(); // استدعاء عرض معلومات الإعدادات
   }
 }
 
+// جلب معرّف الجهاز
 function getDeviceId() {
   let deviceId = localStorage.getItem("deviceId");
   if (!deviceId) {
@@ -22,6 +39,7 @@ function getDeviceId() {
   return deviceId;
 }
 
+// محاولة الدخول عبر الكود أو فتح مباشر إذا القفل غير مفعّل
 async function handleAccess() {
   const codeInput = document.getElementById("codeInput");
   const code = codeInput.value.trim();
@@ -81,20 +99,21 @@ async function handleAccess() {
 // عرض بيانات صفحة الإعدادات حسب حالة القفل
 async function showSettingsInfo() {
   const settingsPage = document.getElementById("settingsPage");
-  settingsPage.querySelector("p").textContent = "⏳ جاري التحميل...";
+  const info = settingsPage.querySelector("div") || settingsPage.querySelector("p");
+  info.textContent = "⏳ جاري التحميل...";
 
   try {
     const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
     const lockEnabled = await res.json();
 
     if (!lockEnabled) {
-      settingsPage.querySelector("p").textContent = "سيتم إضافة التاريخ في النسخة المدفوعة.";
+      info.textContent = "سيتم إضافة التاريخ في النسخة المدفوعة.";
       return;
     }
 
     const code = localStorage.getItem("drosakKey");
     if (!code) {
-      settingsPage.querySelector("p").textContent = "⚠️ لا يوجد كود مسجل حالياً.";
+      info.textContent = "⚠️ لا يوجد كود مسجل حالياً.";
       return;
     }
 
@@ -102,15 +121,14 @@ async function showSettingsInfo() {
     const keyData = await keySnap.json();
 
     if (!keyData || !keyData.expiresAt) {
-      settingsPage.querySelector("p").textContent = "⚠️ لم يتم العثور على بيانات هذا الكود.";
+      info.textContent = "⚠️ لم يتم العثور على بيانات هذا الكود.";
       return;
     }
 
     const now = Date.now();
     const remainingTime = keyData.expiresAt - now;
-
     if (remainingTime <= 0) {
-      settingsPage.querySelector("p").textContent = "⚠️ الكود الخاص بك منتهي الصلاحية.";
+      info.textContent = "⚠️ الكود الخاص بك منتهي الصلاحية.";
       return;
     }
 
@@ -118,10 +136,11 @@ async function showSettingsInfo() {
     const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
 
-    settingsPage.querySelector("p").textContent = `⏱️ المدة المتبقية للكود: ${days} يوم، ${hours} ساعة، ${minutes} دقيقة`;
+    info.textContent = `⏱️ المدة المتبقية للكود: ${days} يوم، ${hours} ساعة، ${minutes} دقيقة`;
 
   } catch (err) {
     console.error(err);
-    settingsPage.querySelector("p").textContent = "⚠️ حدث خطأ أثناء تحميل البيانات.";
+    info.textContent = "⚠️ حدث خطأ أثناء تحميل البيانات.";
   }
 }
+```0
