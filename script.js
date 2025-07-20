@@ -1,9 +1,10 @@
+// إعداد Firebase
 const firebaseConfig = {
   databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
 };
 const dbURL = firebaseConfig.databaseURL;
 
-// عند تحميل الصفحة أول مرة، نثبت الصفحة الرئيسية في سجل التنقل
+// نثبت الصفحة الرئيسية في سجل التاريخ أول مرة
 window.addEventListener("DOMContentLoaded", () => {
   history.replaceState({ pageId: "homePage" }, "", "#homePage");
 });
@@ -17,19 +18,18 @@ window.addEventListener("popstate", (event) => {
   }
 });
 
-// دالة التنقل بين الصفحات وتسجيلها في التاريخ
+// دالة عرض صفحة وتسجيلها في التاريخ
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-
   history.pushState({ pageId: id }, "", `#${id}`);
 
   if (id === "settingsPage") {
-    showSettingsInfo(); // استدعاء عرض معلومات الإعدادات
+    showSettingsInfo();
   }
 }
 
-// جلب معرّف الجهاز
+// توليد معرّف الجهاز
 function getDeviceId() {
   let deviceId = localStorage.getItem("deviceId");
   if (!deviceId) {
@@ -39,7 +39,7 @@ function getDeviceId() {
   return deviceId;
 }
 
-// محاولة الدخول عبر الكود أو فتح مباشر إذا القفل غير مفعّل
+// معالجة الدخول أو فتح مباشر عند القفل غير مفعل
 async function handleAccess() {
   const codeInput = document.getElementById("codeInput");
   const code = codeInput.value.trim();
@@ -60,8 +60,8 @@ async function handleAccess() {
       return;
     }
 
-    const keysSnap = await fetch(`${dbURL}/validKeys/${code}.json`);
-    const keyData = await keysSnap.json();
+    const keyRes = await fetch(`${dbURL}/validKeys/${code}.json`);
+    const keyData = await keyRes.json();
     const now = Date.now();
     const currentDevice = getDeviceId();
 
@@ -92,55 +92,54 @@ async function handleAccess() {
 
   } catch (err) {
     console.error(err);
-    errorBox.textContent = "❌ حدث خطأ أثناء الاتصال بقاعدة البيانات";
+    document.getElementById("errorMsg").textContent = "❌ حدث خطأ أثناء الاتصال بقاعدة البيانات";
   }
 }
 
-// عرض بيانات صفحة الإعدادات حسب حالة القفل
+// عرض بيانات صفحة الإعدادات
 async function showSettingsInfo() {
-  const settingsPage = document.getElementById("settingsPage");
-  const info = settingsPage.querySelector("div") || settingsPage.querySelector("p");
-  info.textContent = "⏳ جاري التحميل...";
+  const container = document.getElementById("settingsContent");
+  container.textContent = "⏳ جاري التحميل...";
 
   try {
-    const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
-    const lockEnabled = await res.json();
+    const lockRes = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
+    const lockEnabled = await lockRes.json();
 
     if (!lockEnabled) {
-      info.textContent = "سيتم إضافة التاريخ في النسخة المدفوعة.";
+      container.textContent = "سيتم إضافة التاريخ في النسخة المدفوعة.";
       return;
     }
 
     const code = localStorage.getItem("drosakKey");
     if (!code) {
-      info.textContent = "⚠️ لا يوجد كود مسجل حالياً.";
+      container.textContent = "⚠️ لا يوجد كود مسجل حالياً.";
       return;
     }
 
-    const keySnap = await fetch(`${dbURL}/validKeys/${code}.json`);
-    const keyData = await keySnap.json();
+    const keyRes = await fetch(`${dbURL}/validKeys/${code}.json`);
+    const keyData = await keyRes.json();
 
     if (!keyData || !keyData.expiresAt) {
-      info.textContent = "⚠️ لم يتم العثور على بيانات هذا الكود.";
+      container.textContent = "⚠️ لم يتم العثور على بيانات هذا الكود.";
       return;
     }
 
     const now = Date.now();
-    const remainingTime = keyData.expiresAt - now;
-    if (remainingTime <= 0) {
-      info.textContent = "⚠️ الكود الخاص بك منتهي الصلاحية.";
+    const diff = keyData.expiresAt - now;
+    if (diff <= 0) {
+      container.textContent = "⚠️ الكود الخاص بك منتهي الصلاحية.";
       return;
     }
 
-    const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+    const days   = Math.floor(diff / (1000*60*60*24));
+    const hours  = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    const mins   = Math.floor((diff % (1000*60*60)) / (1000*60));
 
-    info.textContent = `⏱️ المدة المتبقية للكود: ${days} يوم، ${hours} ساعة، ${minutes} دقيقة`;
+    container.textContent =
+      `🔑 الكود: ${code}\n⏱️ المدة المتبقية: ${days} يوم، ${hours} ساعة، ${mins} دقيقة`;
 
   } catch (err) {
     console.error(err);
-    info.textContent = "⚠️ حدث خطأ أثناء تحميل البيانات.";
+    container.textContent = "⚠️ حدث خطأ أثناء تحميل البيانات.";
   }
 }
-```0
