@@ -2,33 +2,34 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>تطبيق دروسك</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>دروسك</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <!-- الصفحة الرئيسية -->
-  <div class="page active" id="homePage">
-    <div class="container">
-      <h1>دروسك</h1>
-      <input id="codeInput" type="text" placeholder="ادخل الكود" />
-      <button onclick="handleAccess()">يلا بينا</button>
+  <div id="homePage" class="page active">
+    <div class="centered">
+      <h1 class="main-title">دروسك</h1>
+      <button class="main-btn" onclick="handleAccess()">يلا بينا</button>
+      <p class="hint-msg">اضغط على يلا بينا</p>
       <p id="errorMsg" class="error-msg"></p>
+      <input type="text" id="codeInput" class="code-input" placeholder="ادخل الكود هنا" />
     </div>
   </div>
 
   <!-- صفحة المواد -->
-  <div class="page" id="subjectsPage">
-    <div class="container">
+  <div id="subjectsPage" class="page">
+    <div class="centered">
       <h2>اختر المادة</h2>
-      <ul>
-        <li><a href="#">اللغة العربية</a></li>
-        <li><a href="#">الكيمياء</a></li>
-        <li><a href="#">الفيزياء</a></li>
-        <li><a href="#">الأحياء</a></li>
-        <li><a href="#">الإنجليزي</a></li>
-        <li><a href="#">الرياضيات</a></li>
+      <ul class="subjects-list">
+        <li>عربي</li>
+        <li>كيمياء</li>
+        <li>فيزياء</li>
+        <li>أحياء</li>
+        <li>إنجليزي</li>
+        <li>رياضة</li>
       </ul>
       <button onclick="showPage('homePage')">رجوع</button>
     </div>
