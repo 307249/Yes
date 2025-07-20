@@ -4,15 +4,12 @@
   <meta charset="UTF-8">
   <title>DROSAK</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"></script>
 </head>
 <body>
   <div class="circles">
     <span></span><span></span><span></span><span></span><span></span>
   </div>
 
-  <!-- الصفحة الرئيسية -->
   <div class="page active" id="homePage">
     <h1>DROSAK</h1>
     <p>﴿ وَأَنْ لَيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَى ﴾</p>
@@ -22,7 +19,6 @@
     <button class="main-btn" onclick="handleAccess()">يلا بينا</button>
   </div>
 
-  <!-- صفحة اختيار المواد -->
   <div class="page" id="subjectsPage">
     <div class="top-bar">
       <button class="settings-icon" onclick="showPage('settingsPage')">⚙️</button>
@@ -41,8 +37,7 @@
   <div class="page" id="settingsPage">
     <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     <h1>الإعدادات</h1>
-    <!-- هنا هيظهر عدد الأيام المتبقية أو نص النسخة المدفوعة -->
-    <p id="keyInfoDisplay" class="key-info"></p>
+    <p>سيتم عرض الكود والوقت المتبقي لاحقًا هنا</p>
   </div>
 
   <!-- صفحات المواد -->
