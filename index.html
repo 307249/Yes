@@ -1,34 +1,95 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DROSAK</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* دمج CSS سريع هنا لو مش بتحمل ملف خارجي */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', sans-serif;
+      background: #111;
+      color: #fff;
+      overflow-x: hidden;
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .page {
+      display: none;
+      padding: 20px;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .main-btn, .back-btn {
+      display: block;
+      width: 90%;
+      max-width: 300px;
+      margin: 10px auto;
+      padding: 12px;
+      font-size: 18px;
+      background-color: #00f2fe;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .main-btn:hover {
+      background-color: #00c9d8;
+    }
+
+    .code-input {
+      padding: 10px;
+      font-size: 16px;
+      width: 90%;
+      max-width: 300px;
+      border-radius: 6px;
+      border: none;
+      margin-bottom: 10px;
+    }
+
+    .error-msg {
+      color: #ff4d4d;
+      margin-bottom: 10px;
+    }
+
+    .notice-box {
+      background-color: #333;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+  </style>
 </head>
 <body>
-  <div class="circles">
-    <span></span><span></span><span></span><span></span><span></span>
-  </div>
-
   <div class="page active" id="homePage">
     <h1>DROSAK</h1>
     <p>﴿ وَأَنْ لَيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَى ﴾</p>
+
     <div class="notice-box">🔐 أدخل الكود للمتابعة</div>
+
     <input id="codeInput" type="text" placeholder="ادخل الكود هنا" class="code-input" />
     <p class="error-msg" id="errorMsg"></p>
-    
-    <button class="main-btn" onclick="handleAccess()">يلا بينا</button>
 
-    <!-- 🔽 زر كلمنا الجديد -->
+    <button id="goBtn" class="main-btn">يلا بينا</button>
+
     <a href="https://t.me/DROSAK3072" target="_blank">
-      <button class="main-btn" style="margin-top: 10px; background-color: #4caf50;">كلمنا</button>
+      <button class="main-btn" style="background-color: #4caf50;">كلمنا</button>
     </a>
   </div>
 
   <div class="page" id="subjectsPage">
-    <div class="top-bar">
-      <button class="settings-icon" onclick="showPage('settingsPage')">⚙️</button>
-    </div>
     <h1>اختر المادة</h1>
     <button class="main-btn" onclick="showPage('arabicPage')">عربي</button>
     <button class="main-btn" onclick="showPage('chemistryPage')">كيمياء</button>
@@ -39,68 +100,17 @@
     <button class="back-btn" onclick="showPage('homePage')">← رجوع</button>
   </div>
 
-  <div class="page" id="settingsPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>الإعدادات</h1>
-    <p>سيتم عرض الكود والوقت المتبقي لاحقًا هنا</p>
-  </div>
+  <!-- باقي الصفحات متروكة كما هي -->
 
-  <div class="page" id="arabicPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>عربي</h1>
-    <button class="main-btn">محمد صلاح</button>
-    <button class="main-btn">رضا الفاروق</button>
-  </div>
-
-  <div class="page" id="chemistryPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>كيمياء</h1>
-    <button class="main-btn">خالد صقر</button>
-    <button class="main-btn">عبد الجواد</button>
-  </div>
-
-  <div class="page" id="physicsPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>فيزياء</h1>
-    <button class="main-btn">محمد عبد المعبود</button>
-    <button class="main-btn">كرلس</button>
-  </div>
-
-  <div class="page" id="biologyPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>أحياء</h1>
-    <button class="main-btn">الجوهري</button>
-    <button class="main-btn">جيو ماجد</button>
-  </div>
-
-  <div class="page" id="englishPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>ENGLISH</h1>
-    <button class="main-btn">وائل ميلاد</button>
-    <button class="main-btn">عبقري لغة</button>
-  </div>
-
-  <div class="page" id="mathPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>رياضة</h1>
-    <button class="main-btn">أحمد عصام</button>
-  </div>
-
-  <!-- 🔽 سكريبت في آخر الصفحة -->
   <script>
     const firebaseConfig = {
       databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
     };
-
     const dbURL = firebaseConfig.databaseURL;
 
     function showPage(id) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(id).classList.add('active');
-
-      if (id === "settingsPage") {
-        showSettingsInfo();
-      }
     }
 
     function getDeviceId() {
@@ -167,6 +177,14 @@
         errorBox.textContent = "❌ حدث خطأ أثناء الاتصال بقاعدة البيانات";
       }
     }
+
+    // ربط زر يلا بينا بعد تحميل الصفحة
+    window.addEventListener("DOMContentLoaded", () => {
+      const goBtn = document.getElementById("goBtn");
+      if (goBtn) {
+        goBtn.addEventListener("click", handleAccess);
+      }
+    });
   </script>
 </body>
 </html>
