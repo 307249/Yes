@@ -10,20 +10,14 @@
 
     * { box-sizing: border-box; }
 
-    body {
+    html, body {
       margin: 0;
       padding: 0;
       font-family: 'Cairo', sans-serif;
       color: #fff;
       overflow-x: hidden;
-      text-align: center;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      padding-top: 10px;
+      min-height: 100dvh;
       background: #000;
-      position: relative;
     }
 
     body::before {
@@ -46,7 +40,17 @@
       100% { background-position: 0% 50%; }
     }
 
-    .page { display: none; padding: 10px; }
+    .container {
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 10px;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .page { display: none; width: 100%; }
     .page.active { display: block; }
 
     .main-btn, .back-btn {
@@ -101,37 +105,39 @@
   </style>
 </head>
 <body>
-  <div class="page active" id="homePage">
-    <h1>DROSAK</h1>
-    <p>﴿ وَأَنْ لَيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَى ﴾</p>
+  <div class="container">
+    <div class="page active" id="homePage">
+      <h1>DROSAK</h1>
+      <p>﴿ وَأَنْ لَيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَى ﴾</p>
 
-    <div class="notice-box" id="codeNotice">🔐 أدخل الكود للمتابعة</div>
-    <input id="codeInput" type="text" placeholder="ادخل الكود هنا" class="code-input" />
-    <p class="error-msg" id="errorMsg"></p>
+      <div class="notice-box" id="codeNotice">🔐 أدخل الكود للمتابعة</div>
+      <input id="codeInput" type="text" placeholder="ادخل الكود هنا" class="code-input" />
+      <p class="error-msg" id="errorMsg"></p>
 
-    <button id="goBtn" class="main-btn">يلا بينا</button>
+      <button id="goBtn" class="main-btn">يلا بينا</button>
 
-    <a href="https://t.me/DROSAK3072" target="_blank">
-      <button class="main-btn" style="background-color: #4caf50;">كلمنا</button>
-    </a>
-  </div>
+      <a href="https://t.me/DROSAK3072" target="_blank">
+        <button class="main-btn" style="background-color: #4caf50;">كلمنا</button>
+      </a>
+    </div>
 
-  <div class="page" id="subjectsPage">
-    <h1>اختر المادة</h1>
-    <button class="main-btn" onclick="showPage('arabicPage')">عربي</button>
-    <button class="main-btn" onclick="showPage('chemistryPage')">كيمياء</button>
-    <button class="main-btn" onclick="showPage('physicsPage')">فيزياء</button>
-    <button class="main-btn" onclick="showPage('biologyPage')">أحياء</button>
-    <button class="main-btn" onclick="showPage('englishPage')">ENGLISH</button>
-    <button class="main-btn" onclick="showPage('mathPage')">رياضة</button>
-    <button class="back-btn" onclick="showPage('homePage')">← رجوع</button>
-  </div>
+    <div class="page" id="subjectsPage">
+      <h1>اختر المادة</h1>
+      <button class="main-btn" onclick="showPage('arabicPage')">عربي</button>
+      <button class="main-btn" onclick="showPage('chemistryPage')">كيمياء</button>
+      <button class="main-btn" onclick="showPage('physicsPage')">فيزياء</button>
+      <button class="main-btn" onclick="showPage('biologyPage')">أحياء</button>
+      <button class="main-btn" onclick="showPage('englishPage')">ENGLISH</button>
+      <button class="main-btn" onclick="showPage('mathPage')">رياضة</button>
+      <button class="back-btn" onclick="showPage('homePage')">← رجوع</button>
+    </div>
 
-  <div class="page" id="arabicPage">
-    <h1>مادة العربي</h1>
-    <button class="main-btn">محمد صلاح</button>
-    <button class="main-btn">رضا الفاروق</button>
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+    <div class="page" id="arabicPage">
+      <h1>مادة العربي</h1>
+      <button class="main-btn">محمد صلاح</button>
+      <button class="main-btn">رضا الفاروق</button>
+      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+    </div>
   </div>
 
   <script>
@@ -221,7 +227,6 @@
         const lockEnabled = await res.json();
 
         if (!lockEnabled) {
-          // إخفاء الكود والعناصر المرتبطة به
           codeInput.style.display = "none";
           notice.style.display = "none";
           errorBox.style.display = "none";
