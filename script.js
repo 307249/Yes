@@ -1,18 +1,3 @@
-const firebaseConfig = {
-  databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
-};
-
-const dbURL = firebaseConfig.databaseURL;
-
-function getDeviceId() {
-  let deviceId = localStorage.getItem("deviceId");
-  if (!deviceId) {
-    deviceId = "device-" + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem("deviceId", deviceId);
-  }
-  return deviceId;
-}
-
 async function handleAccess() {
   const codeInput = document.getElementById("codeInput");
   const code = codeInput.value.trim();
@@ -25,7 +10,7 @@ async function handleAccess() {
 
     if (!lockEnabled) {
       alert("✅ تم الدخول بنجاح، القفل غير مفعل.");
-      window.location.href = "main.html"; // ← صفحة المحتوى الرئيسية
+      window.location.href = "home.html"; // ✅ توجيه للصفحة بعد الدخول
       return;
     }
 
@@ -64,7 +49,7 @@ async function handleAccess() {
 
     localStorage.setItem("drosakKey", code);
     alert("✅ تم التحقق بنجاح، سيتم فتح التطبيق.");
-    window.location.href = "main.html"; // ← هنا يتم الانتقال
+    window.location.href = "home.html"; // ✅ بعد التحقق
 
   } catch (err) {
     console.error(err);
