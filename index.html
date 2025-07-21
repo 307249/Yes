@@ -6,7 +6,6 @@
   <title>DROSAK</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* دمج CSS سريع هنا لو مش بتحمل ملف خارجي */
     body {
       margin: 0;
       padding: 0;
@@ -100,7 +99,13 @@
     <button class="back-btn" onclick="showPage('homePage')">← رجوع</button>
   </div>
 
-  <!-- باقي الصفحات متروكة كما هي -->
+  <!-- ✅ صفحة مادة العربي -->
+  <div class="page" id="arabicPage">
+    <h1>مادة العربي</h1>
+    <button class="main-btn">محمد صلاح</button>
+    <button class="main-btn">رضا الفاروق</button>
+    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+  </div>
 
   <script>
     const firebaseConfig = {
@@ -178,7 +183,6 @@
       }
     }
 
-    // ربط زر يلا بينا بعد تحميل الصفحة
     window.addEventListener("DOMContentLoaded", () => {
       const goBtn = document.getElementById("goBtn");
       if (goBtn) {
