@@ -1,172 +1,120 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DROSAK</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #111;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: white;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .input-container {
+      background-color: #222;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .warning {
+      color: orange;
+      margin: 10px 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .start-btn {
+      background-color: #00cfff;
+    }
+
+    .cancel-btn {
+      background-color: #4CAF50;
+    }
+
+    .dot {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: teal;
+      animation: move 5s infinite;
+    }
+
+    @keyframes move {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(20px); }
+      100% { transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
-  <div class="circles">
-    <span></span><span></span><span></span><span></span><span></span>
-  </div>
 
-  <div class="page active" id="homePage">
+  <!-- عناصر الخلفية -->
+  <div class="dot" style="top: 20%; left: 20%;"></div>
+  <div class="dot" style="top: 40%; left: 80%;"></div>
+  <div class="dot" style="top: 60%; left: 50%;"></div>
+
+  <!-- الواجهة -->
+  <div class="container">
     <h1>DROSAK</h1>
-    <p>﴿ وَأَنْ لَيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَى ﴾</p>
-    <div class="notice-box">🔐 أدخل الكود للمتابعة</div>
-    <input id="codeInput" type="text" placeholder="ادخل الكود هنا" class="code-input" />
-    <p class="error-msg" id="errorMsg"></p>
-    
-    <button class="main-btn" onclick="handleAccess()">يلا بينا</button>
+    <p>{ وَأَن لَّيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَى }</p>
 
-    <!-- 🔽 زر كلمنا الجديد -->
-    <a href="https://t.me/DROSAK3072" target="_blank">
-      <button class="main-btn" style="margin-top: 10px; background-color: #4caf50;">كلمنا</button>
-    </a>
-  </div>
-
-  <div class="page" id="subjectsPage">
-    <div class="top-bar">
-      <button class="settings-icon" onclick="showPage('settingsPage')">⚙️</button>
+    <div class="input-container">
+      <label style="color: white;">🔒 أدخل الكود للمتابعة</label>
+      <input type="text" id="codeInput" placeholder="ادخل الكود هنا">
     </div>
-    <h1>اختر المادة</h1>
-    <button class="main-btn" onclick="showPage('arabicPage')">عربي</button>
-    <button class="main-btn" onclick="showPage('chemistryPage')">كيمياء</button>
-    <button class="main-btn" onclick="showPage('physicsPage')">فيزياء</button>
-    <button class="main-btn" onclick="showPage('biologyPage')">أحياء</button>
-    <button class="main-btn" onclick="showPage('englishPage')">ENGLISH</button>
-    <button class="main-btn" onclick="showPage('mathPage')">رياضة</button>
-    <button class="back-btn" onclick="showPage('homePage')">← رجوع</button>
+
+    <div id="errorMsg" class="warning">من فضلك أدخل الكود ⚠️</div>
+
+    <button class="start-btn" onclick="startApp()">يلا بينا</button>
+    <button class="cancel-btn" onclick="cancel()">كلمة</button>
   </div>
 
-  <div class="page" id="settingsPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>الإعدادات</h1>
-    <p>سيتم عرض الكود والوقت المتبقي لاحقًا هنا</p>
-  </div>
-
-  <div class="page" id="arabicPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>عربي</h1>
-    <button class="main-btn">محمد صلاح</button>
-    <button class="main-btn">رضا الفاروق</button>
-  </div>
-
-  <div class="page" id="chemistryPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>كيمياء</h1>
-    <button class="main-btn">خالد صقر</button>
-    <button class="main-btn">عبد الجواد</button>
-  </div>
-
-  <div class="page" id="physicsPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>فيزياء</h1>
-    <button class="main-btn">محمد عبد المعبود</button>
-    <button class="main-btn">كرلس</button>
-  </div>
-
-  <div class="page" id="biologyPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>أحياء</h1>
-    <button class="main-btn">الجوهري</button>
-    <button class="main-btn">جيو ماجد</button>
-  </div>
-
-  <div class="page" id="englishPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>ENGLISH</h1>
-    <button class="main-btn">وائل ميلاد</button>
-    <button class="main-btn">عبقري لغة</button>
-  </div>
-
-  <div class="page" id="mathPage">
-    <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    <h1>رياضة</h1>
-    <button class="main-btn">أحمد عصام</button>
-  </div>
-
-  <!-- 🔽 سكريبت في آخر الصفحة -->
-  <script>
-    const firebaseConfig = {
-      databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
-    };
-
-    const dbURL = firebaseConfig.databaseURL;
-
-    function showPage(id) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-
-      if (id === "settingsPage") {
-        showSettingsInfo();
-      }
-    }
-
-    function getDeviceId() {
-      let deviceId = localStorage.getItem("deviceId");
-      if (!deviceId) {
-        deviceId = "device-" + Math.random().toString(36).substr(2, 9);
-        localStorage.setItem("deviceId", deviceId);
-      }
-      return deviceId;
-    }
-
-    async function handleAccess() {
-      const codeInput = document.getElementById("codeInput");
-      const code = codeInput.value.trim();
-      const errorBox = document.getElementById("errorMsg");
-      errorBox.textContent = "";
-
-      try {
-        const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
-        const lockEnabled = await res.json();
-
-        if (!lockEnabled) {
-          showPage("subjectsPage");
-          return;
-        }
-
-        if (!code) {
-          errorBox.textContent = "⚠️ من فضلك أدخل الكود";
-          return;
-        }
-
-        const keySnap = await fetch(`${dbURL}/validKeys/${code}.json`);
-        const keyData = await keySnap.json();
-        const now = Date.now();
-        const currentDevice = getDeviceId();
-
-        if (!keyData) {
-          errorBox.textContent = "❌ الكود غير صحيح، تواصل معنا: @AL_MAALA";
-          return;
-        }
-
-        if (now >= keyData.expiresAt) {
-          errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
-          return;
-        }
-
-        if (keyData.deviceId && keyData.deviceId !== currentDevice) {
-          errorBox.textContent = "❌ هذا الكود مرتبط بجهاز آخر بالفعل.";
-          return;
-        }
-
-        if (!keyData.deviceId) {
-          await fetch(`${dbURL}/validKeys/${code}/deviceId.json`, {
-            method: "PUT",
-            body: JSON.stringify(currentDevice)
-          });
-        }
-
-        localStorage.setItem("drosakKey", code);
-        showPage("subjectsPage");
-
-      } catch (err) {
-        console.error(err);
-        errorBox.textContent = "❌ حدث خطأ أثناء الاتصال بقاعدة البيانات";
-      }
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
