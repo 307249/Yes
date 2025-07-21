@@ -1,17 +1,18 @@
-// إعداد Firebase
 const firebaseConfig = {
   databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
 };
 
 const dbURL = firebaseConfig.databaseURL;
 
-// عرض صفحة معينة
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+
+  if (id === "settingsPage") {
+    showSettingsInfo();
+  }
 }
 
-// توليد أو استرجاع deviceId من localStorage
 function getDeviceId() {
   let deviceId = localStorage.getItem("deviceId");
   if (!deviceId) {
@@ -21,7 +22,6 @@ function getDeviceId() {
   return deviceId;
 }
 
-// التحقق من الكود عند الضغط على زر "يلا بينا"
 async function handleAccess() {
   const codeInput = document.getElementById("codeInput");
   const code = codeInput.value.trim();
@@ -30,12 +30,7 @@ async function handleAccess() {
 
   try {
     const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
-    if (!res.ok) {
-      throw new Error("فشل الاتصال بقاعدة البيانات");
-    }
-
     const lockEnabled = await res.json();
-    console.log("lockEnabled:", lockEnabled);
 
     if (!lockEnabled) {
       showPage("subjectsPage");
@@ -48,10 +43,6 @@ async function handleAccess() {
     }
 
     const keySnap = await fetch(`${dbURL}/validKeys/${code}.json`);
-    if (!keySnap.ok) {
-      throw new Error("خطأ في جلب الكود");
-    }
-
     const keyData = await keySnap.json();
     const now = Date.now();
     const currentDevice = getDeviceId();
@@ -62,7 +53,7 @@ async function handleAccess() {
     }
 
     if (now >= keyData.expiresAt) {
-      errorBox.textContent = "⚠️ انتهت صلاحية الكود للتجديد كلمنا هنا: @AL_MAALA";
+      errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
       return;
     }
 
@@ -71,7 +62,7 @@ async function handleAccess() {
       return;
     }
 
-    // حفظ deviceId إذا مش محفوظ
+    // حفظ deviceId إذا لم يكن موجود
     if (!keyData.deviceId) {
       await fetch(`${dbURL}/validKeys/${code}/deviceId.json`, {
         method: "PUT",
@@ -83,7 +74,7 @@ async function handleAccess() {
     showPage("subjectsPage");
 
   } catch (err) {
-    console.error("خطأ:", err);
+    console.error(err);
     errorBox.textContent = "❌ حدث خطأ أثناء الاتصال بقاعدة البيانات";
   }
 }
