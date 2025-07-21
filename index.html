@@ -10,16 +10,15 @@
       margin: 0;
       padding: 0;
       font-family: 'Cairo', sans-serif;
-      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-                  url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1400&q=80') no-repeat center center fixed;
-      background-size: cover;
+      background: linear-gradient(to bottom right, #111, #222);
       color: #fff;
       overflow-x: hidden;
       text-align: center;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
+      padding-top: 40px;
     }
 
     .page {
@@ -34,14 +33,14 @@
     .main-btn, .back-btn {
       display: block;
       width: 90%;
-      max-width: 300px;
-      margin: 10px auto;
-      padding: 12px;
-      font-size: 18px;
+      max-width: 320px;
+      margin: 15px auto;
+      padding: 16px;
+      font-size: 20px;
       background-color: #00f2fe;
       color: #000;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
       transition: 0.3s;
     }
@@ -51,13 +50,13 @@
     }
 
     .code-input {
-      padding: 10px;
-      font-size: 16px;
+      padding: 12px;
+      font-size: 18px;
       width: 90%;
-      max-width: 300px;
+      max-width: 320px;
       border-radius: 6px;
       border: none;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .error-msg {
@@ -66,10 +65,41 @@
     }
 
     .notice-box {
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 15px;
+      background-color: #333;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 17px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    @media (min-width: 500px) {
+      .main-btn, .back-btn {
+        font-size: 22px;
+        padding: 18px;
+      }
+
+      .code-input {
+        font-size: 20px;
+        padding: 14px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      p {
+        font-size: 18px;
+      }
     }
   </style>
 </head>
@@ -101,7 +131,6 @@
     <button class="back-btn" onclick="showPage('homePage')">← رجوع</button>
   </div>
 
-  <!-- ✅ صفحة مادة العربي -->
   <div class="page" id="arabicPage">
     <h1>مادة العربي</h1>
     <button class="main-btn">محمد صلاح</button>
