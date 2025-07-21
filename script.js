@@ -4,15 +4,6 @@ const firebaseConfig = {
 
 const dbURL = firebaseConfig.databaseURL;
 
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-
-  if (id === "settingsPage") {
-    showSettingsInfo();
-  }
-}
-
 function getDeviceId() {
   let deviceId = localStorage.getItem("deviceId");
   if (!deviceId) {
@@ -33,7 +24,7 @@ async function handleAccess() {
     const lockEnabled = await res.json();
 
     if (!lockEnabled) {
-      showPage("subjectsPage");
+      alert("✅ تم الدخول بنجاح، القفل غير مفعل.");
       return;
     }
 
@@ -71,7 +62,7 @@ async function handleAccess() {
     }
 
     localStorage.setItem("drosakKey", code);
-    showPage("subjectsPage");
+    alert("✅ تم التحقق بنجاح، سيتم فتح التطبيق.");
 
   } catch (err) {
     console.error(err);
