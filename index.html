@@ -33,14 +33,12 @@
     <button class="back-btn" onclick="showPage('homePage')">← رجوع</button>
   </div>
 
-  <!-- صفحة الإعدادات -->
   <div class="page" id="settingsPage">
     <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     <h1>الإعدادات</h1>
     <p>سيتم عرض الكود والوقت المتبقي لاحقًا هنا</p>
   </div>
 
-  <!-- صفحات المواد -->
   <div class="page" id="arabicPage">
     <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     <h1>عربي</h1>
@@ -82,6 +80,87 @@
     <button class="main-btn">أحمد عصام</button>
   </div>
 
-  <script src="script.js"></script>
+  <!-- 🔽 سكريبت في آخر الصفحة -->
+  <script>
+    const firebaseConfig = {
+      databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
+    };
+
+    const dbURL = firebaseConfig.databaseURL;
+
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+
+      if (id === "settingsPage") {
+        showSettingsInfo();
+      }
+    }
+
+    function getDeviceId() {
+      let deviceId = localStorage.getItem("deviceId");
+      if (!deviceId) {
+        deviceId = "device-" + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem("deviceId", deviceId);
+      }
+      return deviceId;
+    }
+
+    async function handleAccess() {
+      const codeInput = document.getElementById("codeInput");
+      const code = codeInput.value.trim();
+      const errorBox = document.getElementById("errorMsg");
+      errorBox.textContent = "";
+
+      try {
+        const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
+        const lockEnabled = await res.json();
+
+        if (!lockEnabled) {
+          showPage("subjectsPage");
+          return;
+        }
+
+        if (!code) {
+          errorBox.textContent = "⚠️ من فضلك أدخل الكود";
+          return;
+        }
+
+        const keySnap = await fetch(`${dbURL}/validKeys/${code}.json`);
+        const keyData = await keySnap.json();
+        const now = Date.now();
+        const currentDevice = getDeviceId();
+
+        if (!keyData) {
+          errorBox.textContent = "❌ الكود غير صحيح، تواصل معنا: @AL_MAALA";
+          return;
+        }
+
+        if (now >= keyData.expiresAt) {
+          errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
+          return;
+        }
+
+        if (keyData.deviceId && keyData.deviceId !== currentDevice) {
+          errorBox.textContent = "❌ هذا الكود مرتبط بجهاز آخر بالفعل.";
+          return;
+        }
+
+        if (!keyData.deviceId) {
+          await fetch(`${dbURL}/validKeys/${code}/deviceId.json`, {
+            method: "PUT",
+            body: JSON.stringify(currentDevice)
+          });
+        }
+
+        localStorage.setItem("drosakKey", code);
+        showPage("subjectsPage");
+
+      } catch (err) {
+        console.error(err);
+        errorBox.textContent = "❌ حدث خطأ أثناء الاتصال بقاعدة البيانات";
+      }
+    }
+  </script>
 </body>
 </html>
