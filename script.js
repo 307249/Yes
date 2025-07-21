@@ -25,6 +25,7 @@ async function handleAccess() {
 
     if (!lockEnabled) {
       alert("✅ تم الدخول بنجاح، القفل غير مفعل.");
+      window.location.href = "main.html"; // ← صفحة المحتوى الرئيسية
       return;
     }
 
@@ -63,6 +64,7 @@ async function handleAccess() {
 
     localStorage.setItem("drosakKey", code);
     alert("✅ تم التحقق بنجاح، سيتم فتح التطبيق.");
+    window.location.href = "main.html"; // ← هنا يتم الانتقال
 
   } catch (err) {
     console.error(err);
