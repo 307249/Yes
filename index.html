@@ -109,6 +109,7 @@
 </head>
 <body>
   <div class="container">
+    <!-- الصفحة الرئيسية -->
     <div class="page active" id="homePage">
       <h1>DROSAK</h1>
       <p>﴿ وَأَنْ لَيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَى ﴾</p>
@@ -124,6 +125,7 @@
       </a>
     </div>
 
+    <!-- صفحة اختيار المواد -->
     <div class="page" id="subjectsPage">
       <h1>اختر المادة</h1>
       <button class="main-btn" onclick="showPage('arabicPage')">عربي</button>
@@ -135,12 +137,22 @@
       <button class="back-btn" onclick="showPage('homePage')">← رجوع</button>
     </div>
 
+    <!-- صفحة العربي -->
     <div class="page" id="arabicPage">
       <h1>مادة العربي</h1>
       <button class="main-btn">محمد صلاح</button>
       <button class="main-btn">رضا الفاروق</button>
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     </div>
+
+    <!-- صفحة الكيمياء -->
+    <div class="page" id="chemistryPage">
+      <h1>مادة الكيمياء</h1>
+      <button class="main-btn">خالد صقر</button>
+      <button class="main-btn">عبد الجواد</button>
+      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+    </div>
+
   </div>
 
   <script>
