@@ -6,7 +6,13 @@
   <title>DROSAK</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
-    * { box-sizing: border-box; padding: 0; margin: 0; }
+
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+
     html, body {
       height: 100%;
       font-family: 'Cairo', sans-serif;
@@ -16,21 +22,27 @@
       position: relative;
       z-index: 0;
     }
+
     body::before {
       content: "";
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364);
       background-size: 400% 400%;
       animation: gradientBG 12s ease infinite;
-      z-index: -1; opacity: 0.9;
+      z-index: -1;
+      opacity: 0.9;
     }
+
     @keyframes gradientBG {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
+
     .container {
       min-height: 100dvh;
       display: flex;
@@ -40,11 +52,14 @@
       flex-direction: column;
       text-align: center;
     }
+
     .page { display: none; width: 100%; }
     .page.active { display: block; }
+
     .main-btn, .back-btn {
       display: block;
-      width: 95%; max-width: 360px;
+      width: 95%;
+      max-width: 360px;
       margin: 8px auto;
       padding: 16px;
       font-size: 22px;
@@ -55,7 +70,9 @@
       cursor: pointer;
       transition: 0.3s;
     }
+
     .main-btn:hover { background-color: #00c9d8; }
+
     .code-input {
       padding: 12px;
       font-size: 20px;
@@ -65,10 +82,12 @@
       border: none;
       margin-bottom: 12px;
     }
+
     .error-msg {
       color: #ff4d4d;
       margin-bottom: 10px;
     }
+
     .notice-box {
       background-color: #333;
       padding: 10px;
@@ -76,8 +95,10 @@
       margin-bottom: 15px;
       font-size: 17px;
     }
+
     h1 { font-size: 28px; margin-bottom: 8px; }
     p { font-size: 16px; margin-bottom: 16px; }
+
     @media (min-width: 500px) {
       .main-btn, .back-btn { font-size: 24px; padding: 18px; }
       .code-input { font-size: 22px; padding: 14px; }
@@ -97,6 +118,7 @@
       <p class="error-msg" id="errorMsg"></p>
 
       <button id="goBtn" class="main-btn">يلا بينا</button>
+
       <a href="https://t.me/DROSAK3072" target="_blank">
         <button class="main-btn" style="background-color: #4caf50;">كلمنا</button>
       </a>
@@ -141,16 +163,24 @@
       return deviceId;
     }
 
-    async function validateCode(code) {
+    async function handleAccess() {
+      const codeInput = document.getElementById("codeInput");
+      const code = codeInput.value.trim();
       const errorBox = document.getElementById("errorMsg");
       errorBox.textContent = "";
 
       try {
         const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
         const lockEnabled = await res.json();
+
         if (!lockEnabled) {
           showPage("subjectsPage");
-          return true;
+          return;
+        }
+
+        if (!code) {
+          errorBox.textContent = "⚠️ من فضلك أدخل الكود";
+          return;
         }
 
         const keySnap = await fetch(`${dbURL}/validKeys/${code}.json`);
@@ -160,20 +190,17 @@
 
         if (!keyData) {
           errorBox.textContent = "❌ الكود غير صحيح، تواصل معنا: @AL_MAALA";
-          localStorage.removeItem("drosakKey");
-          return false;
+          return;
         }
 
         if (now >= keyData.expiresAt) {
           errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
-          localStorage.removeItem("drosakKey");
-          return false;
+          return;
         }
 
         if (keyData.deviceId && keyData.deviceId !== currentDevice) {
           errorBox.textContent = "❌ هذا الكود مرتبط بجهاز آخر بالفعل.";
-          localStorage.removeItem("drosakKey");
-          return false;
+          return;
         }
 
         if (!keyData.deviceId) {
@@ -185,23 +212,11 @@
 
         localStorage.setItem("drosakKey", code);
         showPage("subjectsPage");
-        return true;
 
       } catch (err) {
         console.error(err);
         errorBox.textContent = "❌ حدث خطأ أثناء الاتصال بقاعدة البيانات";
-        return false;
       }
-    }
-
-    async function handleAccess() {
-      const codeInput = document.getElementById("codeInput");
-      const code = codeInput.value.trim();
-      if (!code) {
-        document.getElementById("errorMsg").textContent = "⚠️ من فضلك أدخل الكود";
-        return;
-      }
-      await validateCode(code);
     }
 
     window.addEventListener("DOMContentLoaded", async () => {
@@ -218,12 +233,29 @@
           codeInput.style.display = "none";
           notice.style.display = "none";
           errorBox.style.display = "none";
-        } else {
-          const savedCode = localStorage.getItem("drosakKey");
-          if (savedCode) {
-            await validateCode(savedCode);
+          showPage("subjectsPage");
+          return;
+        }
+
+        const savedCode = localStorage.getItem("drosakKey");
+        const currentDevice = getDeviceId();
+
+        if (savedCode) {
+          const keySnap = await fetch(`${dbURL}/validKeys/${savedCode}.json`);
+          const keyData = await keySnap.json();
+
+          const now = Date.now();
+
+          if (
+            keyData &&
+            now < keyData.expiresAt &&
+            keyData.deviceId === currentDevice
+          ) {
+            showPage("subjectsPage");
+            return;
           }
         }
+
       } catch (err) {
         console.error("خطأ في تحميل حالة القفل:", err);
       }
