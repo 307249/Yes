@@ -153,6 +153,15 @@
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     </div>
 
+    <!-- صفحة الأحياء -->
+    <div class="page" id="biologyPage">
+      <h1>مادة الأحياء</h1>
+      <button class="main-btn">الجوهري</button>
+      <button class="main-btn">جيو ماجد</button>
+      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+    </div>
+
+    <!-- يمكنك إضافة الصفحات الأخرى بنفس النمط -->
   </div>
 
   <script>
@@ -267,7 +276,6 @@
             return;
           }
         }
-
       } catch (err) {
         console.error("خطأ في تحميل حالة القفل:", err);
       }
