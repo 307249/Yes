@@ -1,49 +1,53 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>تطبيق دروسك</title>
+  <title>دروسك</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Cairo', sans-serif;
+      font-family: 'Arial', sans-serif;
       background-color: #121212;
-      color: #fff;
-      text-align: center;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
     }
+
     .page {
       display: none;
-      padding: 20px;
+      text-align: center;
     }
+
     .active {
       display: block;
     }
+
     .main-btn, .back-btn {
-      display: block;
-      margin: 15px auto;
       padding: 15px 30px;
-      font-size: 20px;
-      background-color: #1e88e5;
-      color: #fff;
+      margin: 10px;
+      font-size: 18px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      transition: background-color 0.3s;
+      background-color: #1E88E5;
+      color: white;
+      transition: background-color 0.3s ease;
     }
+
     .main-btn:hover, .back-btn:hover {
-      background-color: #1565c0;
-    }
-    h1 {
-      margin-bottom: 30px;
+      background-color: #1565C0;
     }
   </style>
 </head>
 <body>
 
-  <!-- الصفحة الرئيسية -->
-  <div class="page active" id="homePage">
-    <h1>مرحبًا بك في تطبيق دروسك</h1>
+  <!-- صفحة البداية -->
+  <div class="page active" id="startPage">
+    <h1>مرحبًا بك في دروسك</h1>
     <button class="main-btn" onclick="showPage('subjectsPage')">يلا بينا</button>
   </div>
 
@@ -56,7 +60,7 @@
     <button class="main-btn" onclick="showPage('biologyPage')">أحياء</button>
     <button class="main-btn" onclick="showPage('englishPage')">إنجليزي</button>
     <button class="main-btn" onclick="showPage('mathPage')">رياضة</button>
-    <button class="back-btn" onclick="showPage('homePage')">← رجوع</button>
+    <button class="back-btn" onclick="showPage('startPage')">← رجوع</button>
   </div>
 
   <!-- صفحة العربي -->
@@ -100,10 +104,9 @@
   <script>
     function showPage(pageId) {
       const pages = document.querySelectorAll('.page');
-      pages.forEach(page => page.classList.remove('active'));
+      pages.forEach(p => p.classList.remove('active'));
       document.getElementById(pageId).classList.add('active');
     }
   </script>
-
 </body>
 </html>
