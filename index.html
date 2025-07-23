@@ -180,6 +180,7 @@
     <!-- صفحة الرياضة -->
     <div class="page" id="mathPage">
       <h1>رياضة</h1>
+      <button class="main-btn">أحمد عصام</button>
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     </div>
   </div>
@@ -239,7 +240,7 @@
           return;
         }
 
-        if (keyData.deviceId && keyData.deviceId !== currentDevice) {  
+        if (keyData.deviceId && keyData.deviceId !== currentDevice) {
           errorBox.textContent = "❌ هذا الكود مرتبط بجهاز آخر بالفعل.";
           return;
         }
@@ -307,4 +308,3 @@
   </script>
 </body>
 </html>
-```0
