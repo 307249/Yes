@@ -153,7 +153,7 @@
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     </div>
 
-    <!-- صفحة الأحياء (مع الزرين المضافين) -->
+    <!-- صفحة الأحياء -->
     <div class="page" id="biologyPage">
       <h1>مادة الأحياء</h1>
       <button class="main-btn">الجوهري</button>
@@ -161,10 +161,17 @@
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     </div>
 
+    <!-- صفحة الفيزياء -->
+    <div class="page" id="physicsPage">
+      <h1>مادة الفيزياء</h1>
+      <button class="main-btn">عبد المعبود</button>
+      <button class="main-btn">كرلس</button>
+      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+    </div>
+
     <!-- صفحة الإنجليزي -->
     <div class="page" id="englishPage">
       <h1>ENGLISH</h1>
-      <!-- أي محتوى سابق كانت فيه -->
       <button class="main-btn">وائل ميلاد</button>
       <button class="main-btn">شريف المصري</button>
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
@@ -173,10 +180,8 @@
     <!-- صفحة الرياضة -->
     <div class="page" id="mathPage">
       <h1>رياضة</h1>
-      <!-- محتوى الرياضة لديك -->
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     </div>
-
   </div>
 
   <script>
@@ -279,7 +284,6 @@
         if (savedCode) {
           const keySnap = await fetch(`${dbURL}/validKeys/${savedCode}.json`);
           const keyData = await keySnap.json();
-
           const now = Date.now();
 
           if (
@@ -303,3 +307,4 @@
   </script>
 </body>
 </html>
+```0
