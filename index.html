@@ -153,11 +153,27 @@
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     </div>
 
-    <!-- صفحة الانجليزي -->
+    <!-- صفحة الأحياء (مع الزرين المضافين) -->
+    <div class="page" id="biologyPage">
+      <h1>مادة الأحياء</h1>
+      <button class="main-btn">الجوهري</button>
+      <button class="main-btn">جيو ماجد</button>
+      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+    </div>
+
+    <!-- صفحة الإنجليزي -->
     <div class="page" id="englishPage">
-      <h1>مادة الإنجليزي</h1>
+      <h1>ENGLISH</h1>
+      <!-- أي محتوى سابق كانت فيه -->
       <button class="main-btn">وائل ميلاد</button>
       <button class="main-btn">شريف المصري</button>
+      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+    </div>
+
+    <!-- صفحة الرياضة -->
+    <div class="page" id="mathPage">
+      <h1>رياضة</h1>
+      <!-- محتوى الرياضة لديك -->
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     </div>
 
@@ -218,7 +234,7 @@
           return;
         }
 
-        if (keyData.deviceId && keyData.deviceId !== currentDevice) {
+        if (keyData.deviceId && keyData.deviceId !== currentDevice) {  
           errorBox.textContent = "❌ هذا الكود مرتبط بجهاز آخر بالفعل.";
           return;
         }
