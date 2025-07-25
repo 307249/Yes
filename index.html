@@ -109,7 +109,6 @@
 </head>
 <body>
   <div class="container">
-
     <!-- الصفحة الرئيسية -->
     <div class="page active" id="homePage">
       <h1>DROSAK</h1>
@@ -120,6 +119,7 @@
       <p class="error-msg" id="errorMsg"></p>
 
       <button id="goBtn" class="main-btn">يلا بينا</button>
+
       <a href="https://t.me/DROSAK3072" target="_blank">
         <button class="main-btn" style="background-color: #4caf50;">كلمنا</button>
       </a>
@@ -140,21 +140,9 @@
     <!-- صفحة العربي -->
     <div class="page" id="arabicPage">
       <h1>مادة العربي</h1>
-      <button class="main-btn" onclick="showPage('mohamedSalahPage')">محمد صلاح</button>
+      <button class="main-btn">محمد صلاح</button>
       <button class="main-btn">رضا الفاروق</button>
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    </div>
-
-    <!-- صفحة محمد صلاح -->
-    <div class="page" id="mohamedSalahPage">
-      <h1>محمد صلاح</h1>
-      <div class="video-container">
-        <video controls controlsList="nodownload" style="width: 100%; max-width: 800px;">
-          <source src="https://archive.org/download/vid-20250402-wa-0012/VID-20250402-WA0012.mp4" type="video/mp4">
-          المتصفح لا يدعم تشغيل الفيديو.
-        </video>
-      </div>
-      <button class="back-btn" onclick="showPage('arabicPage')">← رجوع</button>
     </div>
 
     <!-- صفحة الكيمياء -->
@@ -195,7 +183,6 @@
       <button class="main-btn">أحمد عصام</button>
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     </div>
-
   </div>
 
   <script>
