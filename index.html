@@ -96,12 +96,6 @@
       font-size: 17px;
     }
 
-    .video-container {
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto 16px;
-    }
-
     h1 { font-size: 28px; margin-bottom: 8px; }
     p { font-size: 16px; margin-bottom: 16px; }
 
@@ -119,11 +113,9 @@
     <div class="page active" id="homePage">
       <h1>DROSAK</h1>
       <p>﴿ وَأَنْ لَيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَى ﴾</p>
-
       <div class="notice-box" id="codeNotice">🔐 أدخل الكود للمتابعة</div>
       <input id="codeInput" type="text" placeholder="ادخل الكود هنا" class="code-input" />
       <p class="error-msg" id="errorMsg"></p>
-
       <button id="goBtn" class="main-btn">يلا بينا</button>
       <a href="https://t.me/DROSAK3072" target="_blank">
         <button class="main-btn" style="background-color: #4caf50;">كلمنا</button>
@@ -139,8 +131,6 @@
       <button class="main-btn" onclick="showPage('biologyPage')">أحياء</button>
       <button class="main-btn" onclick="showPage('englishPage')">ENGLISH</button>
       <button class="main-btn" onclick="showPage('mathPage')">رياضة</button>
-      <!-- زر جديد لتشغيل فيديو YouTube داخلي -->
-      <button class="main-btn" onclick="showPage('youtubePage')">شاهد فيديو</button>
       <button class="back-btn" onclick="showPage('homePage')">← رجوع</button>
     </div>
 
@@ -152,14 +142,17 @@
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     </div>
 
-    <!-- صفحة محمد صلاح (فيديو mp4) -->
+    <!-- صفحة محمد صلاح (تشغيل فيديو يوتيوب داخلي) -->
     <div class="page" id="mohamedSalahPage">
       <h1>محمد صلاح</h1>
-      <div class="video-container">
-        <video controls controlsList="nodownload" style="width:100%;">
-          <source src="https://archive.org/download/vid-20250402-wa-0012/VID-20250402-WA0012.mp4" type="video/mp4">
-          المتصفح لا يدعم تشغيل الفيديو.
-        </video>
+      <div class="video-container" style="width: 100%; max-width: 800px; margin: 0 auto;">
+        <iframe
+          width="100%" height="360"
+          src="https://www.youtube.com/embed/6aiG5GSkO-g?rel=0&modestbranding=1"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
       </div>
       <button class="back-btn" onclick="showPage('arabicPage')">← رجوع</button>
     </div>
@@ -202,21 +195,6 @@
       <button class="main-btn">أحمد عصام</button>
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     </div>
-
-    <!-- صفحة تشغيل فيديو YouTube داخلي -->
-    <div class="page" id="youtubePage">
-      <h1>فيديو YouTube</h1>
-      <div class="video-container">
-        <iframe
-          width="100%" height="315"
-          src="https://www.youtube.com/embed/6aiG5GSkO-g?si=fK7F1sysbcC7HnOE"
-          frameborder="0"
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
-        </iframe>
-      </div>
-      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    </div>
   </div>
 
   <script>
@@ -248,10 +226,12 @@
       try {
         const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
         const lockEnabled = await res.json();
+
         if (!lockEnabled) {
           showPage("subjectsPage");
           return;
         }
+
         if (!code) {
           errorBox.textContent = "⚠️ من فضلك أدخل الكود";
           return;
@@ -266,25 +246,30 @@
           errorBox.textContent = "❌ الكود غير صحيح، تواصل معنا: @AL_MAALA";
           return;
         }
+
         if (now >= keyData.expiresAt) {
-          errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك...";
+          errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
           return;
         }
+
         if (keyData.deviceId && keyData.deviceId !== currentDevice) {
-          errorBox.textContent = "❌ الكود على جهاز آخر.";
+          errorBox.textContent = "❌ هذا الكود مرتبط بجهاز آخر بالفعل.";
           return;
         }
+
         if (!keyData.deviceId) {
           await fetch(`${dbURL}/validKeys/${code}/deviceId.json`, {
             method: "PUT",
             body: JSON.stringify(currentDevice)
           });
         }
+
         localStorage.setItem("drosakKey", code);
         showPage("subjectsPage");
+
       } catch (err) {
         console.error(err);
-        errorBox.textContent = "❌ حدث خطأ أثناء الاتصال";
+        errorBox.textContent = "❌ حدث خطأ أثناء الاتصال بقاعدة البيانات";
       }
     }
 
@@ -297,6 +282,7 @@
       try {
         const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
         const lockEnabled = await res.json();
+
         if (!lockEnabled) {
           codeInput.style.display = "none";
           notice.style.display = "none";
@@ -307,20 +293,29 @@
 
         const savedCode = localStorage.getItem("drosakKey");
         const currentDevice = getDeviceId();
+
         if (savedCode) {
           const keySnap = await fetch(`${dbURL}/validKeys/${savedCode}.json`);
           const keyData = await keySnap.json();
           const now = Date.now();
-          if (keyData && now < keyData.expiresAt && keyData.deviceId === currentDevice) {
+
+          if (
+            keyData &&
+            now < keyData.expiresAt &&
+            keyData.deviceId === currentDevice
+          ) {
             showPage("subjectsPage");
             return;
           }
         }
+
       } catch (err) {
         console.error("خطأ في تحميل حالة القفل:", err);
       }
 
-      if (goBtn) goBtn.addEventListener("click", handleAccess);
+      if (goBtn) {
+        goBtn.addEventListener("click", handleAccess);
+      }
     });
   </script>
 </body>
