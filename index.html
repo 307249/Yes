@@ -105,17 +105,6 @@
       h1 { font-size: 32px; }
       p { font-size: 18px; }
     }
-
-    .video-container {
-      width: 100%;
-      max-width: 800px;
-      margin: 16px auto;
-    }
-    .video-container iframe {
-      width: 100%;
-      height: 450px;
-      border: none;
-    }
   </style>
 </head>
 <body>
@@ -151,7 +140,7 @@
     <!-- صفحة العربي -->
     <div class="page" id="arabicPage">
       <h1>مادة العربي</h1>
-      <button class="main-btn" onclick="showPage('mohamedSalahPage')">محمد صلاح</button>
+      <button class="main-btn">محمد صلاح</button>
       <button class="main-btn">رضا الفاروق</button>
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     </div>
@@ -193,20 +182,6 @@
       <h1>رياضة</h1>
       <button class="main-btn">أحمد عصام</button>
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    </div>
-
-    <!-- صفحة محمد صلاح (مضمّن الفيديو) -->
-    <div class="page" id="mohamedSalahPage">
-      <h1>محمد صلاح</h1>
-      <div class="video-container">
-        <iframe 
-          src="https://archive.org/embed/lv_0_20250723170712" 
-          webkitallowfullscreen 
-          mozallowfullscreen 
-          allowfullscreen>
-        </iframe>
-      </div>
-      <button class="back-btn" onclick="showPage('arabicPage')">← رجوع</button>
     </div>
   </div>
 
