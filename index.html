@@ -113,10 +113,13 @@
     <div class="page active" id="homePage">
       <h1>DROSAK</h1>
       <p>﴿ وَأَنْ لَيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَى ﴾</p>
+
       <div class="notice-box" id="codeNotice">🔐 أدخل الكود للمتابعة</div>
       <input id="codeInput" type="text" placeholder="ادخل الكود هنا" class="code-input" />
       <p class="error-msg" id="errorMsg"></p>
+
       <button id="goBtn" class="main-btn">يلا بينا</button>
+
       <a href="https://t.me/DROSAK3072" target="_blank">
         <button class="main-btn" style="background-color: #4caf50;">كلمنا</button>
       </a>
@@ -137,24 +140,9 @@
     <!-- صفحة العربي -->
     <div class="page" id="arabicPage">
       <h1>مادة العربي</h1>
-      <button class="main-btn" onclick="showPage('mohamedSalahPage')">محمد صلاح</button>
+      <button class="main-btn">محمد صلاح</button>
       <button class="main-btn">رضا الفاروق</button>
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    </div>
-
-    <!-- صفحة محمد صلاح (تشغيل فيديو يوتيوب داخلي) -->
-    <div class="page" id="mohamedSalahPage">
-      <h1>محمد صلاح</h1>
-      <div class="video-container" style="width: 100%; max-width: 800px; margin: 0 auto;">
-        <iframe
-          width="100%" height="360"
-          src="https://www.youtube.com/embed/6aiG5GSkO-g?rel=0&modestbranding=1"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
-        </iframe>
-      </div>
-      <button class="back-btn" onclick="showPage('arabicPage')">← رجوع</button>
     </div>
 
     <!-- صفحة الكيمياء -->
