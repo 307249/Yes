@@ -109,6 +109,7 @@
 </head>
 <body>
   <div class="container">
+
     <!-- الصفحة الرئيسية -->
     <div class="page active" id="homePage">
       <h1>DROSAK</h1>
@@ -140,9 +141,21 @@
     <!-- صفحة العربي -->
     <div class="page" id="arabicPage">
       <h1>مادة العربي</h1>
-      <button class="main-btn">محمد صلاح</button>
+      <button class="main-btn" onclick="showPage('mohamedSalahPage')">محمد صلاح</button>
       <button class="main-btn">رضا الفاروق</button>
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+    </div>
+
+    <!-- صفحة محمد صلاح (الفيديو) -->
+    <div class="page" id="mohamedSalahPage">
+      <h1>محمد صلاح</h1>
+      <div class="video-container">
+        <video controls controlsList="nodownload" style="width: 100%; max-width: 800px;">
+          <source src="https://archive.org/download/vid-20250402-wa-0012/VID-20250402-WA0012.mp4" type="video/mp4">
+          المتصفح لا يدعم تشغيل الفيديو.
+        </video>
+      </div>
+      <button class="back-btn" onclick="showPage('arabicPage')">← رجوع</button>
     </div>
 
     <!-- صفحة الكيمياء -->
@@ -153,19 +166,19 @@
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     </div>
 
-    <!-- صفحة الأحياء -->
-    <div class="page" id="biologyPage">
-      <h1>مادة الأحياء</h1>
-      <button class="main-btn">الجوهري</button>
-      <button class="main-btn">جيو ماجد</button>
-      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    </div>
-
     <!-- صفحة الفيزياء -->
     <div class="page" id="physicsPage">
       <h1>مادة الفيزياء</h1>
       <button class="main-btn">عبد المعبود</button>
       <button class="main-btn">كرلس</button>
+      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+    </div>
+
+    <!-- صفحة الأحياء -->
+    <div class="page" id="biologyPage">
+      <h1>مادة الأحياء</h1>
+      <button class="main-btn">الجوهري</button>
+      <button class="main-btn">جيو ماجد</button>
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     </div>
 
@@ -183,6 +196,7 @@
       <button class="main-btn">أحمد عصام</button>
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     </div>
+
   </div>
 
   <script>
