@@ -1,110 +1,108 @@
-<!DOCTYPE html>
-<html lang="ar">
+<!DOCTYPE html><html lang="ar">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DROSAK</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
 
-    * {
-      box-sizing: border-box;
-      padding: 0;
-      margin: 0;
-    }
+html, body {
+  height: 100%;
+  font-family: 'Cairo', sans-serif;
+  color: #fff;
+  overflow-x: hidden;
+  background-color: transparent;
+  position: relative;
+  z-index: 0;
+}
 
-    html, body {
-      height: 100%;
-      font-family: 'Cairo', sans-serif;
-      color: #fff;
-      overflow-x: hidden;
-      background-color: transparent;
-      position: relative;
-      z-index: 0;
-    }
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364);
+  background-size: 400% 400%;
+  animation: gradientBG 12s ease infinite;
+  z-index: -1;
+  opacity: 0.9;
+}
 
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364);
-      background-size: 400% 400%;
-      animation: gradientBG 12s ease infinite;
-      z-index: -1;
-      opacity: 0.9;
-    }
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+.container {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 10px;
+  flex-direction: column;
+  text-align: center;
+}
 
-    .container {
-      min-height: 100dvh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px 10px;
-      flex-direction: column;
-      text-align: center;
-    }
+.page { display: none; width: 100%; }
+.page.active { display: block; }
 
-    .page { display: none; width: 100%; }
-    .page.active { display: block; }
+.main-btn, .back-btn {
+  display: block;
+  width: 95%;
+  max-width: 360px;
+  margin: 8px auto;
+  padding: 16px;
+  font-size: 22px;
+  background-color: #00f2fe;
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-    .main-btn, .back-btn {
-      display: block;
-      width: 95%;
-      max-width: 360px;
-      margin: 8px auto;
-      padding: 16px;
-      font-size: 22px;
-      background-color: #00f2fe;
-      color: #000;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+.main-btn:hover { background-color: #00c9d8; }
 
-    .main-btn:hover { background-color: #00c9d8; }
+.code-input {
+  padding: 12px;
+  font-size: 20px;
+  width: 95%;
+  max-width: 360px;
+  border-radius: 6px;
+  border: none;
+  margin-bottom: 12px;
+}
 
-    .code-input {
-      padding: 12px;
-      font-size: 20px;
-      width: 95%;
-      max-width: 360px;
-      border-radius: 6px;
-      border: none;
-      margin-bottom: 12px;
-    }
+.error-msg {
+  color: #ff4d4d;
+  margin-bottom: 10px;
+}
 
-    .error-msg {
-      color: #ff4d4d;
-      margin-bottom: 10px;
-    }
+.notice-box {
+  background-color: #333;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-size: 17px;
+}
 
-    .notice-box {
-      background-color: #333;
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      font-size: 17px;
-    }
+h1 { font-size: 28px; margin-bottom: 8px; }
+p { font-size: 16px; margin-bottom: 16px; }
 
-    h1 { font-size: 28px; margin-bottom: 8px; }
-    p { font-size: 16px; margin-bottom: 16px; }
+@media (min-width: 500px) {
+  .main-btn, .back-btn { font-size: 24px; padding: 18px; }
+  .code-input { font-size: 22px; padding: 14px; }
+  h1 { font-size: 32px; }
+  p { font-size: 18px; }
+}
 
-    @media (min-width: 500px) {
-      .main-btn, .back-btn { font-size: 24px; padding: 18px; }
-      .code-input { font-size: 22px; padding: 14px; }
-      h1 { font-size: 32px; }
-      p { font-size: 18px; }
-    }
   </style>
 </head>
 <body>
@@ -113,79 +111,81 @@
     <div class="page active" id="homePage">
       <h1>DROSAK</h1>
       <p>﴿ وَأَنْ لَيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَى ﴾</p>
-
       <div class="notice-box" id="codeNotice">🔐 أدخل الكود للمتابعة</div>
       <input id="codeInput" type="text" placeholder="ادخل الكود هنا" class="code-input" />
       <p class="error-msg" id="errorMsg"></p>
-
       <button id="goBtn" class="main-btn">يلا بينا</button>
-
       <a href="https://t.me/DROSAK3072" target="_blank">
         <button class="main-btn" style="background-color: #4caf50;">كلمنا</button>
       </a>
-    </div>
+    </div><!-- صفحة اختيار المواد -->
+<div class="page" id="subjectsPage">
+  <h1>اختر المادة</h1>
+  <button class="main-btn" onclick="showPage('arabicPage')">عربي</button>
+  <button class="main-btn" onclick="showPage('chemistryPage')">كيمياء</button>
+  <button class="main-btn" onclick="showPage('physicsPage')">فيزياء</button>
+  <button class="main-btn" onclick="showPage('biologyPage')">أحياء</button>
+  <button class="main-btn" onclick="showPage('englishPage')">ENGLISH</button>
+  <button class="main-btn" onclick="showPage('mathPage')">رياضة</button>
+  <button class="back-btn" onclick="showPage('homePage')">← رجوع</button>
+</div>
 
-    <!-- صفحة اختيار المواد -->
-    <div class="page" id="subjectsPage">
-      <h1>اختر المادة</h1>
-      <button class="main-btn" onclick="showPage('arabicPage')">عربي</button>
-      <button class="main-btn" onclick="showPage('chemistryPage')">كيمياء</button>
-      <button class="main-btn" onclick="showPage('physicsPage')">فيزياء</button>
-      <button class="main-btn" onclick="showPage('biologyPage')">أحياء</button>
-      <button class="main-btn" onclick="showPage('englishPage')">ENGLISH</button>
-      <button class="main-btn" onclick="showPage('mathPage')">رياضة</button>
-      <button class="back-btn" onclick="showPage('homePage')">← رجوع</button>
-    </div>
+<!-- صفحة العربي -->
+<div class="page" id="arabicPage">
+  <h1>مادة العربي</h1>
+  <button class="main-btn" onclick="showPage('mohamedSalahPage')">محمد صلاح</button>
+  <button class="main-btn">رضا الفاروق</button>
+  <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+</div>
 
-    <!-- صفحة العربي -->
-    <div class="page" id="arabicPage">
-      <h1>مادة العربي</h1>
-      <button class="main-btn">محمد صلاح</button>
-      <button class="main-btn">رضا الفاروق</button>
-      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    </div>
+<!-- صفحة الكيمياء -->
+<div class="page" id="chemistryPage">
+  <h1>مادة الكيمياء</h1>
+  <button class="main-btn">خالد صقر</button>
+  <button class="main-btn" onclick="showPage('abdElgowadPage')">عبد الجواد</button>
+  <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+</div>
 
-    <!-- صفحة الكيمياء -->
-    <div class="page" id="chemistryPage">
-      <h1>مادة الكيمياء</h1>
-      <button class="main-btn">خالد صقر</button>
-      <button class="main-btn">عبد الجواد</button>
-      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    </div>
+<!-- صفحة عبد الجواد -->
+<div class="page" id="abdElgowadPage">
+  <h1>عبد الجواد</h1>
+  <button class="main-btn">شرح2026</button>
+  <button class="main-btn">عضويه 2025</button>
+  <button class="back-btn" onclick="showPage('chemistryPage')">← رجوع</button>
+</div>
 
-    <!-- صفحة الأحياء -->
-    <div class="page" id="biologyPage">
-      <h1>مادة الأحياء</h1>
-      <button class="main-btn">الجوهري</button>
-      <button class="main-btn">جيو ماجد</button>
-      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    </div>
+<!-- صفحة الفيزياء -->
+<div class="page" id="physicsPage">
+  <h1>مادة الفيزياء</h1>
+  <button class="main-btn">عبد المعبود</button>
+  <button class="main-btn">كرلس</button>
+  <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+</div>
 
-    <!-- صفحة الفيزياء -->
-    <div class="page" id="physicsPage">
-      <h1>مادة الفيزياء</h1>
-      <button class="main-btn">عبد المعبود</button>
-      <button class="main-btn">كرلس</button>
-      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    </div>
+<!-- صفحة الأحياء -->
+<div class="page" id="biologyPage">
+  <h1>مادة الأحياء</h1>
+  <button class="main-btn">الجوهري</button>
+  <button class="main-btn">جيو ماجد</button>
+  <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+</div>
 
-    <!-- صفحة الإنجليزي -->
-    <div class="page" id="englishPage">
-      <h1>ENGLISH</h1>
-      <button class="main-btn">وائل ميلاد</button>
-      <button class="main-btn">شريف المصري</button>
-      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    </div>
+<!-- صفحة الإنجليزي -->
+<div class="page" id="englishPage">
+  <h1>ENGLISH</h1>
+  <button class="main-btn">وائل ميلاد</button>
+  <button class="main-btn">شريف المصري</button>
+  <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+</div>
 
-    <!-- صفحة الرياضة -->
-    <div class="page" id="mathPage">
-      <h1>رياضة</h1>
-      <button class="main-btn">أحمد عصام</button>
-      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    </div>
-  </div>
+<!-- صفحة الرياضة -->
+<div class="page" id="mathPage">
+  <h1>رياضة</h1>
+  <button class="main-btn">أحمد عصام</button>
+  <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+</div>
 
-  <script>
+  </div>  <script>
     const firebaseConfig = {
       databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
     };
@@ -280,31 +280,9 @@
         }
 
         const savedCode = localStorage.getItem("drosakKey");
-        const currentDevice = getDeviceId();
-
-        if (savedCode) {
-          const keySnap = await fetch(`${dbURL}/validKeys/${savedCode}.json`);
-          const keyData = await keySnap.json();
-          const now = Date.now();
-
-          if (
-            keyData &&
-            now < keyData.expiresAt &&
-            keyData.deviceId === currentDevice
-          ) {
-            showPage("subjectsPage");
-            return;
-          }
-        }
-
-      } catch (err) {
-        console.error("خطأ في تحميل حالة القفل:", err);
-      }
-
-      if (goBtn) {
-        goBtn.addEventListener("click", handleAccess);
-      }
+  
+      } catch (err) { console.error("خطأ في تحميل حالة القفل:", err); }
+      if (goBtn) { goBtn.addEventListener("click", handleAccess); }
     });
-  </script>
-</body>
+  </script></body>
 </html>
