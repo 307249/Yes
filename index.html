@@ -20,27 +20,22 @@
       position: relative;
       z-index: 0;
     }
-
     body::before {
       content: "";
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364);
       background-size: 400% 400%;
       animation: gradientBG 12s ease infinite;
       z-index: -1;
       opacity: 0.9;
     }
-
     @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-
     .container {
       min-height: 100dvh;
       display: flex;
@@ -50,14 +45,11 @@
       flex-direction: column;
       text-align: center;
     }
-
     .page { display: none; width: 100%; }
     .page.active { display: block; }
-
     .main-btn, .back-btn {
       display: block;
-      width: 95%;
-      max-width: 360px;
+      width: 95%; max-width: 360px;
       margin: 8px auto;
       padding: 16px;
       font-size: 22px;
@@ -66,26 +58,22 @@
       border: none;
       border-radius: 12px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: .3s;
     }
-
     .main-btn:hover { background-color: #00c9d8; }
-
     .code-input {
       padding: 12px;
       font-size: 20px;
-      width: 95%;
-      max-width: 360px;
+      width: 95%; max-width: 360px;
       border-radius: 6px;
       border: none;
       margin-bottom: 12px;
     }
-
     .error-msg {
       color: #ff4d4d;
       margin-bottom: 10px;
+      min-height: 24px;
     }
-
     .notice-box {
       background-color: #333;
       padding: 10px;
@@ -93,21 +81,19 @@
       margin-bottom: 15px;
       font-size: 17px;
     }
-
     h1 { font-size: 28px; margin-bottom: 8px; }
-    p { font-size: 16px; margin-bottom: 16px; }
-
+    p  { font-size: 16px; margin-bottom: 16px; }
     @media (min-width: 500px) {
       .main-btn, .back-btn { font-size: 24px; padding: 18px; }
       .code-input { font-size: 22px; padding: 14px; }
       h1 { font-size: 32px; }
-      p { font-size: 18px; }
+      p  { font-size: 18px; }
     }
-
   </style>
 </head>
 <body>
   <div class="container">
+
     <!-- الصفحة الرئيسية -->
     <div class="page active" id="homePage">
       <h1>DROSAK</h1>
@@ -120,6 +106,7 @@
         <button class="main-btn" style="background-color: #4caf50;">كلمنا</button>
       </a>
     </div>
+
     <!-- صفحة اختيار المواد -->
     <div class="page" id="subjectsPage">
       <h1>اختر المادة</h1>
@@ -240,7 +227,7 @@
       <button class="back-btn" onclick="showPage('lecture1Page')">← رجوع</button>
     </div>
 
-    <!-- بقية الصفحات -->
+    <!-- مادة الفيزياء -->
     <div class="page" id="physicsPage">
       <h1>مادة الفيزياء</h1>
       <button class="main-btn">عبد المعبود</button>
@@ -248,6 +235,7 @@
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     </div>
 
+    <!-- مادة الأحياء -->
     <div class="page" id="biologyPage">
       <h1>مادة الأحياء</h1>
       <button class="main-btn">الجوهري</button>
@@ -255,6 +243,7 @@
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     </div>
 
+    <!-- ENGLISH -->
     <div class="page" id="englishPage">
       <h1>ENGLISH</h1>
       <button class="main-btn">وائل ميلاد</button>
@@ -262,28 +251,42 @@
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     </div>
 
+    <!-- الرياضة -->
     <div class="page" id="mathPage">
       <h1>رياضة</h1>
       <button class="main-btn" onclick="showPage('essamVideoPage')">أحمد عصام</button>
       <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
     </div>
 
+    <!-- فيديو أحمد عصام -->
     <div class="page" id="essamVideoPage">
       <h1>فيديو أحمد عصام</h1>
       <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
-        <!-- تم حذف الفيديو من هنا -->
+        <!-- يمكنك إضافة فيديو هنا -->
       </div>
       <button class="back-btn" onclick="showPage('mathPage')">← رجوع</button>
     </div>
 
   </div>
+
   <script>
     const firebaseConfig = {
       databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
     };
     const dbURL = firebaseConfig.databaseURL;
 
+    // دالة لإيقاف الفيديوهات عند التنقل
+    function stopAllVideos() {
+      const iframes = document.querySelectorAll('.page.active iframe');
+      iframes.forEach(iframe => {
+        const src = iframe.src;
+        iframe.src = '';
+        iframe.src = src;
+      });
+    }
+
     function showPage(id) {
+      stopAllVideos();
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(id).classList.add('active');
     }
@@ -338,7 +341,10 @@
         }
 
         if (!keyData.deviceId) {
-          await fetch(`${dbURL}/validKeys/${code}/deviceId.json`, { method: "PUT", body: JSON.stringify(currentDevice) });
+          await fetch(`${dbURL}/validKeys/${code}/deviceId.json`, {
+            method: "PUT",
+            body: JSON.stringify(currentDevice)
+          });
         }
 
         localStorage.setItem("drosakKey", code);
@@ -368,8 +374,13 @@
           return;
         }
 
-      } catch (err) { console.error("خطأ في تحميل حالة القفل:", err); }
-      if (goBtn) { goBtn.addEventListener("click", handleAccess); }
+      } catch (err) {
+        console.error("خطأ في تحميل حالة القفل:", err);
+      }
+
+      if (goBtn) {
+        goBtn.addEventListener("click", handleAccess);
+      }
     });
   </script>
 </body>
