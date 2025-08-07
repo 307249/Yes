@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="ar">
+<!DOCTYPE html><html lang="ar">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -92,190 +91,213 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container"><!-- الصفحة الرئيسية -->
+<div class="page active" id="homePage">
+  <h1>DROSAK</h1>
+  <p>﴿ وَأَنْ لَيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَى ﴾</p>
+  <div class="notice-box" id="codeNotice">🔐 أدخل الكود للمتابعة</div>
+  <input id="codeInput" type="text" placeholder="ادخل الكود هنا" class="code-input" />
+  <p class="error-msg" id="errorMsg"></p>
+  <button id="goBtn" class="main-btn">يلا بينا</button>
+  <a href="https://t.me/DROSAK3072" target="_blank">
+    <button class="main-btn" style="background-color: #4caf50;">كلمنا</button>
+  </a>
+</div>
 
-    <!-- الصفحة الرئيسية -->
-    <div class="page active" id="homePage">
-      <h1>DROSAK</h1>
-      <p>﴿ وَأَنْ لَيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَى ﴾</p>
-      <div class="notice-box" id="codeNotice">🔐 أدخل الكود للمتابعة</div>
-      <input id="codeInput" type="text" placeholder="ادخل الكود هنا" class="code-input" />
-      <p class="error-msg" id="errorMsg"></p>
-      <button id="goBtn" class="main-btn">يلا بينا</button>
-      <a href="https://t.me/DROSAK3072" target="_blank">
-        <button class="main-btn" style="background-color: #4caf50;">كلمنا</button>
-      </a>
-    </div>
+<!-- صفحة اختيار المواد -->
+<div class="page" id="subjectsPage">
+  <h1>اختر المادة</h1>
+  <button class="main-btn" onclick="showPage('arabicPage')">عربي</button>
+  <button class="main-btn" onclick="showPage('chemistryPage')">كيمياء</button>
+  <button class="main-btn" onclick="showPage('physicsPage')">فيزياء</button>
+  <button class="main-btn" onclick="showPage('biologyPage')">أحياء</button>
+  <button class="main-btn" onclick="showPage('englishPage')">ENGLISH</button>
+  <button class="main-btn" onclick="showPage('mathPage')">رياضة</button>
+  <button class="back-btn" onclick="showPage('homePage')">← رجوع</button>
+</div>
 
-    <!-- صفحة اختيار المواد -->
-    <div class="page" id="subjectsPage">
-      <h1>اختر المادة</h1>
-      <button class="main-btn" onclick="showPage('arabicPage')">عربي</button>
-      <button class="main-btn" onclick="showPage('chemistryPage')">كيمياء</button>
-      <button class="main-btn" onclick="showPage('physicsPage')">فيزياء</button>
-      <button class="main-btn" onclick="showPage('biologyPage')">أحياء</button>
-      <button class="main-btn" onclick="showPage('englishPage')">ENGLISH</button>
-      <button class="main-btn" onclick="showPage('mathPage')">رياضة</button>
-      <button class="back-btn" onclick="showPage('homePage')">← رجوع</button>
-    </div>
+<!-- صفحة العربي -->
+<div class="page" id="arabicPage">
+  <h1>مادة العربي</h1>
+  <button class="main-btn" onclick="showPage('mohamedSalahPage')">محمد صلاح</button>
+  <button class="main-btn" onclick="showPage('redaFaroukPage')">رضا الفاروق</button>
+  <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+</div>
 
-    <!-- صفحة العربي -->
-    <div class="page" id="arabicPage">
-      <h1>مادة العربي</h1>
-      <button class="main-btn" onclick="showPage('mohamedSalahPage')">محمد صلاح</button>
-      <button class="main-btn">رضا الفاروق</button>
-      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    </div>
+<!-- صفحة رضا الفاروق -->
+<div class="page" id="redaFaroukPage">
+  <h1>رضا الفاروق</h1>
+  <button class="main-btn" onclick="showPage('redaFaroukLecture1Page')">محاضرة 1</button>
+  <button class="back-btn" onclick="showPage('arabicPage')">← رجوع</button>
+</div>
 
-    <!-- صفحة الكيمياء -->
-    <div class="page" id="chemistryPage">
-      <h1>مادة الكيمياء</h1>
-      <button class="main-btn" onclick="showPage('khaledSakrPage')">خالد صقر</button>
-      <button class="main-btn" onclick="showPage('abdElgowadPage')">عبد الجواد</button>
-      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    </div>
+<!-- صفحة محاضرة 1 - رضا الفاروق -->
+<div class="page" id="redaFaroukLecture1Page">
+  <h1>محاضرة 1 – رضا الفاروق</h1>
+  <!-- يمكن إضافة المحتوى هنا -->
+  <button class="back-btn" onclick="showPage('redaFaroukPage')">← رجوع</button>
+</div>
 
-    <!-- صفحة خالد صقر -->
-    <div class="page" id="khaledSakrPage">
-      <h1>خالد صقر</h1>
-      <button class="main-btn" onclick="showPage('foundationsLecturePage')">المحاضرة التأسيسية</button>
-      <button class="back-btn" onclick="showPage('chemistryPage')">← رجوع</button>
-    </div>
+<!-- صفحة محمد صلاح -->
+<div class="page" id="mohamedSalahPage">
+  <h1>محمد صلاح</h1>
+  <button class="main-btn" onclick="showPage('mohamedSalahLecture1Page')">محاضرة 1</button>
+  <button class="back-btn" onclick="showPage('arabicPage')">← رجوع</button>
+</div>
 
-    <!-- الصفحة التأسيسية -->
-    <div class="page" id="foundationsLecturePage">
-      <h1>المحاضرة التأسيسية - خالد صقر</h1>
-      <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
-        <iframe
-          src="https://www.youtube.com/embed/ZxSLUTfXFCM?si=yythDqplUWYM8XF3"
-          style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
-        </iframe>
-      </div>
-      <button class="back-btn" onclick="showPage('khaledSakrPage')">← رجوع</button>
-    </div>
+<!-- صفحة محاضرة 1 - محمد صلاح -->
+<div class="page" id="mohamedSalahLecture1Page">
+  <h1>محاضرة 1 – محمد صلاح</h1>
+  <!-- يمكن إضافة المحتوى هنا -->
+  <button class="back-btn" onclick="showPage('mohamedSalahPage')">← رجوع</button>
+</div>
 
-    <!-- صفحة عبد الجواد -->
-    <div class="page" id="abdElgowadPage">
-      <h1>عبد الجواد</h1>
-      <button class="main-btn">شرح2026</button>
-      <button class="main-btn" onclick="showPage('membership2025Page')">عضويه 2025</button>
-      <button class="back-btn" onclick="showPage('chemistryPage')">← رجوع</button>
-    </div>
+<!-- صفحة الكيمياء -->
+<div class="page" id="chemistryPage">
+  <h1>مادة الكيمياء</h1>
+  <button class="main-btn" onclick="showPage('khaledSakrPage')">خالد صقر</button>
+  <button class="main-btn" onclick="showPage('abdElgowadPage')">عبد الجواد</button>
+  <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+</div>
 
-    <!-- صفحة عضويه 2025 -->
-    <div class="page" id="membership2025Page">
-      <h1>عضويه 2025 - عبد الجواد</h1>
-      <p>هنا ممكن تحط محتوى العضوية أو أي معلومات ترغب بها.</p>
-      <button class="main-btn" onclick="showPage('lecture1Page')">محاضرة 1</button>
-      <button class="back-btn" onclick="showPage('abdElgowadPage')">← رجوع</button>
-    </div>
+<!-- صفحة خالد صقر -->
+<div class="page" id="khaledSakrPage">
+  <h1>خالد صقر</h1>
+  <button class="main-btn" onclick="showPage('foundationsLecturePage')">المحاضرة التأسيسية</button>
+  <button class="back-btn" onclick="showPage('chemistryPage')">← رجوع</button>
+</div>
 
-    <!-- صفحة المحاضرة 1 -->
-    <div class="page" id="lecture1Page">
-      <h1>محاضرة 1 - عضويه 2025</h1>
-      <button class="main-btn" onclick="showPage('lecture1ExplainPage')">الشرح</button>
-      <button class="main-btn" onclick="showPage('lecture1TakatPage')">التكات</button>
-      <button class="main-btn" onclick="showPage('lecture1HomeworkPage')">الواجب</button>
-      <button class="back-btn" onclick="showPage('membership2025Page')">← رجوع</button>
-    </div>
-
-    <!-- صفحة الشرح - المحاضرة 1 -->
-    <div class="page" id="lecture1ExplainPage">
-      <h1>الشرح - محاضرة 1</h1>
-      <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
-        <iframe
-          src="https://archive.org/embed/lv_0_20250803010139"
-          style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
-          frameborder="0"
-          webkitallowfullscreen
-          mozallowfullscreen
-          allowfullscreen>
-        </iframe>
-      </div>
-      <button class="back-btn" onclick="showPage('lecture1Page')">← رجوع</button>
-    </div>
-
-    <!-- صفحات التكات - المحاضرة 1 -->
-    <div class="page" id="lecture1TakatPage">
-      <h1>التكات - محاضرة 1</h1>
-      <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
-        <iframe
-          src="https://archive.org/embed/lv_0__202508"
-          style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
-          frameborder="0"
-          webkitallowfullscreen
-          mozallowfullscreen
-          allowfullscreen>
-        </iframe>
-      </div>
-      <button class="back-btn" onclick="showPage('lecture1Page')">← رجوع</button>
-    </div>
-
-    <!-- صفحة الواجب - المحاضرة 1 -->
-    <div class="page" id="lecture1HomeworkPage">
-      <h1>الواجب - محاضرة 1</h1>
-      <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
-        <iframe
-          src="https://www.youtube.com/embed/oyYL1KcfNLo?si=OAQRRT6tx88cXI7d"
-          style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
-        </iframe>
-      </div>
-      <button class="back-btn" onclick="showPage('lecture1Page')">← رجوع</button>
-    </div>
-
-    <!-- مادة الفيزياء -->
-    <div class="page" id="physicsPage">
-      <h1>مادة الفيزياء</h1>
-      <button class="main-btn">عبد المعبود</button>
-      <button class="main-btn">كرلس</button>
-      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    </div>
-
-    <!-- مادة الأحياء -->
-    <div class="page" id="biologyPage">
-      <h1>مادة الأحياء</h1>
-      <button class="main-btn">الجوهري</button>
-      <button class="main-btn">جيو ماجد</button>
-      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    </div>
-
-    <!-- ENGLISH -->
-    <div class="page" id="englishPage">
-      <h1>ENGLISH</h1>
-      <button class="main-btn">وائل ميلاد</button>
-      <button class="main-btn">شريف المصري</button>
-      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    </div>
-
-    <!-- الرياضة -->
-    <div class="page" id="mathPage">
-      <h1>رياضة</h1>
-      <button class="main-btn" onclick="showPage('essamVideoPage')">أحمد عصام</button>
-      <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
-    </div>
-
-    <!-- فيديو أحمد عصام -->
-    <div class="page" id="essamVideoPage">
-      <h1>فيديو أحمد عصام</h1>
-      <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
-        <!-- يمكنك إضافة فيديو هنا -->
-      </div>
-      <button class="back-btn" onclick="showPage('mathPage')">← رجوع</button>
-    </div>
-
+<!-- الصفحة التأسيسية -->
+<div class="page" id="foundationsLecturePage">
+  <h1>المحاضرة التأسيسية – خالد صقر</h1>
+  <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
+    <iframe
+      src="https://www.youtube.com/embed/ZxSLUTfXFCM?si=yythDqplUWYM8XF3"
+      style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
   </div>
+  <button class="back-btn" onclick="showPage('khaledSakrPage')">← رجوع</button>
+</div>
 
-  <script>
+<!-- صفحة عبد الجواد -->
+<div class="page" id="abdElgowadPage">
+  <h1>عبد الجواد</h1>
+  <button class="main-btn">شرح2026</button>
+  <button class="main-btn" onclick="showPage('membership2025Page')">عضويه 2025</button>
+  <button class="back-btn" onclick="showPage('chemistryPage')">← رجوع</button>
+</div>
+
+<!-- صفحة عضويه 2025 -->
+<div class="page" id="membership2025Page">
+  <h1>عضويه 2025 – عبد الجواد</h1>
+  <p>هنا ممكن تحط محتوى العضوية أو أي معلومات ترغب بها.</p>
+  <button class="main-btn" onclick="showPage('lecture1Page')">محاضرة 1</button>
+  <button class="back-btn" onclick="showPage('abdElgowadPage')">← رجوع</button>
+</div>
+
+<!-- صفحة المحاضرة 1 -->
+<div class="page" id="lecture1Page">
+  <h1>محاضرة 1 – عضويه 2025</h1>
+  <button class="main-btn" onclick="showPage('lecture1ExplainPage')">الشرح</button>
+  <button class="main-btn" onclick="showPage('lecture1TakatPage')">التكات</button>
+  <button class="main-btn" onclick="showPage('lecture1HomeworkPage')">الواجب</button>
+  <button class="back-btn" onclick="showPage('membership2025Page')">← رجوع</button>
+</div>
+
+<!-- صفحة الشرح – المحاضرة 1 -->
+<div class="page" id="lecture1ExplainPage">
+  <h1>الشرح – محاضرة 1</h1>
+  <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
+    <iframe
+      src="https://archive.org/embed/lv_0_20250803010139"
+      style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+      frameborder="0"
+      webkitallowfullscreen
+      mozallowfullscreen
+      allowfullscreen>
+    </iframe>
+  </div>
+  <button class="back-btn" onclick="showPage('lecture1Page')">← رجوع</button>
+</div>
+
+<!-- صفحات التكات – المحاضرة 1 -->
+<div class="page" id="lecture1TakatPage">
+  <h1>التكات – محاضرة 1</h1>
+  <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
+    <iframe
+      src="https://archive.org/embed/lv_0__202508"
+      style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+      frameborder="0"
+      webkitallowfullscreen
+      mozallowfullscreen
+      allowfullscreen>
+    </iframe>
+  </div>
+  <button class="back-btn" onclick="showPage('lecture1Page')">← رجوع</button>
+</div>
+
+<!-- صفحة الواجب – المحاضرة 1 -->
+<div class="page" id="lecture1HomeworkPage">
+  <h1>الواجب – محاضرة 1</h1>
+  <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
+    <iframe
+      src="https://www.youtube.com/embed/oyYL1KcfNLo?si=OAQRRT6tx88cXI7d"
+      style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  </div>
+  <button class="back-btn" onclick="showPage('lecture1Page')">← رجوع</button>
+</div>
+
+<!-- مادة الفيزياء -->
+<div class="page" id="physicsPage">
+  <h1>مادة الفيزياء</h1>
+  <button class="main-btn">عبد المعبود</button>
+  <button class="main-btn">كرلس</button>
+  <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+</div>
+
+<!-- مادة الأحياء -->
+<div class="page" id="biologyPage">
+  <h1>مادة الأحياء</h1>
+  <button class="main-btn">الجوهري</button>
+  <button class="main-btn">جيو ماجد</button>
+  <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+</div>
+
+<!-- ENGLISH -->
+<div class="page" id="englishPage">
+  <h1>ENGLISH</h1>
+  <button class="main-btn">وائل ميلاد</button>
+  <button class="main-btn">شريف المصري</button>
+  <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+</div>
+
+<!-- الرياضة -->
+<div class="page" id="mathPage">
+  <h1>رياضة</h1>
+  <button class="main-btn" onclick="showPage('essamVideoPage')">أحمد عصام</button>
+  <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
+</div>
+
+<!-- فيديو أحمد عصام -->
+<div class="page" id="essamVideoPage">
+  <h1>فيديو أحمد عصام</h1>
+  <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
+    <!-- يمكنك إضافة فيديو هنا -->
+  </div>
+  <button class="back-btn" onclick="showPage('mathPage')">← رجوع</button>
+</div>
+
+  </div>  <script>
     const firebaseConfig = {
       databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
     };
     const dbURL = firebaseConfig.databaseURL;
 
-    // دالة لإيقاف الفيديوهات عند التنقل
     function stopAllVideos() {
       const iframes = document.querySelectorAll('.page.active iframe');
       iframes.forEach(iframe => {
@@ -382,6 +404,5 @@
         goBtn.addEventListener("click", handleAccess);
       }
     });
-  </script>
-</body>
+  </script></body>
 </html>
