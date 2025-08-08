@@ -206,20 +206,25 @@
   <button class="main-btn" onclick="showPage('lecture1HomeworkPage')">الواجب</button>
   <button class="back-btn" onclick="showPage('membership2025Page')">← رجوع</button>
 </div>
-<!-- صفحة الشرح – المحاضرة 1 -->
-<div class="page" id="lecture1ExplainPage">
-  <h1>الشرح – محاضرة 1</h1>
-  <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
-    <iframe
-      src="https://archive.org/embed/lv_0_20250803010139"
-      style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
-      frameborder="0"
-      webkitallowfullscreen
-      mozallowfullscreen
-      allowfullscreen>
+<!-- صفحة الشرح – المحاضرة 2 -->
+<div class="page" id="lecture2ExplainPage">
+  <h1>الشرح – محاضرة 2</h1>
+
+  <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+    <iframe id="dm-iframe"
+            src="https://www.dailymotion.com/embed/video/x9oekdc"
+            frameborder="0"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowfullscreen
+            style="position:absolute; top:0; left:0; width:100%; height:100%;">
     </iframe>
   </div>
-  <button class="back-btn" onclick="showPage('lecture1Page')">← رجوع</button>
+
+  <button class="back-btn" onclick="
+    var iframe = document.getElementById('dm-iframe');
+    iframe.src = iframe.src; 
+    showPage('lecture2Page');
+  ">← رجوع</button>
 </div>
 
 <!-- صفحة التكات – المحاضرة 1 -->
