@@ -269,8 +269,10 @@
 <div class="page" id="lecture2ExplainPage">
   <h1>الشرح – محاضرة 2</h1>
 
-  <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;" id="dm-player">
-    <iframe src="https://www.dailymotion.com/embed/video/x9oekdc?autoplay=1"
+  <!-- مشغل الفيديو -->
+  <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+    <iframe id="dm-iframe"
+            src="https://www.dailymotion.com/embed/video/x9oekdc"
             frameborder="0"
             allow="autoplay; fullscreen; picture-in-picture"
             allowfullscreen
@@ -278,7 +280,28 @@
     </iframe>
   </div>
 
-  <button class="back-btn" onclick="document.getElementById('dm-player').innerHTML=''; showPage('lecture2Page')">← رجوع</button>
+  <!-- أزرار التحكم -->
+  <div style="margin-top:15px; display:flex; gap:10px;">
+    <!-- زر ملء الشاشة -->
+    <button onclick="
+      const iframe = document.getElementById('dm-iframe');
+      if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+      } else if (iframe.webkitRequestFullscreen) { // Safari
+        iframe.webkitRequestFullscreen();
+      } else if (iframe.msRequestFullscreen) { // IE11
+        iframe.msRequestFullscreen();
+      }
+    ">⛶ ملء الشاشة</button>
+
+    <!-- زر الرجوع -->
+    <button class="back-btn" onclick="
+      const iframe = document.getElementById('dm-iframe');
+      iframe.src = iframe.src; 
+      showPage('lecture2Page');
+    ">← رجوع</button>
+  </div>
+</div>
 </div>
 <!-- صفحة التكات – المحاضرة 2 -->
 <div class="page" id="lecture2TakatPage">
