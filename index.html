@@ -260,10 +260,20 @@
   <button class="main-btn" onclick="showPage('lecture2HomeworkPage')">الواجب</button>
   <button class="back-btn" onclick="showPage('membership2025Page')">← رجوع</button>
 </div>
-<!-- صفحة الشرح – المحاضرة 2 -->  <div class="page" id="lecture2ExplainPage">  
-  <h1>الشرح – محاضرة 2</h1>  
-  <!-- ضع رابط الفيديو أو المحتوى هنا -->  
-  <button class="back-btn" onclick="showPage('lecture2Page')">← رجوع</button>  
+<!-- صفحة الشرح – المحاضرة 2 -->
+<div class="page" id="lecture2ExplainPage">
+  <h1>الشرح – محاضرة 2</h1>
+
+  <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;" id="dm-player">
+    <iframe src="https://www.dailymotion.com/embed/video/x9oekdc?autoplay=1"
+            frameborder="0"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowfullscreen
+            style="position:absolute; top:0; left:0; width:100%; height:100%;">
+    </iframe>
+  </div>
+
+  <button class="back-btn" onclick="document.getElementById('dm-player').innerHTML=''; showPage('lecture2Page')">← رجوع</button>
 </div>
 <!-- صفحة التكات – المحاضرة 2 -->
 <div class="page" id="lecture2TakatPage">
