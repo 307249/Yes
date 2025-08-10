@@ -184,9 +184,54 @@
 <!-- صفحة عبد الجواد -->
 <div class="page" id="abdElgowadPage">
   <h1>عبد الجواد</h1>
-  <button class="main-btn">شرح2026</button>
+  <button class="main-btn" onclick="showPage('explain2026Page')">شرح2026</button>
   <button class="main-btn" onclick="showPage('membership2025Page')">عضويه 2025</button>
   <button class="back-btn" onclick="showPage('chemistryPage')">← رجوع</button>
+</div>
+
+<!-- صفحة شرح2026 -->
+<div class="page" id="explain2026Page">
+  <h1>شرح 2026 – عبد الجواد</h1>
+  <button class="main-btn" onclick="showPage('lecture1_2026_Page')">محاضرة 1</button>
+  <button class="back-btn" onclick="showPage('abdElgowadPage')">← رجوع</button>
+</div>
+
+<!-- صفحة محاضرة 1 – شرح2026 -->
+<div class="page" id="lecture1_2026_Page">
+  <h1>محاضرة 1 – شرح 2026</h1>
+  <button class="main-btn" onclick="showPage('lecture1_2026_part1')">الشرح جزء 1</button>
+  <button class="main-btn" onclick="showPage('lecture1_2026_part2')">الشرح جزء 2</button>
+  <button class="main-btn" onclick="showPage('lecture1_2026_questions')">لو سألك</button>
+  <button class="main-btn" onclick="showPage('lecture1_2026_homework')">الواجب</button>
+  <button class="back-btn" onclick="showPage('explain2026Page')">← رجوع</button>
+</div>
+
+<!-- صفحة الشرح جزء 1 -->
+<div class="page" id="lecture1_2026_part1">
+  <h1>الشرح – جزء 1</h1>
+  <p>ضع هنا فيديو أو محتوى الشرح – جزء 1.</p>
+  <button class="back-btn" onclick="showPage('lecture1_2026_Page')">← رجوع</button>
+</div>
+
+<!-- صفحة الشرح جزء 2 -->
+<div class="page" id="lecture1_2026_part2">
+  <h1>الشرح – جزء 2</h1>
+  <p>ضع هنا فيديو أو محتوى الشرح – جزء 2.</p>
+  <button class="back-btn" onclick="showPage('lecture1_2026_Page')">← رجوع</button>
+</div>
+
+<!-- صفحة لو سألك -->
+<div class="page" id="lecture1_2026_questions">
+  <h1>لو سألك</h1>
+  <p>ضع هنا محتوى قسم "لو سألك".</p>
+  <button class="back-btn" onclick="showPage('lecture1_2026_Page')">← رجوع</button>
+</div>
+
+<!-- صفحة الواجب -->
+<div class="page" id="lecture1_2026_homework">
+  <h1>الواجب</h1>
+  <p>ضع هنا محتوى أو فيديو الواجب.</p>
+  <button class="back-btn" onclick="showPage('lecture1_2026_Page')">← رجوع</button>
 </div>
 
 <!-- صفحة عضويه 2025 -->
@@ -206,6 +251,7 @@
   <button class="main-btn" onclick="showPage('lecture1HomeworkPage')">الواجب</button>
   <button class="back-btn" onclick="showPage('membership2025Page')">← رجوع</button>
 </div>
+
 <!-- صفحة الشرح – المحاضرة 1 -->
 <div class="page" id="lecture1ExplainPage">
   <h1>الشرح – محاضرة 1</h1>
