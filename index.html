@@ -252,13 +252,67 @@
 </script>
 
 <!-- صفحة الشرح جزء 2 -->
-<div class="page" id="lecture1_2026_part2">
+<div class="page" id="lecture1_2026_part2" style="text-align:center;">
   <h1>الشرح – جزء 2</h1>
+  
+  <div style="position: relative; display: inline-block;">
+    <!-- فيديو Dailymotion -->
+    <iframe
+      id="dailymotionVideo"
+      frameborder="0"
+      width="640"
+      height="360"
+      src="https://geo.dailymotion.com/player.html?video=x9ok5pq"
+      allowfullscreen
+      allow="autoplay; fullscreen; picture-in-picture; web-share">
+    </iframe>
+
+    <!-- زر التكبير -->
+    <button 
+      id="fullscreenBtn" 
+      style="position:absolute; bottom:10px; right:10px; background:#000; color:#fff; border:none; padding:6px 10px; cursor:pointer; border-radius:4px;">
+      ⬜ تكبير
+    </button>
+  </div>
+
+  <button class="back-btn" onclick="showPage('lecture1_2026_Page')">← رجوع</button>
+</div>
+
+<script>
+  // زر التكبير
+  document.getElementById('fullscreenBtn').addEventListener('click', function() {
+    let iframe = document.getElementById('dailymotionVideo');
+    if (iframe.requestFullscreen) {
+      iframe.requestFullscreen();
+    } else if (iframe.mozRequestFullScreen) { // Firefox
+      iframe.mozRequestFullScreen();
+    } else if (iframe.webkitRequestFullscreen) { // Chrome, Safari
+      iframe.webkitRequestFullscreen();
+    } else if (iframe.msRequestFullscreen) { // IE/Edge
+      iframe.msRequestFullscreen();
+    }
+  });
+
+  // إيقاف الفيديو عند الخروج من الصفحة
+  function stopDailymotionVideo() {
+    let iframe = document.getElementById('dailymotionVideo');
+    iframe.contentWindow.postMessage('{"command":"pause"}', '*');
+  }
+
+  // تشغيل عند الانتقال بين الصفحات
+  document.querySelectorAll('.back-btn').forEach(btn => {
+    btn.addEventListener('click', stopDailymotionVideo);
+  });
+</script>
+
+<!-- صفحة لو سألك -->
+<div class="page" id="lecture1_2026_questions">
+  <h1>لو سألك</h1>
 
   <div style="position: relative; max-width: 100%; text-align: right;">
     <iframe 
-      id="lecture2Video" 
-      src="https://www.dailymotion.com/embed/video/x9ok5pq" 
+      id="questionsVideo" 
+      src="https://www.dailymotion.com/embed/video/x9okfro" 
       width="100%" 
       height="315" 
       frameborder="0" 
@@ -267,18 +321,19 @@
     </iframe>
     <button 
       style="margin-top: 5px; padding: 5px 10px; font-size: 14px; cursor: pointer;" 
-      onclick="fullscreenVideo('lecture2Video')">
+      onclick="fullscreenVideo('questionsVideo')">
       ⛶ تكبير
     </button>
   </div>
 
-  <button class="back-btn" onclick="showPage('lecture1_2026_Page'); stopLecture2Video();">← رجوع</button>
+  <p>ضع هنا محتوى قسم "لو سألك".</p>
+  <button class="back-btn" onclick="showPage('lecture1_2026_Page'); stopQuestionsVideo();">← رجوع</button>
 </div>
 
 <script>
-  // دالة إيقاف الفيديو
-  function stopLecture2Video() {
-    const iframe = document.getElementById('lecture2Video');
+  // دالة إيقاف الفيديو لصفحة لو سألك
+  function stopQuestionsVideo() {
+    const iframe = document.getElementById('questionsVideo');
     iframe.src = iframe.src; // إعادة تحميل الرابط لإيقاف التشغيل
   }
 
@@ -296,13 +351,6 @@
     }
   }
 </script>
-
-<!-- صفحة لو سألك -->
-<div class="page" id="lecture1_2026_questions">
-  <h1>لو سألك</h1>
-  <p>ضع هنا محتوى قسم "لو سألك".</p>
-  <button class="back-btn" onclick="showPage('lecture1_2026_Page')">← رجوع</button>
-</div>
 
 <!-- صفحة الواجب -->
 <div class="page" id="lecture1_2026_homework">
