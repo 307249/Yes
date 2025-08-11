@@ -252,56 +252,49 @@
 </script>
 
 <!-- صفحة الشرح جزء 2 -->
-<div class="page" id="lecture1_2026_part2" style="text-align:center;">
+<div class="page" id="lecture1_2026_part2">
   <h1>الشرح – جزء 2</h1>
-  
-  <div style="position: relative; width: 100%; max-width: 800px; margin: auto; padding-top: 56.25%;"> 
-    <!-- فيديو Dailymotion -->
-    <iframe
-      id="dailymotionVideo"
-      frameborder="0"
-      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-      src="https://geo.dailymotion.com/player.html?video=x9ok5pq"
-      allowfullscreen
-      allow="autoplay; fullscreen; picture-in-picture; web-share">
-    </iframe>
 
-    <!-- زر التكبير -->
+  <div style="position: relative; max-width: 100%; text-align: right;">
+    <iframe 
+      id="lecture2Video" 
+      src="https://www.dailymotion.com/embed/video/x9ok5pq" 
+      width="100%" 
+      height="315" 
+      frameborder="0" 
+      allow="autoplay; fullscreen" 
+      allowfullscreen>
+    </iframe>
     <button 
-      id="fullscreenBtn" 
-      style="position:absolute; bottom:10px; right:10px; background:#000; color:#fff; border:none; padding:6px 10px; cursor:pointer; border-radius:4px; z-index: 10;">
-      ⬜ تكبير
+      style="margin-top: 5px; padding: 5px 10px; font-size: 14px; cursor: pointer;" 
+      onclick="fullscreenVideo('lecture2Video')">
+      ⛶ تكبير
     </button>
   </div>
 
-  <button class="back-btn" onclick="showPage('lecture1_2026_Page')">← رجوع</button>
+  <button class="back-btn" onclick="showPage('lecture1_2026_Page'); stopLecture2Video();">← رجوع</button>
 </div>
 
 <script>
-  // زر التكبير
-  document.getElementById('fullscreenBtn').addEventListener('click', function() {
-    let iframe = document.getElementById('dailymotionVideo');
-    if (iframe.requestFullscreen) {
-      iframe.requestFullscreen();
-    } else if (iframe.mozRequestFullScreen) {
-      iframe.mozRequestFullScreen();
-    } else if (iframe.webkitRequestFullscreen) {
-      iframe.webkitRequestFullscreen();
-    } else if (iframe.msRequestFullscreen) {
-      iframe.msRequestFullscreen();
-    }
-  });
-
-  // إيقاف الفيديو عند الخروج من الصفحة
-  function stopDailymotionVideo() {
-    let iframe = document.getElementById('dailymotionVideo');
-    iframe.contentWindow.postMessage('{"command":"pause"}', '*');
+  // دالة إيقاف الفيديو
+  function stopLecture2Video() {
+    const iframe = document.getElementById('lecture2Video');
+    iframe.src = iframe.src; // إعادة تحميل الرابط لإيقاف التشغيل
   }
 
-  // إيقاف عند الضغط على أي زر رجوع
-  document.querySelectorAll('.back-btn').forEach(btn => {
-    btn.addEventListener('click', stopDailymotionVideo);
-  });
+  // دالة تكبير الفيديو (ملء الشاشة)
+  function fullscreenVideo(id) {
+    const iframe = document.getElementById(id);
+    if (iframe.requestFullscreen) {
+      iframe.requestFullscreen();
+    } else if (iframe.mozRequestFullScreen) { // Firefox
+      iframe.mozRequestFullScreen();
+    } else if (iframe.webkitRequestFullscreen) { // Chrome, Safari, Opera
+      iframe.webkitRequestFullscreen();
+    } else if (iframe.msRequestFullscreen) { // IE/Edge
+      iframe.msRequestFullscreen();
+    }
+  }
 </script>
 
 <!-- صفحة لو سألك -->
