@@ -561,4 +561,125 @@
 <!-- فيديو أحمد عصام -->
 <div class="page" id="essamVideoPage">
   <h1>فيديو أحمد عصام</h1>
-  <div style="position:relative;padding-bottom:56.25%
+  <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
+    <!-- يمكنك إضافة فيديو هنا -->
+  </div>
+  <button class="back-btn" onclick="showPage('mathPage')">← رجوع</button>
+</div>
+
+  </div>  
+  <script>
+    const firebaseConfig = {
+      databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
+    };
+    const dbURL = firebaseConfig.databaseURL;
+
+    function stopAllVideos() {
+      const iframes = document.querySelectorAll('.page.active iframe');
+      iframes.forEach(iframe => {
+        const src = iframe.src;
+        iframe.src = '';
+        iframe.src = src;
+      });
+    }
+
+    function showPage(id) {
+      stopAllVideos();
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function getDeviceId() {
+      let deviceId = localStorage.getItem("deviceId");
+      if (!deviceId) {
+        deviceId = "device-" + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem("deviceId", deviceId);
+      }
+      return deviceId;
+    }
+
+    async function handleAccess() {
+      const codeInput = document.getElementById("codeInput");
+      const code = codeInput.value.trim();
+      const errorBox = document.getElementById("errorMsg");
+      errorBox.textContent = "";
+
+      try {
+        const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
+        const lockEnabled = await res.json();
+
+        if (!lockEnabled) {
+          showPage("subjectsPage");
+          return;
+        }
+
+        if (!code) {
+          errorBox.textContent = "⚠️ من فضلك أدخل الكود";
+          return;
+        }
+
+        const keySnap = await fetch(`${dbURL}/validKeys/${code}.json`);
+        const keyData = await keySnap.json();
+        const now = Date.now();
+        const currentDevice = getDeviceId();
+
+        if (!keyData) {
+          errorBox.textContent = "❌ الكود غير صحيح، تواصل معنا: @AL_MAALA";
+          return;
+        }
+
+        if (now >= keyData.expiresAt) {
+          errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
+          return;
+        }
+
+        if (keyData.deviceId && keyData.deviceId !== currentDevice) {
+          errorBox.textContent = "❌ هذا الكود مرتبط بجهاز آخر بالفعل.";
+          return;
+        }
+
+        if (!keyData.deviceId) {
+          await fetch(`${dbURL}/validKeys/${code}/deviceId.json`, {
+            method: "PUT",
+            body: JSON.stringify(currentDevice)
+          });
+        }
+
+        localStorage.setItem("drosakKey", code);
+        showPage("subjectsPage");
+
+      } catch (err) {
+        console.error(err);
+        errorBox.textContent = "❌ حدث خطأ أثناء الاتصال بقاعدة البيانات";
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", async () => {
+      const codeInput = document.getElementById("codeInput");
+      const notice = document.getElementById("codeNotice");
+      const errorBox = document.getElementById("errorMsg");
+      const goBtn = document.getElementById("goBtn");
+
+      try {
+        const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
+        const lockEnabled = await res.json();
+
+        if (!lockEnabled) {
+          codeInput.style.display = "none";
+          notice.style.display = "none";
+          errorBox.style.display = "none";
+          showPage("subjectsPage");
+          return;
+        }
+
+      } catch (err) {
+        console.error("خطأ في تحميل حالة القفل:", err);
+      }
+
+      if (goBtn) {
+        goBtn.addEventListener("click", handleAccess);
+      }
+    });
+  </script>
+</body>
+</html>
