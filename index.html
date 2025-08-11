@@ -252,11 +252,58 @@
 </script>
 
 <!-- صفحة الشرح جزء 2 -->
-<div class="page" id="lecture1_2026_part2">
+<div class="page" id="lecture1_2026_part2" style="text-align:center;">
   <h1>الشرح – جزء 2</h1>
-  <p>ضع هنا فيديو أو محتوى الشرح – جزء 2.</p>
+  
+  <div style="position: relative; display: inline-block;">
+    <!-- فيديو Dailymotion -->
+    <iframe
+      id="dailymotionVideo"
+      frameborder="0"
+      width="640"
+      height="360"
+      src="https://geo.dailymotion.com/player.html?video=x9ok5pq"
+      allowfullscreen
+      allow="autoplay; fullscreen; picture-in-picture; web-share">
+    </iframe>
+
+    <!-- زر التكبير -->
+    <button 
+      id="fullscreenBtn" 
+      style="position:absolute; bottom:10px; right:10px; background:#000; color:#fff; border:none; padding:6px 10px; cursor:pointer; border-radius:4px;">
+      ⬜ تكبير
+    </button>
+  </div>
+
   <button class="back-btn" onclick="showPage('lecture1_2026_Page')">← رجوع</button>
 </div>
+
+<script>
+  // زر التكبير
+  document.getElementById('fullscreenBtn').addEventListener('click', function() {
+    let iframe = document.getElementById('dailymotionVideo');
+    if (iframe.requestFullscreen) {
+      iframe.requestFullscreen();
+    } else if (iframe.mozRequestFullScreen) { // Firefox
+      iframe.mozRequestFullScreen();
+    } else if (iframe.webkitRequestFullscreen) { // Chrome, Safari
+      iframe.webkitRequestFullscreen();
+    } else if (iframe.msRequestFullscreen) { // IE/Edge
+      iframe.msRequestFullscreen();
+    }
+  });
+
+  // إيقاف الفيديو عند الخروج من الصفحة
+  function stopDailymotionVideo() {
+    let iframe = document.getElementById('dailymotionVideo');
+    iframe.contentWindow.postMessage('{"command":"pause"}', '*');
+  }
+
+  // تشغيل عند الانتقال بين الصفحات
+  document.querySelectorAll('.back-btn').forEach(btn => {
+    btn.addEventListener('click', stopDailymotionVideo);
+  });
+</script>
 
 <!-- صفحة لو سألك -->
 <div class="page" id="lecture1_2026_questions">
@@ -588,4 +635,4 @@
     });
   </script>
 </body>
-  </html>
+</html>
