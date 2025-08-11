@@ -306,50 +306,57 @@
 </script>
 
 <!-- صفحة لو سألك -->
-<div class="page" id="lecture1_2026_questions">
+<div class="page" id="lecture1_2026_questions" style="text-align:center;">
   <h1>لو سألك</h1>
-
-  <div style="position: relative; max-width: 100%; text-align: right;">
-    <iframe 
-      id="questionsVideo" 
-      src="https://www.dailymotion.com/embed/video/x9okfro" 
-      width="100%" 
-      height="315" 
-      frameborder="0" 
-      allow="autoplay; fullscreen" 
-      allowfullscreen>
+  
+  <div style="position: relative; display: inline-block;">
+    <!-- فيديو Dailymotion -->
+    <iframe
+      id="dailymotionVideo_questions"
+      frameborder="0"
+      width="640"
+      height="360"
+      src="https://geo.dailymotion.com/player.html?video=x9ok5pq"
+      allowfullscreen
+      allow="autoplay; fullscreen; picture-in-picture; web-share">
     </iframe>
+
+    <!-- زر التكبير -->
     <button 
-      style="margin-top: 5px; padding: 5px 10px; font-size: 14px; cursor: pointer;" 
-      onclick="fullscreenVideo('questionsVideo')">
-      ⛶ تكبير
+      id="fullscreenBtn_questions" 
+      style="position:absolute; bottom:10px; right:10px; background:#000; color:#fff; border:none; padding:6px 10px; cursor:pointer; border-radius:4px;">
+      ⬜ تكبير
     </button>
   </div>
 
-  <p>ضع هنا محتوى قسم "لو سألك".</p>
-  <button class="back-btn" onclick="showPage('lecture1_2026_Page'); stopQuestionsVideo();">← رجوع</button>
+  <button class="back-btn" onclick="showPage('lecture1_2026_Page')">← رجوع</button>
 </div>
 
 <script>
-  // دالة إيقاف الفيديو لصفحة لو سألك
-  function stopQuestionsVideo() {
-    const iframe = document.getElementById('questionsVideo');
-    iframe.src = iframe.src; // إعادة تحميل الرابط لإيقاف التشغيل
-  }
-
-  // دالة تكبير الفيديو (ملء الشاشة)
-  function fullscreenVideo(id) {
-    const iframe = document.getElementById(id);
+  // زر التكبير لفيديو "لو سألك"
+  document.getElementById('fullscreenBtn_questions').addEventListener('click', function() {
+    let iframe = document.getElementById('dailymotionVideo_questions');
     if (iframe.requestFullscreen) {
       iframe.requestFullscreen();
     } else if (iframe.mozRequestFullScreen) { // Firefox
       iframe.mozRequestFullScreen();
-    } else if (iframe.webkitRequestFullscreen) { // Chrome, Safari, Opera
+    } else if (iframe.webkitRequestFullscreen) { // Chrome, Safari
       iframe.webkitRequestFullscreen();
     } else if (iframe.msRequestFullscreen) { // IE/Edge
       iframe.msRequestFullscreen();
     }
+  });
+
+  // إيقاف الفيديو عند الرجوع
+  function stopDailymotionVideo_questions() {
+    let iframe = document.getElementById('dailymotionVideo_questions');
+    iframe.contentWindow.postMessage('{"command":"pause"}', '*');
   }
+
+  // ربط زر الرجوع بإيقاف الفيديو
+  document.querySelectorAll('#lecture1_2026_questions .back-btn').forEach(btn => {
+    btn.addEventListener('click', stopDailymotionVideo_questions);
+  });
 </script>
 
 <!-- صفحة الواجب -->
@@ -554,125 +561,4 @@
 <!-- فيديو أحمد عصام -->
 <div class="page" id="essamVideoPage">
   <h1>فيديو أحمد عصام</h1>
-  <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;">
-    <!-- يمكنك إضافة فيديو هنا -->
-  </div>
-  <button class="back-btn" onclick="showPage('mathPage')">← رجوع</button>
-</div>
-
-  </div>  
-  <script>
-    const firebaseConfig = {
-      databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
-    };
-    const dbURL = firebaseConfig.databaseURL;
-
-    function stopAllVideos() {
-      const iframes = document.querySelectorAll('.page.active iframe');
-      iframes.forEach(iframe => {
-        const src = iframe.src;
-        iframe.src = '';
-        iframe.src = src;
-      });
-    }
-
-    function showPage(id) {
-      stopAllVideos();
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
-
-    function getDeviceId() {
-      let deviceId = localStorage.getItem("deviceId");
-      if (!deviceId) {
-        deviceId = "device-" + Math.random().toString(36).substr(2, 9);
-        localStorage.setItem("deviceId", deviceId);
-      }
-      return deviceId;
-    }
-
-    async function handleAccess() {
-      const codeInput = document.getElementById("codeInput");
-      const code = codeInput.value.trim();
-      const errorBox = document.getElementById("errorMsg");
-      errorBox.textContent = "";
-
-      try {
-        const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
-        const lockEnabled = await res.json();
-
-        if (!lockEnabled) {
-          showPage("subjectsPage");
-          return;
-        }
-
-        if (!code) {
-          errorBox.textContent = "⚠️ من فضلك أدخل الكود";
-          return;
-        }
-
-        const keySnap = await fetch(`${dbURL}/validKeys/${code}.json`);
-        const keyData = await keySnap.json();
-        const now = Date.now();
-        const currentDevice = getDeviceId();
-
-        if (!keyData) {
-          errorBox.textContent = "❌ الكود غير صحيح، تواصل معنا: @AL_MAALA";
-          return;
-        }
-
-        if (now >= keyData.expiresAt) {
-          errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
-          return;
-        }
-
-        if (keyData.deviceId && keyData.deviceId !== currentDevice) {
-          errorBox.textContent = "❌ هذا الكود مرتبط بجهاز آخر بالفعل.";
-          return;
-        }
-
-        if (!keyData.deviceId) {
-          await fetch(`${dbURL}/validKeys/${code}/deviceId.json`, {
-            method: "PUT",
-            body: JSON.stringify(currentDevice)
-          });
-        }
-
-        localStorage.setItem("drosakKey", code);
-        showPage("subjectsPage");
-
-      } catch (err) {
-        console.error(err);
-        errorBox.textContent = "❌ حدث خطأ أثناء الاتصال بقاعدة البيانات";
-      }
-    }
-
-    window.addEventListener("DOMContentLoaded", async () => {
-      const codeInput = document.getElementById("codeInput");
-      const notice = document.getElementById("codeNotice");
-      const errorBox = document.getElementById("errorMsg");
-      const goBtn = document.getElementById("goBtn");
-
-      try {
-        const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
-        const lockEnabled = await res.json();
-
-        if (!lockEnabled) {
-          codeInput.style.display = "none";
-          notice.style.display = "none";
-          errorBox.style.display = "none";
-          showPage("subjectsPage");
-          return;
-        }
-
-      } catch (err) {
-        console.error("خطأ في تحميل حالة القفل:", err);
-      }
-
-      if (goBtn) {
-        goBtn.addEventListener("click", handleAccess);
-      }
-    });
-  </script>
-</body>
-</html>
+  <div style="position:relative;padding-bottom:56.25%
