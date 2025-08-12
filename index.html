@@ -137,7 +137,7 @@
   <!-- يمكن إضافة المحتوى هنا -->
   <button class="back-btn" onclick="showPage('redaFaroukPage')">← رجوع</button>
 </div>
-
+<!-- ======================================= -->
 <!-- صفحة محمد صلاح -->
 <div class="page" id="mohamedSalahPage">
   <h1>محمد صلاح</h1>
@@ -151,7 +151,7 @@
   <!-- يمكن إضافة المحتوى هنا -->
   <button class="back-btn" onclick="showPage('mohamedSalahPage')">← رجوع</button>
 </div>
-
+<!-- ================================================================================================================================================================================= -->
 <!-- صفحة الكيمياء -->
 <div class="page" id="chemistryPage">
   <h1>مادة الكيمياء</h1>
@@ -180,7 +180,7 @@
   </div>
   <button class="back-btn" onclick="showPage('khaledSakrPage')">← رجوع</button>
 </div>
-
+<!-- ======================================= -->
 <!-- صفحة عبد الجواد -->
 <div class="page" id="abdElgowadPage">
   <h1>عبد الجواد</h1>
@@ -343,7 +343,7 @@ v>
   
   <button class="back-btn" onclick="showPage('lecture1_2026_Page')">← رجوع</button>
 </div>
-
+<!-- ======================================= -->
 <!-- صفحة عضويه 2025 -->
 <div class="page" id="membership2025Page">
   <h1>عضويه 2025 – عبد الجواد</h1>
@@ -504,6 +504,7 @@ v>
     showPage('lecture2Page');
   ">← رجوع</button>
 </div>
+<!-- ================================================================================================================================================================================= -->
 
 <!-- مادة الفيزياء -->
 <div class="page" id="physicsPage">
@@ -512,15 +513,72 @@ v>
   <button class="main-btn">كرلس</button>
   <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
 </div>
+<!-- ================================================================================================================================================================================= -->
+
 
 <!-- مادة الأحياء -->
 <div class="page" id="biologyPage">
   <h1>مادة الأحياء</h1>
-  <button class="main-btn">الجوهري</button>
-  <button class="main-btn">جيو ماجد</button>
+  <button class="main-btn" onclick="showPage('ahmedGoharyPage')">أحمد الجوهري</button>
+  <button class="main-btn" onclick="showPage('mohamedAymanPage')">محمد أيمن</button>
   <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
 </div>
 
+<!-- صفحة أحمد الجوهري -->
+<div class="page" id="ahmedGoharyPage">
+  <h1>أحمد الجوهري</h1>
+  <button class="main-btn" onclick="showPage('ahmedGoharyLecture1Page')">محاضرة 1</button>
+  <button class="back-btn" onclick="showPage('biologyPage')">← رجوع</button>
+</div>
+
+<!-- صفحة محاضرة 1 - أحمد الجوهري -->
+<div class="page" id="ahmedGoharyLecture1Page">
+  <h1>محاضرة 1 – أحمد الجوهري</h1>
+
+  <!-- الأزرار الثلاثة -->
+  <button class="main-btn" onclick="showPage('ahmedGoharySupportPage')">شرح الدعامة</button>
+  <button class="main-btn" onclick="showPage('ahmedGoharyStudyPage')">المذاكرة</button>
+  <button class="main-btn" onclick="showPage('ahmedGoharyHomeworkPage')">الواجب من كتاب الجوهري</button>
+
+  <button class="back-btn" onclick="showPage('ahmedGoharyPage')">← رجوع</button>
+</div>
+
+<!-- صفحة شرح الدعامة -->
+<div class="page" id="ahmedGoharySupportPage">
+  <h1>شرح الدعامة – محاضرة 1</h1>
+  <!-- ضع المحتوى هنا -->
+  <button class="back-btn" onclick="showPage('ahmedGoharyLecture1Page')">← رجوع</button>
+</div>
+
+<!-- صفحة المذاكرة -->
+<div class="page" id="ahmedGoharyStudyPage">
+  <h1>المذاكرة – محاضرة 1</h1>
+  <!-- ضع المحتوى هنا -->
+  <button class="back-btn" onclick="showPage('ahmedGoharyLecture1Page')">← رجوع</button>
+</div>
+
+<!-- صفحة الواجب من كتاب الجوهري -->
+<div class="page" id="ahmedGoharyHomeworkPage">
+  <h1>الواجب من كتاب الجوهري – محاضرة 1</h1>
+  <!-- ضع المحتوى هنا -->
+  <button class="back-btn" onclick="showPage('ahmedGoharyLecture1Page')">← رجوع</button>
+</div>
+
+<!-- ======================================= -->
+<!-- صفحة محمد أيمن -->
+<div class="page" id="mohamedAymanPage">
+  <h1>محمد أيمن</h1>
+  <button class="main-btn" onclick="showPage('mohamedAymanLecture1Page')">محاضرة 1</button>
+  <button class="back-btn" onclick="showPage('biologyPage')">← رجوع</button>
+</div>
+
+<!-- صفحة محاضرة 1 - محمد أيمن -->
+<div class="page" id="mohamedAymanLecture1Page">
+  <h1>محاضرة 1 – محمد أيمن</h1>
+  <!-- محتوى المحاضرة هنا -->
+  <button class="back-btn" onclick="showPage('mohamedAymanPage')">← رجوع</button>
+</div>
+<!-- ================================================================================================================================================================================= -->
 <!-- ENGLISH -->
 <div class="page" id="englishPage">
   <h1>ENGLISH</h1>
@@ -528,14 +586,14 @@ v>
   <button class="main-btn">شريف المصري</button>
   <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
 </div>
-
+<!-- ================================================================================================================================================================================= -->
 <!-- الرياضة -->
 <div class="page" id="mathPage">
   <h1>رياضة</h1>
   <button class="main-btn" onclick="showPage('essamVideoPage')">أحمد عصام</button>
   <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
 </div>
-
+<!-- ================================================================================================================================================================================= -->
 <!-- فيديو أحمد عصام -->
 <div class="page" id="essamVideoPage">
   <h1>فيديو أحمد عصام</h1>
@@ -660,4 +718,4 @@ v>
     });
   </script>
 </body>
-</html>
+  </html>
