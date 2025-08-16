@@ -701,12 +701,12 @@ function showPage(id) {
   document.querySelectorAll(".page").forEach(p => {
     p.style.display = "none";
 
-    // وقف كل الفيديوهات في الصفحة دي
-    p.querySelectorAll("video").forEach(v => { 
-      v.pause();          // يوقف الفيديو
-      v.currentTime = 0;  // يرجع لأول ثانية
-      v.removeAttribute("src"); // يشيل المصدر
-      v.load();           // يعمل إعادة تحميل → كده الفيديو يتقفل خالص
+    // لو الصفحة فيها iframe (فيديو embed)
+    p.querySelectorAll("iframe").forEach(f => {
+      // نعمل إعادة تحميل للـ iframe → الفيديو يقفل
+      let src = f.src;
+      f.src = "";
+      f.src = src;
     });
   });
 
