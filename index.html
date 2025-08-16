@@ -695,5 +695,15 @@
       }
     });
   </script>
+  
+  <script>
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => {
+    p.style.display = "none";
+    p.querySelectorAll("video").forEach(v => { v.pause(); v.currentTime = 0; });
+  });
+  document.getElementById(id).style.display = "block";
+}
+  </script>
 </body>
 </html>
