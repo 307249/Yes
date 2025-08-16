@@ -293,17 +293,47 @@
 <div class="page" id="lecture2_part1_2026_Page">
   <h1>شرح جزء 1 – محاضرة 2</h1>
 
-  <!-- تضمين فيديو بنسبة 16:9 بنفس إعدادات الصفحة التي تعمل -->
-  <div style="position: relative; width: 100%; padding-bottom: 56.25%;">
+  <!-- تضمين فيديو متجاوب -->
+  <div class="video-container">
     <iframe
       src="https://iframe.mediadelivery.net/play/481227/6e206792-a866-4d75-b7ac-a7818784291a"
-      frameborder="0" allowfullscreen
-      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+      frameborder="0" allowfullscreen>
     </iframe>
   </div>
 
   <button class="back-btn" onclick="showPage('lecture2_2026_Page')">← رجوع</button>
 </div>
+
+<style>
+/* الحاوية الأساسية للفيديو */
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* نسبة 16:9 */
+  height: 0;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* لو الشاشة موبايل (عرض صغير) خليه يملى الشاشة كلها */
+@media (max-width: 768px) {
+  .video-container {
+    height: 100vh;   /* يملى ارتفاع الشاشة */
+    padding-bottom: 0; /* نشيل النسبة */
+  }
+
+  .video-container iframe {
+    height: 100vh;  /* يخلي الفيديو fullscreen */
+  }
+}
+</style>
 
 <!-- صفحة شرح جزء 2 -->
 <div class="page" id="lecture2_part2_2026_Page">
