@@ -374,12 +374,22 @@
   <button class="back-btn" onclick="showPage('ahmedGoharyPage')">← رجوع</button>    
 </div>    
 
-<!-- صفحة الشرح -->    
-<div class="page" id="lecture1Part2ExplanationPage">    
-  <h1>الشرح – محاضرة 1 الجزء 2</h1>    
-  <p>ضع هنا فيديو أو محتوى الشرح.</p>    
-  <button class="back-btn" onclick="showPage('ahmedGoharyLecture1Part2Page')">← رجوع</button>    
-</div>    
+<!-- صفحة الشرح -->
+<div class="page" id="lecture1Part2ExplanationPage">
+  <h1>الشرح – محاضرة 1 الجزء 2</h1>
+  <!-- بداية تضمين الفيديو بنسبة العرض 16:9 -->
+  <div style="position: relative; width: 100%; padding-bottom: 56.25%;">
+    <iframe
+      src="https://iframe.mediadelivery.net/play/481553/52450c45-4fbd-4c38-823b-1d2189b6f6b2"
+      frameborder="0" allowfullscreen
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+    </iframe>
+  </div>
+  <!-- نهاية تضمين الفيديو -->
+  <button class="back-btn" onclick="showPage('ahmedGoharyLecture1Part2Page')">
+    ← رجوع
+  </button>
+</div>
 
 <!-- صفحة المذاكرة -->
 <div class="page" id="lecture1Part2StudyPage">
