@@ -695,21 +695,5 @@
       }
     });
   </script>
-
-<script>
-function showPage(pageId) {
-  // نخفي كل الصفحات
-  var pages = document.querySelectorAll(".page");
-  pages.forEach(function(page) {
-    page.style.display = "none";
-  });
-
-  // نعرض الصفحة المطلوبة
-  var targetPage = document.getElementById(pageId);
-  if (targetPage) {
-    targetPage.style.display = "block";
-  }
-}
-</script>
 </body>
 </html>
