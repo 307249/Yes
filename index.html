@@ -698,20 +698,36 @@
   
   <script>
 function showPage(id) {
+  // نخفي كل الصفحات
   document.querySelectorAll(".page").forEach(p => {
     p.style.display = "none";
 
-    // لو الصفحة فيها iframe (فيديو embed)
+    // لو فيها iframe (embedded videos)
     p.querySelectorAll("iframe").forEach(f => {
-      // نعمل إعادة تحميل للـ iframe → الفيديو يقفل
-      let src = f.src;
-      f.src = "";
-      f.src = src;
+      // نخزن الرابط الأصلي في data-src أول مرة
+      if (!f.dataset.src) {
+        f.dataset.src = f.src;
+      }
+      f.src = ""; // نفرّغ الفيديو → يتقفل
+    });
+
+    // لو فيها video عادي
+    p.querySelectorAll("video").forEach(v => {
+      v.pause();
+      v.currentTime = 0;
     });
   });
 
-  // إظهار الصفحة المطلوبة
-  document.getElementById(id).style.display = "block";
+  // نظهر الصفحة المطلوبة
+  let target = document.getElementById(id);
+  if (target) {
+    target.style.display = "block";
+
+    // نرجع الفيديوهات اللي فيها
+    target.querySelectorAll("iframe").forEach(f => {
+      if (f.dataset.src) f.src = f.dataset.src;
+    });
+  }
 }
   </script>
 </body>
