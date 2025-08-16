@@ -730,5 +730,41 @@ function showPage(id) {
   }
 }
   </script>
+
+
+  <style>
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* نسبة 16:9 */
+  height: 0;
+  overflow: hidden;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+</style>
+
+<script>
+function fixYoutubeEmbeds() {
+  document.querySelectorAll("iframe").forEach(f => {
+    // نتأكد إن اللينك يوتيوب ومش متلفف بالفعل
+    if (f.src.includes("youtube.com") && !f.parentElement.classList.contains("video-container")) {
+      let wrapper = document.createElement("div");
+      wrapper.className = "video-container";
+      f.parentNode.insertBefore(wrapper, f);
+      wrapper.appendChild(f);
+    }
+  });
+}
+
+// نشغلها أول ما الصفحة تفتح
+document.addEventListener("DOMContentLoaded", fixYoutubeEmbeds);
+</script>
 </body>
 </html>
