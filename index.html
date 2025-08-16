@@ -385,13 +385,11 @@
 <div class="page" id="lecture1Part2StudyPage">
   <h1>المذاكرة – محاضرة 1 الجزء 2</h1>
 
-  <!-- تضمين الفيديو -->
-  <div class="video-container" style="text-align: center; margin: 20px 0;">
+  <!-- فيديو بنسبة 16:9 -->
+  <div class="video-container">
     <iframe 
-      src="https://iframe.mediadelivery.net/play/481553/9024f04d-eeb0-411a-9866-ea21dabd4035" 
-      width="640" 
-      height="360" 
-      frameborder="0" 
+      src="https://iframe.mediadelivery.net/play/481553/9024f04d-eeb0-411a-9866-ea21dabd4035"
+      frameborder="0"
       allowfullscreen>
     </iframe>
   </div>
@@ -399,6 +397,22 @@
   <p>ضع هنا محتوى المذاكرة.</p>
   <button class="back-btn" onclick="showPage('ahmedGoharyLecture1Part2Page')">← رجوع</button>
 </div>
+
+<style>
+  .video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 النسبة */
+    height: 0;
+  }
+  .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>
 
 <!-- صفحة الواجب -->    
 <div class="page" id="lecture1Part2HomeworkPage">    
