@@ -700,8 +700,17 @@
 function showPage(id) {
   document.querySelectorAll(".page").forEach(p => {
     p.style.display = "none";
-    p.querySelectorAll("video").forEach(v => { v.pause(); v.currentTime = 0; });
+
+    // وقف كل الفيديوهات في الصفحة دي
+    p.querySelectorAll("video").forEach(v => { 
+      v.pause();          // يوقف الفيديو
+      v.currentTime = 0;  // يرجع لأول ثانية
+      v.removeAttribute("src"); // يشيل المصدر
+      v.load();           // يعمل إعادة تحميل → كده الفيديو يتقفل خالص
+    });
   });
+
+  // إظهار الصفحة المطلوبة
   document.getElementById(id).style.display = "block";
 }
   </script>
