@@ -276,7 +276,6 @@
 </div>
 
 
-
 <!-- صفحة محاضرة 2 - عبد الجواد -->
 <div class="page" id="lecture2_2026_Page">
   <h1>محاضرة 2 – عبد الجواد</h1>
@@ -285,6 +284,8 @@
   <button class="main-btn" onclick="showPage('lecture2_part2_2026_Page')">شرح جزء 2</button>
   <button class="main-btn" onclick="showPage('lecture2_question_2026_Page')">لو سألك</button>
   <button class="main-btn" onclick="showPage('lecture2_homework_2026_Page')">الواجب</button>
+  <!-- الزر الجديد -->
+  <button class="main-btn" onclick="showPage('lecture2_summary_2026_Page')">ملخص محاضره 2</button>
 
   <button class="back-btn" onclick="showPage('explain2026Page')">← رجوع</button>
 </div>
@@ -367,7 +368,12 @@
 </div>
 
 
-
+<!-- صفحة ملخص محاضرة 1 -->
+<div class="page" id="lecture2_summary_2026_Page" style="display: none;">
+  <h1>ملخص محاضرة 2</h1>
+  <p>هنا تكتب الملخص بتاع المحاضرة...</p>
+  <button class="back-btn" onclick="showPage('lecture2_2026_Page')">← رجوع</button>
+</div>
 
 <!-- ======================================= -->
 <!-- ================================================================================================================================================================================= -->
@@ -678,5 +684,21 @@
       }
     });
   </script>
+
+<script>
+function showPage(pageId) {
+  // نخفي كل الصفحات
+  var pages = document.querySelectorAll(".page");
+  pages.forEach(function(page) {
+    page.style.display = "none";
+  });
+
+  // نعرض الصفحة المطلوبة
+  var targetPage = document.getElementById(pageId);
+  if (targetPage) {
+    targetPage.style.display = "block";
+  }
+}
+</script>
 </body>
 </html>
