@@ -474,50 +474,50 @@
 <!-- ======================================= -->
 <!-- ================================================================================================================================================================================= -->
 
-<!-- صفحة مادة الفيزياء -->
-<div id="physicsPage" class="page">
+<!-- مادة الفيزياء -->
+<div class="page" id="physicsPage">
   <h1>مادة الفيزياء</h1>
-  <a href="#abdelmaaboudPage" class="main-btn">عبد المعبود</a>
-  <a href="#kerlosPage" class="main-btn">كرلس</a>
-  <a href="#subjectsPage" class="back-btn">← رجوع</a>
+  <button class="main-btn">عبد المعبود</button>
+  <button class="main-btn" onclick="showPage('kerlosPage')">كرلس</button>
+  <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
 </div>
 
-    <!-- صفحة كرلس -->
-<div id="kerlosPage" class="page">
+<!-- صفحة كرلس -->
+<div class="page" id="kerlosPage" style="display:none;">
   <h1>كرلس</h1>
-  <a href="#explainPage" class="main-btn">الشرح</a>
-  <a href="#doctorBookPage" class="main-btn">حل كتاب الدكتور</a>
-  <a href="#wisamPage" class="main-btn">الوسام</a>
-  <a href="#newtonPage" class="main-btn">نيوتن</a>
-  <a href="#physicsPage" class="back-btn">← رجوع</a>
+  <button class="main-btn" onclick="showPage('kerlos_explain_Page')">الشرح</button>
+  <button class="main-btn" onclick="showPage('kerlos_doctorBook_Page')">كتاب الدكتور</button>
+  <button class="main-btn" onclick="showPage('kerlos_wesam_Page')">الوسام</button>
+  <button class="main-btn" onclick="showPage('kerlos_newton_Page')">نيوتن</button>
+  <button class="back-btn" onclick="showPage('physicsPage')">← رجوع</button>
 </div>
 
 <!-- صفحة الشرح -->
-<div id="explainPage" class="page">
-  <h1>📘 الشرح</h1>
-  <p>هنا تضع محتوى صفحة الشرح.</p>
-  <a href="#kerlosPage" class="back-btn">← رجوع</a>
+<div class="page" id="kerlos_explain_Page" style="display:none;">
+  <h1>الشرح – كرلس</h1>
+  <!-- محتوى الشرح -->
+  <button class="back-btn" onclick="showPage('kerlosPage')">← رجوع</button>
 </div>
 
-<!-- صفحة حل كتاب الدكتور -->
-<div id="doctorBookPage" class="page">
-  <h1>📖 حل كتاب الدكتور</h1>
-  <p>هنا تضع محتوى حلول كتاب الدكتور.</p>
-  <a href="#kerlosPage" class="back-btn">← رجوع</a>
+<!-- صفحة كتاب الدكتور -->
+<div class="page" id="kerlos_doctorBook_Page" style="display:none;">
+  <h1>كتاب الدكتور – كرلس</h1>
+  <!-- محتوى كتاب الدكتور -->
+  <button class="back-btn" onclick="showPage('kerlosPage')">← رجوع</button>
 </div>
 
 <!-- صفحة الوسام -->
-<div id="wisamPage" class="page">
-  <h1>🏅 الوسام</h1>
-  <p>هنا تضع محتوى الوسام.</p>
-  <a href="#kerlosPage" class="back-btn">← رجوع</a>
+<div class="page" id="kerlos_wesam_Page" style="display:none;">
+  <h1>الوسام – كرلس</h1>
+  <!-- محتوى الوسام -->
+  <button class="back-btn" onclick="showPage('kerlosPage')">← رجوع</button>
 </div>
 
 <!-- صفحة نيوتن -->
-<div id="newtonPage" class="page">
-  <h1>⚡ نيوتن</h1>
-  <p>هنا تضع محتوى نيوتن.</p>
-  <a href="#kerlosPage" class="back-btn">← رجوع</a>
+<div class="page" id="kerlos_newton_Page" style="display:none;">
+  <h1>نيوتن – كرلس</h1>
+  <!-- محتوى نيوتن -->
+  <button class="back-btn" onclick="showPage('kerlosPage')">← رجوع</button>
 </div>
 <!-- ================================================================================================================================================================================= -->
 
