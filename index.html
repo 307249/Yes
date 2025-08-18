@@ -164,6 +164,8 @@
 <div class="page" id="khaledSakrPage">
   <h1>خالد صقر</h1>
   <button class="main-btn" onclick="showPage('foundationsLecturePage')">المحاضرة التأسيسية</button>
+  <!-- الزر الجديد -->
+  <button class="main-btn" onclick="showPage('khaledSakrLecture2Page')">محاضرة 1</button>
   <button class="back-btn" onclick="showPage('chemistryPage')">← رجوع</button>
 </div>
 
@@ -179,6 +181,47 @@
     </iframe>
   </div>
   <button class="back-btn" onclick="showPage('khaledSakrPage')">← رجوع</button>
+</div>
+
+<!-- صفحة محاضرة 1 - خالد صقر -->
+<div class="page" id="khaledSakrLecture2Page" style="display:none;">
+  <h1>محاضرة 1 – خالد صقر</h1>
+  <button class="main-btn" onclick="showPage('khaledSakrLecture1_part1_Page')">شرح جزء 1</button>
+  <button class="main-btn" onclick="showPage('khaledSakrLecture1_part2_Page')">شرح جزء 2</button>
+  <button class="main-btn" onclick="showPage('khaledSakrLecture1_books_Page')">حل الكتب الخارجية</button>
+  <button class="back-btn" onclick="showPage('khaledSakrPage')">← رجوع</button>
+</div>
+
+
+<!-- صفحة شرح جزء 1 -->
+<div class="page" id="khaledSakrLecture1_part1_Page" style="display:none;">
+  <h1>شرح جزء 1 – محاضرة 1 خالد صقر</h1>
+  <!-- هنا تحط الفيديو أو المحتوى -->
+  <button class="back-btn" onclick="showPage('khaledSakrLecture2Page')">← رجوع</button>
+</div>
+<!-- صفحة شرح جزء 2 -->
+<div class="page" id="khaledSakrLecture1_part2_Page" style="display:none;">
+  <h1>شرح جزء 2 – محاضرة 1 خالد صقر</h1>
+
+  <!-- الفيديو داخل حاوية مرنة -->
+  <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px;">
+    <iframe 
+      src="https://iframe.mediadelivery.net/play/482354/37294e9f-dcf1-44a1-bc56-a60faecf7839" 
+      loading="lazy" 
+      allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" 
+      allowfullscreen
+      style="position: absolute; top:0; left:0; width:100%; height:100%; border:0;">
+    </iframe>
+  </div>
+
+  <button class="back-btn" onclick="showPage('khaledSakrLecture2Page')">← رجوع</button>
+</div>
+
+<!-- صفحة حل الكتب الخارجية -->
+<div class="page" id="khaledSakrLecture1_books_Page" style="display:none;">
+  <h1>حل الكتب الخارجية – محاضرة 1 خالد صقر</h1>
+  <!-- هنا تحط الحلول أو الفيديوهات -->
+  <button class="back-btn" onclick="showPage('khaledSakrLecture2Page')">← رجوع</button>
 </div>
 <!-- ======================================= -->
 <!-- صفحة عبد الجواد -->
