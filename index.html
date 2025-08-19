@@ -678,7 +678,17 @@
 <!-- صفحة القفص الصدري -->
 <div class="page" id="ribCagePage" style="display:none;">
   <h1>القفص الصدري</h1>
-  <!-- محتوى القفص الصدري -->
+
+  <!-- تضمين الفيديو بنسبة 16:9 -->
+  <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:12px;">
+    <iframe src="https://www.youtube.com/embed/DLdInNPZZr4" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen
+            style="position:absolute; top:0; left:0; width:100%; height:100%;">
+    </iframe>
+  </div>
+
   <button class="back-btn" onclick="showPage('ahmedGoharyLecture2Page')">← رجوع</button>
 </div>
 
