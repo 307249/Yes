@@ -771,22 +771,41 @@
 
 <script>
 function showPage(pageId) {
-  // نخفي كل الصفحات
-  var pages = document.querySelectorAll(".page");
-  pages.forEach(function(page) {
-    // قبل ما نخفي الصفحة: نوقف الفيديوهات اللي فيها
-    var iframes = page.querySelectorAll("iframe");
-    iframes.forEach(function(iframe) {
-      iframe.src = iframe.src; // إعادة تحميل للفيديو = يوقف التشغيل
-    });
+  // نوقف كل الفيديوهات في الصفحات التي سنُخفيها
+  document.querySelectorAll(".page").forEach(function(page) {
+    if (page.id !== pageId) {
+      // 1) إطارات الفيديو (YouTube, Bunny, Vimeo…)
+      page.querySelectorAll("iframe").forEach(function(iframe) {
+        // خزّن الرابط الأصلي لو مش متخزن
+        if (!iframe.dataset.src) iframe.dataset.src = iframe.src;
+        // امسح الرابط → يوقف الفيديو
+        iframe.src = '';
+      });
 
-    page.style.display = "none";
+      // 2) فيديوهات HTML5
+      page.querySelectorAll("video").forEach(function(v) {
+        try {
+          v.pause();
+          v.currentTime = 0;
+        } catch (e) {}
+      });
+
+      // إخفاء الصفحة
+      page.style.display = "none";
+    }
   });
 
   // نعرض الصفحة المطلوبة
   var targetPage = document.getElementById(pageId);
   if (targetPage) {
     targetPage.style.display = "block";
+
+    // نرجع src الأصلي لو كان فاضي
+    targetPage.querySelectorAll("iframe").forEach(function(iframe) {
+      if ((!iframe.src || iframe.src === window.location.href) && iframe.dataset.src) {
+        iframe.src = iframe.dataset.src;
+      }
+    });
   }
 }
 </script>
