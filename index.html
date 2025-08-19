@@ -379,12 +379,93 @@
 <!-- ================================================================================================================================================================================= -->
 
 <!-- مادة الفيزياء -->
-<div class="page" id="physicsPage">
+<div class="page" id="physicsPage" style="display:none;">
   <h1>مادة الفيزياء</h1>
   <button class="main-btn">عبد المعبود</button>
-  <button class="main-btn">كرلس</button>
+  <button class="main-btn" onclick="showPage('kerlosPage')">كرلس</button>
   <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
 </div>
+
+<!-- صفحة كرلس -->
+<div class="page" id="kerlosPage" style="display:none;">
+  <h1>كرلس</h1>
+  <button class="main-btn" onclick="showPage('kerlosLecture1')">محاضرة 1</button>
+  <button class="back-btn" onclick="showPage('physicsPage')">← رجوع</button>
+</div>
+<!-- صفحة محاضرة 1 -->
+<div class="page" id="kerlosLecture1" style="display:none;">
+  <h1>كرلس - محاضرة 1</h1>
+  <button class="main-btn" onclick="showPage('lecture1_explain')">الشرح</button>
+  <button class="main-btn" onclick="showPage('lecture1_book')">كتاب الدكتور</button>
+  <button class="main-btn" onclick="showPage('lecture1_wesam')">الوسام</button>
+  <button class="main-btn" onclick="showPage('lecture1_newton')">نيوتن</button>
+  <br><br>
+  <button class="back-btn" onclick="showPage('kerlosPage')">← رجوع</button>
+</div>
+
+<!-- صفحة الشرح -->
+<div class="page" id="kerlos_explain_Page" style="display:none;">
+  <h1>الشرح – كرلس</h1>
+  <!-- محتوى الشرح -->
+  <div class="video-container">
+    <iframe width="560" height="315"
+            src="https://www.youtube.com/embed/qCf6XvdV0w0"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+    </iframe>
+  </div>
+  <button class="back-btn" onclick="showPage('kerlosPage')">← رجوع</button>
+</div>
+
+
+<!-- صفحة كتاب الدكتور -->
+<div class="page" id="lecture1_book" style="display:none;">
+  <h1>محاضرة 1 - كتاب الدكتور</h1>
+  <div class="video-container">
+    <iframe width="560" height="315"
+            src="https://www.youtube.com/embed/cZNNRgt8L8Y"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+    </iframe>
+  </div>
+  <button class="back-btn" onclick="showPage('kerlosLecture1')">← رجوع</button>
+</div>
+
+
+<!-- صفحة الوسام -->
+<div class="page" id="lecture1_wesam" style="display:none;">
+  <h1>محاضرة 1 - الوسام</h1>
+  <div class="video-container">
+    <iframe width="560" height="315"
+            src="https://www.youtube.com/embed/rs4879Qwv3M"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+    </iframe>
+  </div>
+  <button class="back-btn" onclick="showPage('kerlosLecture1')">← رجوع</button>
+</div>
+
+<!-- صفحة نيوتن -->
+<div class="page" id="lecture1_newton" style="display:none;">
+  <h1>محاضرة 1 - نيوتن</h1>
+  <div class="video-container">
+    <iframe width="560" height="315"
+            src="https://www.youtube.com/embed/KqyHUMkYoTY"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+    </iframe>
+  </div>
+  <button class="back-btn" onclick="showPage('kerlosLecture1')">← رجوع</button>
+</div>
+    
 <!-- ================================================================================================================================================================================= -->
 
 
