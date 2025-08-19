@@ -774,6 +774,12 @@ function showPage(pageId) {
   // نخفي كل الصفحات
   var pages = document.querySelectorAll(".page");
   pages.forEach(function(page) {
+    // قبل ما نخفي الصفحة: نوقف الفيديوهات اللي فيها
+    var iframes = page.querySelectorAll("iframe");
+    iframes.forEach(function(iframe) {
+      iframe.src = iframe.src; // إعادة تحميل للفيديو = يوقف التشغيل
+    });
+
     page.style.display = "none";
   });
 
