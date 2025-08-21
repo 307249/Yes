@@ -549,8 +549,61 @@
 <!-- صفحة محاضرة 1 لعبد المعبود -->
 <div class="page" id="abdelmaboudLecture1" style="display:none;">
   <h1>عبد المعبود - محاضرة 1</h1>
-  <p>هنا محتوى محاضرة 1 لعبد المعبود...</p>
+  <p>اختر القسم:</p>
+
+  <!-- الأزرار -->
+  <button class="main-btn" onclick="showPage('introPage')">المقدمة</button>
+  <button class="main-btn" onclick="showPage('electricCurrentPage')">التيار الكهربي</button>
+  <button class="main-btn" onclick="showPage('resistancePage')">المقاومة الكهربية</button>
+  <button class="main-btn" onclick="showPage('currentIntensityPage')">شدة التيار</button>
+  <button class="main-btn" onclick="showPage('importantQuestionsPage')">أسئلة هامة</button>
+  <button class="main-btn" onclick="showPage('homeworkPage')">الواجب</button>
+
+  <br><br>
   <button class="back-btn" onclick="showPage('abdelmaboudPage')">← رجوع</button>
+</div>
+
+
+<!-- صفحة المقدمة -->
+<div class="page" id="introPage" style="display:none;">
+  <h1>المقدمة</h1>
+  <p>هنا محتوى المقدمة...</p>
+  <button class="back-btn" onclick="showPage('abdelmaboudLecture1')">← رجوع</button>
+</div>
+
+<!-- صفحة التيار الكهربي -->
+<div class="page" id="electricCurrentPage" style="display:none;">
+  <h1>التيار الكهربي</h1>
+  <p>شرح التيار الكهربي...</p>
+  <button class="back-btn" onclick="showPage('abdelmaboudLecture1')">← رجوع</button>
+</div>
+
+<!-- صفحة المقاومة الكهربية -->
+<div class="page" id="resistancePage" style="display:none;">
+  <h1>المقاومة الكهربية</h1>
+  <p>شرح المقاومة الكهربية...</p>
+  <button class="back-btn" onclick="showPage('abdelmaboudLecture1')">← رجوع</button>
+</div>
+
+<!-- صفحة شدة التيار -->
+<div class="page" id="currentIntensityPage" style="display:none;">
+  <h1>شدة التيار</h1>
+  <p>شرح شدة التيار...</p>
+  <button class="back-btn" onclick="showPage('abdelmaboudLecture1')">← رجوع</button>
+</div>
+
+<!-- صفحة أسئلة هامة -->
+<div class="page" id="importantQuestionsPage" style="display:none;">
+  <h1>أسئلة هامة</h1>
+  <p>هنا أسئلة هامة...</p>
+  <button class="back-btn" onclick="showPage('abdelmaboudLecture1')">← رجوع</button>
+</div>
+
+<!-- صفحة الواجب -->
+<div class="page" id="homeworkPage" style="display:none;">
+  <h1>الواجب</h1>
+  <p>هنا واجب المحاضرة...</p>
+  <button class="back-btn" onclick="showPage('abdelmaboudLecture1')">← رجوع</button>
 </div>
     
 <!-- ================================================================================================================================================================================= -->
