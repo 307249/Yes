@@ -445,7 +445,7 @@
 <!-- مادة الفيزياء -->
 <div class="page" id="physicsPage" style="display:none;">
   <h1>مادة الفيزياء</h1>
-  <button class="main-btn">عبد المعبود</button>
+  <button class="main-btn" onclick="showPage('abdelmaboudPage')">عبد المعبود</button>
   <button class="main-btn" onclick="showPage('kerlosPage')">كرلس</button>
   <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
 </div>
@@ -525,6 +525,32 @@
     </iframe>
   </div>
   <button class="back-btn" onclick="showPage('kerlosLecture1')">← رجوع</button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- صفحة عبد المعبود -->
+<div class="page" id="abdelmaboudPage" style="display:none;">
+  <h1>عبد المعبود</h1>
+  <button class="main-btn" onclick="showPage('abdelmaboudLecture1')">محاضرة 1</button>
+  <button class="back-btn" onclick="showPage('physicsPage')">← رجوع</button>
+</div>
+
+
+<!-- صفحة محاضرة 1 لعبد المعبود -->
+<div class="page" id="abdelmaboudLecture1" style="display:none;">
+  <h1>عبد المعبود - محاضرة 1</h1>
+  <p>هنا محتوى محاضرة 1 لعبد المعبود...</p>
+  <button class="back-btn" onclick="showPage('abdelmaboudPage')">← رجوع</button>
 </div>
     
 <!-- ================================================================================================================================================================================= -->
