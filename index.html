@@ -183,58 +183,72 @@
   <button class="back-btn" onclick="showPage('khaledSakrPage')">← رجوع</button>
 </div>
 
-  
-<!-- صفحة محاضرة 1 -->
-<div class="page" id="khaledSakrLecture1Page" style="display:none;">
-  <h1>خالد صقر - محاضرة 1</h1>
-  <button class="main-btn" onclick="showPage('khaledSakrLecture1ExplainPage')">الشرح</button>
-  <button class="main-btn" onclick="showPage('khaledSakrLecture1SolvePage')">الحل</button>
-  <br><br>
+  <!-- صفحة محاضرة 1 - خالد صقر -->
+<div class="page" id="khaledSakrLecture2Page" style="display:none;">
+  <h1>محاضرة 1 – خالد صقر</h1>
+  <button class="main-btn" onclick="showPage('khaledSakrLecture1_part1_Page')">شرح جزء 1</button>
+  <button class="main-btn" onclick="showPage('khaledSakrLecture1_part2_Page')">شرح جزء 2</button>
+  <button class="main-btn" onclick="showPage('khaledSakrLecture1_books_Page')">حل الكتب الخارجية</button>
   <button class="back-btn" onclick="showPage('khaledSakrPage')">← رجوع</button>
 </div>
 
-<!-- صفحة الشرح -->
-<div class="page" id="khaledSakrLecture1ExplainPage" style="display:none;">
-  <h1>الشرح</h1>
-  <p>هنا محتوى شرح محاضرة 1...</p>
-
-  <!-- تضمين فيديو YouTube -->
-  <div class="video-container" style="position:relative; width:100%; padding-top:56.25%; overflow:hidden;">
+<!-- صفحة شرح جزء 1 -->
+<div class="page" id="khaledSakrLecture1_part1_Page" style="display:none;">
+  <h1>شرح جزء 1 – محاضرة 1 خالد صقر</h1>
+  
+  <!-- تضمين الفيديو بمربع -->
+  <div class="video-container" style="position:relative; width:100%; padding-top:100%; overflow:hidden; border-radius:0;">
     <iframe
-      src="https://www.youtube.com/embed/gqF2yFOdjJU"
+      src="https://iframe.mediadelivery.net/play/482354/a2f8dac9-d83b-4cf8-b6fc-65d47a9987b8"
       frameborder="0"
-      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+      allow="autoplay; fullscreen; picture-in-picture"
       allowfullscreen
       style="position:absolute; top:0; left:0; width:100%; height:100%;"
     ></iframe>
   </div>
-
-  <button class="back-btn" onclick="showPage('khaledSakrLecture1Page')">← رجوع</button>
+  
+  <button class="back-btn" onclick="showPage('khaledSakrLecture2Page')">← رجوع</button>
 </div>
 
-<!-- صفحة الحل -->
-<div class="page" id="khaledSakrLecture1SolvePage" style="display:none;">
-  <h1>الحل</h1>
-  <p>هنا محتوى الحل لمحاضرة 1...</p>
+<!-- صفحة شرح جزء 2 -->
+<div class="page" id="khaledSakrLecture1_part2_Page" style="display:none;">
+  <h1>شرح جزء 2 – محاضرة 1 خالد صقر</h1>
 
-  <!-- تضمين فيديو YouTube -->
-  <div class="video-container" style="position:relative; width:100%; padding-top:56.25%; overflow:hidden;">
+  <!-- الفيديو داخل حاوية مرنة -->
+  <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px;">
+    <iframe 
+      src="https://iframe.mediadelivery.net/play/482354/37294e9f-dcf1-44a1-bc56-a60faecf7839" 
+      loading="lazy" 
+      allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" 
+      allowfullscreen
+      style="position: absolute; top:0; left:0; width:100%; height:100%; border:0;">
+    </iframe>
+  </div>
+
+  <button class="back-btn" onclick="showPage('khaledSakrLecture2Page')">← رجوع</button>
+</div>
+<!-- صفحة حل الكتب الخارجية -->
+<div class="page" id="khaledSakrLecture1_books_Page" style="display:none;">
+  <h1>حل الكتب الخارجية – محاضرة 1 خالد صقر</h1>
+  
+  <!-- تضمين الفيديو بمربع -->
+  <div class="video-container" style="position:relative; width:100%; padding-top:100%; overflow:hidden; border-radius:0;">
     <iframe
-      src="https://www.youtube.com/embed/rxVaJZo5fq0"
+      src="https://iframe.mediadelivery.net/play/482354/e19bf015-721a-497b-8229-0cffc1c9a22e"
       frameborder="0"
-      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+      allow="autoplay; fullscreen; picture-in-picture"
       allowfullscreen
       style="position:absolute; top:0; left:0; width:100%; height:100%;"
     ></iframe>
   </div>
 
-  <button class="back-btn" onclick="showPage('khaledSakrLecture1Page')">← رجوع</button>
+  <button class="back-btn" onclick="showPage('khaledSakrLecture2Page')">← رجوع</button>
 </div>
 <!-- ======================================= -->
 <!-- صفحة عبد الجواد -->
 <div class="page" id="abdElgowadPage">
   <h1>عبد الجواد</h1>
-  <button class="main-btn" onclck="showPage('explain2026Page')">شرح2026</button>
+  <button class="main-btn" onclick="showPage('explain2026Page')">شرح2026</button>
   <button class="back-btn" onclick="showPage('chemistryPage')">← رجوع</button>
 </div>
 
