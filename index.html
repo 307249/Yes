@@ -160,14 +160,16 @@
   <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
 </div>
 
-    <!-- صفحة خالد صقر -->
-<div class="page" id="khaledSakrPage" style="display:none;">
-  <h1>خالد صقر</h1>
-  <button class="main-btn" onclick="showPage('foundationsLecturePage')">المحاضرة التأسيسية</button>
-  <!-- الزر الجديد -->
-  <button class="main-btn" onclick="showPage('khaledSakrLecture1Page')">محاضرة 1</button>
-  <button class="back-btn" onclick="showPage('chemistryPage')">← رجوع</button>
-</div>
+<!-- صفحة خالد صقر -->  
+<div class="page" id="khaledSakrPage" style="display:none;">  
+  <h1>خالد صقر</h1>  
+  <button class="main-btn" onclick="showPage('foundationsLecturePage')">المحاضرة التأسيسية</button>  
+  <button class="main-btn" onclick="showPage('khaledSakrLecture1Page')">محاضرة 1</button>  
+  <!-- الزر الجديد -->  
+  <button class="main-btn" onclick="showPage('khaledSakrLecture2Page')">محاضرة 2</button>  
+  <button class="back-btn" onclick="showPage('chemistryPage')">← رجوع</button>  
+</div>  
+
   
 <!-- الصفحة التأسيسية -->
 <div class="page" id="foundationsLecturePage">
@@ -229,6 +231,37 @@
 
   <button class="back-btn" onclick="showPage('khaledSakrLecture1Page')">← رجوع</button>
 </div>
+
+<!-- صفحة محاضرة 2 -->  
+<div class="page" id="khaledSakrLecture2Page" style="display:none;">  
+  <h1>خالد صقر - محاضرة 2</h1>  
+  <p>هنا محتوى محاضرة 2...</p>  
+
+  <!-- الزر الجديد -->
+  <button class="main-btn" onclick="showPage('khaledSakrLecture2ExplainPage')">شرح محاضرة 2</button>  
+
+  <button class="back-btn" onclick="showPage('khaledSakrPage')">← رجوع</button>  
+</div>  
+
+<!-- صفحة شرح محاضرة 2 -->  
+<div class="page" id="khaledSakrLecture2ExplainPage" style="display:none;">  
+  <h1>شرح محاضرة 2 - خالد صقر</h1>  
+  <p>هنا محتوى شرح محاضرة 2...</p>  
+
+  <!-- تضمين فيديو YouTube -->
+  <div class="video-container" style="position:relative; width:100%; padding-top:56.25%; overflow:hidden;">  
+    <iframe  
+      src="https://www.youtube.com/embed/5PufqX4X2Dc"  
+      frameborder="0"  
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"  
+      allowfullscreen  
+      style="position:absolute; top:0; left:0; width:100%; height:100%;"  
+    ></iframe>  
+  </div>  
+
+  <button class="back-btn" onclick="showPage('khaledSakrLecture2Page')">← رجوع</button>  
+</div>
+
 <!-- ======================================= -->
 <!-- صفحة عبد الجواد -->
 <div class="page" id="abdElgowadPage">
