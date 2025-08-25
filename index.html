@@ -1025,6 +1025,8 @@
 <div class="page" id="biologyPage">
   <h1>مادة الأحياء</h1>
   <button class="main-btn" onclick="showPage('ahmedGoharyPage')">أحمد الجوهري</button>
+  <button class="main-btn" onclick="showPage('geoMagdPage')">جيو ماجد (جيولوجيا)</button>
+  <br><br>
   <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
 </div>
 
@@ -1286,6 +1288,41 @@
 
 
 
+
+<!-- صفحة جيو ماجد (جيولوجيا) -->
+<div class="page" id="geoMagdPage" style="display:none;">
+  <h1>جيو ماجد - جيولوجيا</h1>
+  <button class="main-btn" onclick="showPage('geoMagdLecture1Page')">محاضرة 1</button>
+  <br><br>
+  <button class="back-btn" onclick="showPage('biologyPage')">← رجوع</button>
+</div>
+
+<!-- صفحة محاضرة 1 - جيو ماجد -->
+<div class="page" id="geoMagdLecture1Page" style="display:none;">
+  <h1>جيو ماجد - محاضرة 1</h1>
+  <button class="main-btn" onclick="showPage('geoMagdLecture1ExplainPage')">الشرح</button>
+  <br><br>
+  <button class="back-btn" onclick="showPage('geoMagdPage')">← رجوع</button>
+</div>
+
+<!-- صفحة الشرح - محاضرة 1 جيو ماجد -->
+<div class="page" id="geoMagdLecture1ExplainPage" style="display:none;">
+  <h1>جيو ماجد - محاضرة 1 (الشرح)</h1>
+  <p>هنا محتوى الشرح...</p>
+
+  <!-- تضمين فيديو YouTube -->
+  <div class="video-container" style="position:relative; width:100%; padding-top:56.25%; overflow:hidden;">
+    <iframe
+      src="https://www.youtube.com/embed/yHBxFaBxAVM"
+      frameborder="0"
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+      style="position:absolute; top:0; left:0; width:100%; height:100%;"
+    ></iframe>
+  </div>
+
+  <button class="back-btn" onclick="showPage('geoMagdLecture1Page')">← رجوع</button>
+</div>
 
 
 
