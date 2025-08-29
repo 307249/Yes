@@ -1152,10 +1152,10 @@
   <h1>مادة الأحياء</h1>
   <button class="main-btn" onclick="showPage('ahmedGoharyPage')">أحمد الجوهري</button>
   <button class="main-btn" onclick="showPage('geoMagdPage')">جيو ماجد (جيولوجيا)</button>
+  <button class="main-btn" onclick="showPage('mohamedAymanPage')">محمد أيمن</button>
   <br><br>
   <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
 </div>
-
     
 <!-- صفحة أحمد الجوهري -->
 <div class="page" id="ahmedGoharyPage">
@@ -1571,6 +1571,74 @@
 
 
 
+
+
+
+
+
+    
+<!-- صفحة محمد أيمن -->
+<div class="page" id="mohamedAymanPage" style="display:none;">
+  <h1>محمد أيمن - أحياء</h1>
+  <button class="main-btn" onclick="showPage('mohamedAymanSharhPage')">الشرح</button>
+  <button class="main-btn" onclick="showPage('mohamedAymanStudyPage')">يلا نذاكر</button>
+  <button class="main-btn" onclick="showPage('mohamedAyman3DPage')">3D</button>
+  <button class="main-btn" onclick="showPage('mohamedAymanBookPage')">حل كتاب الهيكل العظمي</button>
+  <br><br>
+  <button class="back-btn" onclick="showPage('biologyPage')">← رجوع</button>
+</div>
+
+<!-- صفحة الشرح -->
+<div class="page" id="mohamedAymanSharhPage" style="display:none;">
+  <h1>محمد أيمن - الشرح</h1>
+  <p>هنا محتوى الشرح...</p>
+
+  <!-- تضمين فيديو YouTube -->
+  <div class="video-container" style="position:relative; width:100%; padding-top:56.25%; overflow:hidden;">
+    <iframe
+      src="https://www.youtube.com/embed/PonS6bjV9xk"
+      frameborder="0"
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+      style="position:absolute; top:0; left:0; width:100%; height:100%;">
+    </iframe>
+  </div>
+
+  <button class="back-btn" onclick="showPage('mohamedAymanPage')">← رجوع</button>
+</div>
+
+<!-- صفحة يلا نذاكر -->
+<div class="page" id="mohamedAymanStudyPage" style="display:none;">
+  <h1>محمد أيمن - يلا نذاكر</h1>
+  <p>هنا محتوى يلا نذاكر...</p>
+
+  <!-- تضمين فيديو YouTube -->
+  <div class="video-container" style="position:relative; width:100%; padding-top:56.25%; overflow:hidden;">
+    <iframe
+      src="https://www.youtube.com/embed/vZ3msNJAsAg"
+      frameborder="0"
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+      style="position:absolute; top:0; left:0; width:100%; height:100%;">
+    </iframe>
+  </div>
+
+  <button class="back-btn" onclick="showPage('mohamedAymanPage')">← رجوع</button>
+</div>
+
+<!-- صفحة 3D -->
+<div class="page" id="mohamedAyman3DPage" style="display:none;">
+  <h1>محمد أيمن - 3D</h1>
+  <p>هنا محتوى 3D...</p>
+  <button class="back-btn" onclick="showPage('mohamedAymanPage')">← رجوع</button>
+</div>
+
+<!-- صفحة حل كتاب الهيكل العظمي -->
+<div class="page" id="mohamedAymanBookPage" style="display:none;">
+  <h1>محمد أيمن - حل كتاب الهيكل العظمي</h1>
+  <p>هنا محتوى حل كتاب الهيكل العظمي...</p>
+  <button class="back-btn" onclick="showPage('mohamedAymanPage')">← رجوع</button>
+</div>
 
 
 <!-- ================================================================================================================================================================================= -->
