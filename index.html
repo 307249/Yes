@@ -1962,21 +1962,21 @@
     
 <!-- ================================================================================================================================================================================= -->
 
-  <script>
+    <script>
 const firebaseConfig = {
   databaseURL: "https://drosak-v2-default-rtdb.europe-west1.firebasedatabase.app"
 };
 const dbURL = firebaseConfig.databaseURL;
 
-// ========== إيقاف الفيديوهات ==========
+// ========== إيقاف الفيديوهات عند التنقل ==========
 function stopAllVideosExcept(pageId) {
-  document.querySelectorAll(".page").forEach(function(page) {
+  document.querySelectorAll(".page").forEach(page => {
     if (page.id !== pageId) {
-      page.querySelectorAll("iframe").forEach(function(iframe) {
+      page.querySelectorAll("iframe").forEach(iframe => {
         if (!iframe.dataset.src) iframe.dataset.src = iframe.src;
         iframe.src = '';
       });
-      page.querySelectorAll("video").forEach(function(v) {
+      page.querySelectorAll("video").forEach(v => {
         try { v.pause(); v.currentTime = 0; } catch (e) {}
       });
       page.style.display = "none";
@@ -1984,13 +1984,14 @@ function stopAllVideosExcept(pageId) {
   });
 }
 
-// ========== إظهار صفحة ==========
+// ========== إظهار الصفحة المطلوبة ==========
 function showPage(pageId) {
   stopAllVideosExcept(pageId);
   const targetPage = document.getElementById(pageId);
   if (targetPage) {
     targetPage.style.display = "block";
-    targetPage.querySelectorAll("iframe").forEach(function(iframe) {
+    // تفعيل Lazy Loading للفيديوهات
+    targetPage.querySelectorAll("iframe").forEach(iframe => {
       if ((!iframe.src || iframe.src === window.location.href) && iframe.dataset.src) {
         iframe.src = iframe.dataset.src;
       }
@@ -1998,7 +1999,7 @@ function showPage(pageId) {
   }
 }
 
-// ========== جلب أو إنشاء ID للجهاز ==========
+// ========== إنشاء أو جلب معرف الجهاز ==========
 function getDeviceId() {
   let deviceId = localStorage.getItem("deviceId");
   if (!deviceId) {
@@ -2028,21 +2029,18 @@ async function handleAccess(forceCheck = false) {
       return;
     }
 
-    // التحقق من الكود المخزن محليًا
     const savedKey = localStorage.getItem("drosakKey");
     const savedExpiresAt = localStorage.getItem("drosakExpiresAt");
     const lastCheck = parseInt(localStorage.getItem("lastCheck") || "0");
     const now = Date.now();
 
     if (savedKey && savedExpiresAt && now < parseInt(savedExpiresAt) && !forceCheck) {
-      // لو مر أقل من 24 ساعة → افتح فورًا
       if (now - lastCheck < 24 * 60 * 60 * 1000) {
         showPage("subjectsPage");
         return;
       }
     }
 
-    // التحقق من الكود الحالي أو المدخل
     const finalCode = savedKey || code;
     if (!finalCode) {
       errorBox.textContent = "⚠️ من فضلك أدخل الكود";
@@ -2075,7 +2073,6 @@ async function handleAccess(forceCheck = false) {
       });
     }
 
-    // تخزين البيانات محليًا
     localStorage.setItem("drosakKey", finalCode);
     localStorage.setItem("drosakExpiresAt", keyData.expiresAt);
     localStorage.setItem("lastCheck", now);
@@ -2110,7 +2107,6 @@ window.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    // التحقق من الكود المخزن لو موجود وصالح
     const savedKey = localStorage.getItem("drosakKey");
     const savedExpiresAt = localStorage.getItem("drosakExpiresAt");
     if (savedKey && savedExpiresAt && Date.now() < parseInt(savedExpiresAt)) {
@@ -2125,4 +2121,4 @@ window.addEventListener("DOMContentLoaded", async () => {
     goBtn.addEventListener("click", () => handleAccess());
   }
 });
-  </script>
+    </script>
