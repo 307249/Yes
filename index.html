@@ -1968,39 +1968,28 @@ const firebaseConfig = {
 };
 const dbURL = firebaseConfig.databaseURL;
 
-/* 🔹 دالة لإيقاف كل الفيديوهات في الصفحات المخفية */
+// ========== إيقاف الفيديوهات ==========
 function stopAllVideosExcept(pageId) {
   document.querySelectorAll(".page").forEach(function(page) {
     if (page.id !== pageId) {
-      // 1) إطارات الفيديو (YouTube, Bunny, Vimeo…)
       page.querySelectorAll("iframe").forEach(function(iframe) {
         if (!iframe.dataset.src) iframe.dataset.src = iframe.src;
         iframe.src = '';
       });
-
-      // 2) فيديوهات HTML5 العادية
       page.querySelectorAll("video").forEach(function(v) {
-        try {
-          v.pause();
-          v.currentTime = 0;
-        } catch (e) {}
+        try { v.pause(); v.currentTime = 0; } catch (e) {}
       });
-
-      // إخفاء الصفحة
       page.style.display = "none";
     }
   });
 }
 
-/* 🔹 دالة إظهار صفحة معينة */
+// ========== إظهار صفحة ==========
 function showPage(pageId) {
   stopAllVideosExcept(pageId);
   const targetPage = document.getElementById(pageId);
-
   if (targetPage) {
     targetPage.style.display = "block";
-
-    // إعادة تحميل الـ iframe لو كان src فاضي
     targetPage.querySelectorAll("iframe").forEach(function(iframe) {
       if ((!iframe.src || iframe.src === window.location.href) && iframe.dataset.src) {
         iframe.src = iframe.dataset.src;
@@ -2009,7 +1998,7 @@ function showPage(pageId) {
   }
 }
 
-/* 🔹 جلب معرف الجهاز أو إنشاؤه */
+// ========== جلب أو إنشاء ID للجهاز ==========
 function getDeviceId() {
   let deviceId = localStorage.getItem("deviceId");
   if (!deviceId) {
@@ -2019,8 +2008,8 @@ function getDeviceId() {
   return deviceId;
 }
 
-/* 🔹 التحقق من الكود */
-async function handleAccess() {
+// ========== التحقق من الكود ==========
+async function handleAccess(forceCheck = false) {
   const codeInput = document.getElementById("codeInput");
   const goBtn = document.getElementById("goBtn");
   const code = codeInput.value.trim();
@@ -2031,7 +2020,6 @@ async function handleAccess() {
   errorBox.textContent = "";
 
   try {
-    // تحقق من حالة القفل
     const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
     const lockEnabled = await res.json();
 
@@ -2040,14 +2028,29 @@ async function handleAccess() {
       return;
     }
 
-    if (!code) {
+    // التحقق من الكود المخزن محليًا
+    const savedKey = localStorage.getItem("drosakKey");
+    const savedExpiresAt = localStorage.getItem("drosakExpiresAt");
+    const lastCheck = parseInt(localStorage.getItem("lastCheck") || "0");
+    const now = Date.now();
+
+    if (savedKey && savedExpiresAt && now < parseInt(savedExpiresAt) && !forceCheck) {
+      // لو مر أقل من 24 ساعة → افتح فورًا
+      if (now - lastCheck < 24 * 60 * 60 * 1000) {
+        showPage("subjectsPage");
+        return;
+      }
+    }
+
+    // التحقق من الكود الحالي أو المدخل
+    const finalCode = savedKey || code;
+    if (!finalCode) {
       errorBox.textContent = "⚠️ من فضلك أدخل الكود";
       return;
     }
 
-    const keySnap = await fetch(`${dbURL}/validKeys/${code}.json`);
+    const keySnap = await fetch(`${dbURL}/validKeys/${finalCode}.json`);
     const keyData = await keySnap.json();
-    const now = Date.now();
     const currentDevice = getDeviceId();
 
     if (!keyData) {
@@ -2056,39 +2059,39 @@ async function handleAccess() {
     }
 
     if (now >= keyData.expiresAt) {
-      errorBox.textContent = "⚠️ انتهت صلاحية الكود الخاص بك للتجديد كلمنا هنا: @AL_MAALA";
+      errorBox.textContent = "⚠️ انتهت صلاحية الكود، للتجديد كلمنا: @AL_MAALA";
       return;
     }
 
     if (keyData.deviceId && keyData.deviceId !== currentDevice) {
-      errorBox.textContent = "❌ هذا الكود مرتبط بجهاز آخر بالفعل.";
+      errorBox.textContent = "❌ هذا الكود مستخدم على جهاز آخر.";
       return;
     }
 
-    // ربط الجهاز بالكود أول مرة فقط
     if (!keyData.deviceId) {
-      await fetch(`${dbURL}/validKeys/${code}/deviceId.json`, {
+      await fetch(`${dbURL}/validKeys/${finalCode}/deviceId.json`, {
         method: "PUT",
         body: JSON.stringify(currentDevice)
       });
     }
 
-    // حفظ الكود وتاريخ الانتهاء محليًا
-    localStorage.setItem("drosakKey", code);
+    // تخزين البيانات محليًا
+    localStorage.setItem("drosakKey", finalCode);
     localStorage.setItem("drosakExpiresAt", keyData.expiresAt);
+    localStorage.setItem("lastCheck", now);
 
     showPage("subjectsPage");
 
   } catch (err) {
     console.error(err);
-    errorBox.textContent = "❌ حدث خطأ أثناء الاتصال بقاعدة البيانات";
+    errorBox.textContent = "❌ مشكلة في الاتصال بالخادم";
   } finally {
     goBtn.disabled = false;
     goBtn.textContent = "يلا بينا";
   }
 }
 
-/* 🔹 عند تحميل الصفحة */
+// ========== عند تحميل الصفحة ==========
 window.addEventListener("DOMContentLoaded", async () => {
   const codeInput = document.getElementById("codeInput");
   const notice = document.getElementById("codeNotice");
@@ -2107,25 +2110,19 @@ window.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    // تحقق من وجود كود صالح محليًا
+    // التحقق من الكود المخزن لو موجود وصالح
     const savedKey = localStorage.getItem("drosakKey");
     const savedExpiresAt = localStorage.getItem("drosakExpiresAt");
-
     if (savedKey && savedExpiresAt && Date.now() < parseInt(savedExpiresAt)) {
-      // لو الكود لسه صالح → افتح الصفحة فورًا بدون طلب Firebase
       showPage("subjectsPage");
       return;
-    } else {
-      // لو الكود منتهي أو مش موجود → امسحه وخلي المستخدم يدخل كود جديد
-      localStorage.removeItem("drosakKey");
-      localStorage.removeItem("drosakExpiresAt");
     }
   } catch (err) {
     console.error("خطأ في تحميل حالة القفل:", err);
   }
 
   if (goBtn) {
-    goBtn.addEventListener("click", handleAccess);
+    goBtn.addEventListener("click", () => handleAccess());
   }
 });
   </script>
