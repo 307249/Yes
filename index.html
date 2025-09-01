@@ -1968,7 +1968,7 @@ const firebaseConfig = {
 };
 const dbURL = firebaseConfig.databaseURL;
 
-// ========== إيقاف الفيديوهات عند التنقل ==========
+// ========== إيقاف الفيديوهات ==========
 function stopAllVideosExcept(pageId) {
   document.querySelectorAll(".page").forEach(page => {
     if (page.id !== pageId) {
@@ -1990,7 +1990,6 @@ function showPage(pageId) {
   const targetPage = document.getElementById(pageId);
   if (targetPage) {
     targetPage.style.display = "block";
-    // تفعيل Lazy Loading للفيديوهات
     targetPage.querySelectorAll("iframe").forEach(iframe => {
       if ((!iframe.src || iframe.src === window.location.href) && iframe.dataset.src) {
         iframe.src = iframe.dataset.src;
@@ -2021,6 +2020,7 @@ async function handleAccess(forceCheck = false) {
   errorBox.textContent = "";
 
   try {
+    // التحقق من حالة القفل
     const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
     const lockEnabled = await res.json();
 
@@ -2034,6 +2034,7 @@ async function handleAccess(forceCheck = false) {
     const lastCheck = parseInt(localStorage.getItem("lastCheck") || "0");
     const now = Date.now();
 
+    // لو فيه كود محفوظ وصالح
     if (savedKey && savedExpiresAt && now < parseInt(savedExpiresAt) && !forceCheck) {
       if (now - lastCheck < 24 * 60 * 60 * 1000) {
         showPage("subjectsPage");
@@ -2051,21 +2052,27 @@ async function handleAccess(forceCheck = false) {
     const keyData = await keySnap.json();
     const currentDevice = getDeviceId();
 
+    // تحقق من وجود الكود
     if (!keyData) {
       errorBox.textContent = "❌ الكود غير صحيح، تواصل معنا: @AL_MAALA";
       return;
     }
 
+    // تحقق من صلاحية الكود
     if (now >= keyData.expiresAt) {
       errorBox.textContent = "⚠️ انتهت صلاحية الكود، للتجديد كلمنا: @AL_MAALA";
+      localStorage.removeItem("drosakKey");
+      localStorage.removeItem("drosakExpiresAt");
       return;
     }
 
+    // تحقق من الجهاز
     if (keyData.deviceId && keyData.deviceId !== currentDevice) {
       errorBox.textContent = "❌ هذا الكود مستخدم على جهاز آخر.";
       return;
     }
 
+    // ربط الكود بالجهاز لأول مرة فقط
     if (!keyData.deviceId) {
       await fetch(`${dbURL}/validKeys/${finalCode}/deviceId.json`, {
         method: "PUT",
@@ -2073,6 +2080,7 @@ async function handleAccess(forceCheck = false) {
       });
     }
 
+    // تخزين البيانات محليًا
     localStorage.setItem("drosakKey", finalCode);
     localStorage.setItem("drosakExpiresAt", keyData.expiresAt);
     localStorage.setItem("lastCheck", now);
@@ -2089,34 +2097,21 @@ async function handleAccess(forceCheck = false) {
 }
 
 // ========== عند تحميل الصفحة ==========
-window.addEventListener("DOMContentLoaded", async () => {
+window.addEventListener("DOMContentLoaded", () => {
   const codeInput = document.getElementById("codeInput");
   const notice = document.getElementById("codeNotice");
   const errorBox = document.getElementById("errorMsg");
   const goBtn = document.getElementById("goBtn");
 
-  try {
-    const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
-    const lockEnabled = await res.json();
-
-    if (!lockEnabled) {
-      codeInput.style.display = "none";
-      notice.style.display = "none";
-      errorBox.style.display = "none";
-      showPage("subjectsPage");
-      return;
-    }
-
-    const savedKey = localStorage.getItem("drosakKey");
-    const savedExpiresAt = localStorage.getItem("drosakExpiresAt");
-    if (savedKey && savedExpiresAt && Date.now() < parseInt(savedExpiresAt)) {
-      showPage("subjectsPage");
-      return;
-    }
-  } catch (err) {
-    console.error("خطأ في تحميل حالة القفل:", err);
+  // التحقق من صلاحية الكود المخزن محليًا بدون اتصال Firebase
+  const savedKey = localStorage.getItem("drosakKey");
+  const savedExpiresAt = localStorage.getItem("drosakExpiresAt");
+  if (savedKey && savedExpiresAt && Date.now() < parseInt(savedExpiresAt)) {
+    showPage("subjectsPage");
+    return;
   }
 
+  // ربط زر "يلا بينا" بالتحقق من الكود
   if (goBtn) {
     goBtn.addEventListener("click", () => handleAccess());
   }
