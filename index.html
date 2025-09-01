@@ -2020,20 +2020,16 @@ async function handleAccess(forceCheck = false) {
   errorBox.textContent = "";
 
   try {
-    // نتحقق إذا كان الكود مخزن وصالح لمدة أقل من 3 أيام
     const savedKey = localStorage.getItem("drosakKey");
     const savedExpiresAt = localStorage.getItem("drosakExpiresAt");
-    const lastCheck = parseInt(localStorage.getItem("lastCheck") || "0");
     const now = Date.now();
 
+    // ✅ التحقق: لو فيه كود مخزن ولسه صالح → ادخل مباشرة
     if (savedKey && savedExpiresAt && now < parseInt(savedExpiresAt) && !forceCheck) {
-      if (now - lastCheck < 3 * 24 * 60 * 60 * 1000) {
-        // الكود صالح وضمن 3 أيام → افتح مباشرة
-        showPage("subjectsPage");
-        goBtn.disabled = false;
-        goBtn.textContent = "يلا بينا";
-        return;
-      }
+      showPage("subjectsPage");
+      goBtn.disabled = false;
+      goBtn.textContent = "يلا بينا";
+      return;
     }
 
     const finalCode = savedKey || code;
@@ -2045,7 +2041,7 @@ async function handleAccess(forceCheck = false) {
     }
 
     // تحقق من حالة القفل
-    const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
+    const res = await fetch(`${dbURL}/appSettings/lockEnabled.json?nocache=${Date.now()}`);
     const lockEnabled = await res.json();
     if (!lockEnabled) {
       showPage("subjectsPage");
@@ -2053,17 +2049,21 @@ async function handleAccess(forceCheck = false) {
     }
 
     // تحقق من الكود من Firebase
-    const keySnap = await fetch(`${dbURL}/validKeys/${finalCode}.json`);
+    const keySnap = await fetch(`${dbURL}/validKeys/${finalCode}.json?nocache=${Date.now()}`);
     const keyData = await keySnap.json();
     const currentDevice = getDeviceId();
 
     if (!keyData) {
       errorBox.textContent = "❌ الكود غير صحيح، تواصل معنا: @AL_MAALA";
+      localStorage.removeItem("drosakKey");
+      localStorage.removeItem("drosakExpiresAt");
       return;
     }
 
     if (now >= keyData.expiresAt) {
       errorBox.textContent = "⚠️ انتهت صلاحية الكود، للتجديد كلمنا: @AL_MAALA";
+      localStorage.removeItem("drosakKey");
+      localStorage.removeItem("drosakExpiresAt");
       return;
     }
 
@@ -2072,6 +2072,7 @@ async function handleAccess(forceCheck = false) {
       return;
     }
 
+    // ربط الكود بالجهاز لو لسه جديد
     if (!keyData.deviceId) {
       await fetch(`${dbURL}/validKeys/${finalCode}/deviceId.json`, {
         method: "PUT",
@@ -2082,8 +2083,8 @@ async function handleAccess(forceCheck = false) {
     // حفظ بيانات الكود محليًا
     localStorage.setItem("drosakKey", finalCode);
     localStorage.setItem("drosakExpiresAt", keyData.expiresAt);
-    localStorage.setItem("lastCheck", now);
 
+    // ✅ فتح الموقع
     showPage("subjectsPage");
 
   } catch (err) {
@@ -2097,9 +2098,6 @@ async function handleAccess(forceCheck = false) {
 
 // ========== عند تحميل الصفحة ==========
 window.addEventListener("DOMContentLoaded", async () => {
-  const codeInput = document.getElementById("codeInput");
-  const notice = document.getElementById("codeNotice");
-  const errorBox = document.getElementById("errorMsg");
   const goBtn = document.getElementById("goBtn");
 
   try {
