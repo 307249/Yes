@@ -1984,7 +1984,7 @@ function stopAllVideosExcept(pageId) {
   });
 }
 
-// ========== إظهار الصفحة المطلوبة ==========
+// ========== إظهار صفحة ==========
 function showPage(pageId) {
   stopAllVideosExcept(pageId);
   const targetPage = document.getElementById(pageId);
@@ -2020,24 +2020,18 @@ async function handleAccess(forceCheck = false) {
   errorBox.textContent = "";
 
   try {
-    // التحقق من حالة القفل
-    const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
-    const lockEnabled = await res.json();
-
-    if (!lockEnabled) {
-      showPage("subjectsPage");
-      return;
-    }
-
+    // نتحقق إذا كان الكود مخزن وصالح لمدة أقل من 3 أيام
     const savedKey = localStorage.getItem("drosakKey");
     const savedExpiresAt = localStorage.getItem("drosakExpiresAt");
     const lastCheck = parseInt(localStorage.getItem("lastCheck") || "0");
     const now = Date.now();
 
-    // لو فيه كود محفوظ وصالح
     if (savedKey && savedExpiresAt && now < parseInt(savedExpiresAt) && !forceCheck) {
-      if (now - lastCheck < 24 * 60 * 60 * 1000) {
+      if (now - lastCheck < 3 * 24 * 60 * 60 * 1000) {
+        // الكود صالح وضمن 3 أيام → افتح مباشرة
         showPage("subjectsPage");
+        goBtn.disabled = false;
+        goBtn.textContent = "يلا بينا";
         return;
       }
     }
@@ -2045,34 +2039,39 @@ async function handleAccess(forceCheck = false) {
     const finalCode = savedKey || code;
     if (!finalCode) {
       errorBox.textContent = "⚠️ من فضلك أدخل الكود";
+      goBtn.disabled = false;
+      goBtn.textContent = "يلا بينا";
       return;
     }
 
+    // تحقق من حالة القفل
+    const res = await fetch(`${dbURL}/appSettings/lockEnabled.json`);
+    const lockEnabled = await res.json();
+    if (!lockEnabled) {
+      showPage("subjectsPage");
+      return;
+    }
+
+    // تحقق من الكود من Firebase
     const keySnap = await fetch(`${dbURL}/validKeys/${finalCode}.json`);
     const keyData = await keySnap.json();
     const currentDevice = getDeviceId();
 
-    // تحقق من وجود الكود
     if (!keyData) {
       errorBox.textContent = "❌ الكود غير صحيح، تواصل معنا: @AL_MAALA";
       return;
     }
 
-    // تحقق من صلاحية الكود
     if (now >= keyData.expiresAt) {
       errorBox.textContent = "⚠️ انتهت صلاحية الكود، للتجديد كلمنا: @AL_MAALA";
-      localStorage.removeItem("drosakKey");
-      localStorage.removeItem("drosakExpiresAt");
       return;
     }
 
-    // تحقق من الجهاز
     if (keyData.deviceId && keyData.deviceId !== currentDevice) {
       errorBox.textContent = "❌ هذا الكود مستخدم على جهاز آخر.";
       return;
     }
 
-    // ربط الكود بالجهاز لأول مرة فقط
     if (!keyData.deviceId) {
       await fetch(`${dbURL}/validKeys/${finalCode}/deviceId.json`, {
         method: "PUT",
@@ -2080,7 +2079,7 @@ async function handleAccess(forceCheck = false) {
       });
     }
 
-    // تخزين البيانات محليًا
+    // حفظ بيانات الكود محليًا
     localStorage.setItem("drosakKey", finalCode);
     localStorage.setItem("drosakExpiresAt", keyData.expiresAt);
     localStorage.setItem("lastCheck", now);
@@ -2097,21 +2096,23 @@ async function handleAccess(forceCheck = false) {
 }
 
 // ========== عند تحميل الصفحة ==========
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", async () => {
   const codeInput = document.getElementById("codeInput");
   const notice = document.getElementById("codeNotice");
   const errorBox = document.getElementById("errorMsg");
   const goBtn = document.getElementById("goBtn");
 
-  // التحقق من صلاحية الكود المخزن محليًا بدون اتصال Firebase
-  const savedKey = localStorage.getItem("drosakKey");
-  const savedExpiresAt = localStorage.getItem("drosakExpiresAt");
-  if (savedKey && savedExpiresAt && Date.now() < parseInt(savedExpiresAt)) {
-    showPage("subjectsPage");
-    return;
+  try {
+    const savedKey = localStorage.getItem("drosakKey");
+    const savedExpiresAt = localStorage.getItem("drosakExpiresAt");
+    if (savedKey && savedExpiresAt && Date.now() < parseInt(savedExpiresAt)) {
+      showPage("subjectsPage");
+      return;
+    }
+  } catch (err) {
+    console.error("خطأ في تحميل حالة القفل:", err);
   }
 
-  // ربط زر "يلا بينا" بالتحقق من الكود
   if (goBtn) {
     goBtn.addEventListener("click", () => handleAccess());
   }
