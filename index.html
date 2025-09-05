@@ -121,24 +121,10 @@
 <div class="page" id="arabicPage">
   <h1>مادة العربي</h1>
   <button class="main-btn" onclick="showPage('mohamedSalahPage')">محمد صلاح</button>
-  <button class="main-btn" onclick="showPage('redaFaroukPage')">رضا الفاروق</button>
   <button class="back-btn" onclick="showPage('subjectsPage')">← رجوع</button>
 </div>
 
-<!-- صفحة رضا الفاروق -->
-<div class="page" id="redaFaroukPage">
-  <h1>رضا الفاروق</h1>
-  <button class="main-btn" onclick="showPage('redaFaroukLecture1Page')">محاضرة 1</button>
-  <button class="back-btn" onclick="showPage('arabicPage')">← رجوع</button>
-</div>
 
-<!-- صفحة محاضرة 1 - رضا الفاروق -->
-<div class="page" id="redaFaroukLecture1Page">
-  <h1>محاضرة 1 – رضا الفاروق</h1>
-  <!-- يمكن إضافة المحتوى هنا -->
-  <button class="back-btn" onclick="showPage('redaFaroukPage')">← رجوع</button>
-</div>
-<!-- ======================================= -->
 <!-- صفحة محمد صلاح -->
 <div class="page" id="mohamedSalahPage">
   <h1>محمد صلاح</h1>
@@ -2312,6 +2298,36 @@
 
   <p>هنا محتوى الحل...</p>
   <button class="back-btn" onclick="showPage('mohamedAymanCartilagePage')">← رجوع</button>
+</div>
+
+
+
+
+
+    
+
+
+    <!-- صفحة الجوهري (جيولوجيا) -->
+<div class="page" id="gowharyGeoPage" style="display:none;">
+  <h1>الجوهري - جيولوجيا</h1>
+  <button class="main-btn" onclick="showPage('gowharyGeoLecture1Page')">محاضرة 1</button>
+  <button class="main-btn" onclick="showPage('gowharyGeoLecture2Page')">محاضرة 2</button>
+  <br><br>
+  <button class="back-btn" onclick="showPage('biologyPage')">← رجوع</button>
+</div>
+
+<!-- صفحة محاضرة 1 - الجوهري (جيولوجيا) -->
+<div class="page" id="gowharyGeoLecture1Page" style="display:none;">
+  <h1>الجوهري - جيولوجيا (محاضرة 1)</h1>
+  <p>هنا محتوى محاضرة 1...</p>
+  <button class="back-btn" onclick="showPage('gowharyGeoPage')">← رجوع</button>
+</div>
+
+<!-- صفحة محاضرة 2 - الجوهري (جيولوجيا) -->
+<div class="page" id="gowharyGeoLecture2Page" style="display:none;">
+  <h1>الجوهري - جيولوجيا (محاضرة 2)</h1>
+  <p>هنا محتوى محاضرة 2...</p>
+  <button class="back-btn" onclick="showPage('gowharyGeoPage')">← رجوع</button>
 </div>
 
 <!-- ================================================================================================================================================================================= -->
